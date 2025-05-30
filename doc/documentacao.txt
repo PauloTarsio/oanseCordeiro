@@ -1,0 +1,43 @@
+Clube | Idade | Manual
+Ursinho (vermelho)  | 4 ~ 5 anos    | Atividades
+Faísca (Amarelo)    | 6 ~ 8 anos    | Atividades
+Flama (Verde)       | 9 ~ 10 anos   | Atividades
+Tocha (Azul)        | 11 ~ 12 anos  | Atividades
+
+Oansista
+{
+  "id": 1,
+  "nome": "nome do Oansista",
+  "dataNascimento": "17/01/2012",
+  "endereco": {
+    "rua": "rua a",
+    "numero": 1
+    "bairro": "bairro a"
+  },
+  "responsavel": {
+    "nome": "nome do responsavel"
+    "telefone": "telefone do responsavel",
+    "email": "email do responsavel"
+  },
+}
+
+Manual
+{
+  "id": 1,
+  "clube": "Ursinho",
+  "descricao": "nome do manual",
+}
+
+Trilha
+{
+  "id": 1,
+  "nome": "nome da trilha",
+  "atividades": [
+    {
+      "id": 1,
+      "descricao": "descricao da atividade",
+      "dataConclusao": "dd/MM/yyyy"
+    },
+  ],
+  "dataConclusao": "dd/MM/yyyy"
+}
