@@ -1,0 +1,8 @@
+<dataset>
+	<responsavel id="-1" nome="Responsável 1" telefone="1234567890" email="responsavel1@example.com"/>
+  	<responsavel id="-2" nome="Responsável 2" telefone="9876543210" email="responsavel2@example.com"/>
+	
+	<oansista id="-1" nome="Oansista 1" data_nascimento="2020-01-01" rua="rua" numero="1" bairro="bairro" responsavel_id="-1"/>
+  	<oansista id="-2" nome="Oansista 2" data_nascimento="2021-05-15" rua="rua" numero="1" bairro="bairro" responsavel_id="-2"/>
+  	<oansista id="-3" nome="Oansista 3" data_nascimento="2022-10-20" rua="rua" numero="1" bairro="bairro" responsavel_id="-1"/>
+</dataset>
