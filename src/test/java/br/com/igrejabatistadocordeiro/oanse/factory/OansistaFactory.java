@@ -2,7 +2,7 @@ package br.com.igrejabatistadocordeiro.oanse.factory;
 
 import java.time.LocalDate;
 
-import br.com.igrejabatistadocordeiro.oanse.model.Oansista;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.Oansista;
 
 public class OansistaFactory {
 

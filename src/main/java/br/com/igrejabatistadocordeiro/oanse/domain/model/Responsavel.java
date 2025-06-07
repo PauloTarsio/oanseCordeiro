@@ -1,4 +1,4 @@
-package br.com.igrejabatistadocordeiro.oanse.model;
+package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

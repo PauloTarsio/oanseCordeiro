@@ -1,4 +1,4 @@
-package br.com.igrejabatistadocordeiro.oanse.model;
+package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,17 +14,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Atividade {
+public class Secao {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String descricao;
+    private Integer numero;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trilha_id")
     private Trilha trilha;
 
-    @OneToMany(mappedBy = "atividade", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OansistaAtividade> oansistaAtividades = new ArrayList<>();
+    @OneToMany(mappedBy = "secao", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OansistaSecao> oansistaSecao = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -32,14 +32,6 @@ public class Atividade {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
 	}
 
 	public Trilha getTrilha() {
@@ -50,12 +42,20 @@ public class Atividade {
 		this.trilha = trilha;
 	}
 
-	public List<OansistaAtividade> getOansistaAtividades() {
-		return oansistaAtividades;
+	public List<OansistaSecao> getOansistaAtividades() {
+		return oansistaSecao;
 	}
 
-	public void setOansistaAtividades(List<OansistaAtividade> oansistaAtividades) {
-		this.oansistaAtividades = oansistaAtividades;
+	public void setOansistaAtividades(List<OansistaSecao> oansistaAtividades) {
+		this.oansistaSecao = oansistaAtividades;
+	}
+
+	public Integer getNumero() {
+		return numero;
+	}
+
+	public void setNumero(Integer numero) {
+		this.numero = numero;
 	}
     
 }

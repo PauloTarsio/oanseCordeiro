@@ -26,9 +26,9 @@ CREATE TABLE Trilha (
     manual_id INTEGER REFERENCES Manual(id) ON DELETE CASCADE
 );
 
-CREATE TABLE Atividade (
+CREATE TABLE Secao (
     id SERIAL PRIMARY KEY,
-    descricao VARCHAR(255) NOT NULL,
+    numero INTEGER NOT NULL,
     trilha_id INTEGER REFERENCES Trilha(id) ON DELETE CASCADE
 );
 
@@ -41,11 +41,11 @@ CREATE TABLE Oansista_Manual (
     concluida BOOLEAN
 );
 
-CREATE TABLE Oansista_Atividade (
+CREATE TABLE Oansista_secao (
     id SERIAL PRIMARY KEY,
     oansista_id INTEGER REFERENCES Oansista(id) ON DELETE CASCADE,
-    atividade_id INTEGER REFERENCES Atividade(id) ON DELETE CASCADE,
-    data_iInicio DATE,
+    secao_id INTEGER REFERENCES Secao(id) ON DELETE CASCADE,
+    data_inicio DATE,
     data_conclusao DATE,
     concluida BOOLEAN
 );

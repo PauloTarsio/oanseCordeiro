@@ -1,8 +1,8 @@
-package br.com.igrejabatistadocordeiro.oanse.model;
+package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
-import java.util.ArrayList;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -33,11 +33,11 @@ public class Oansista {
     private String rua;
     private Integer numero;
     private String bairro;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "responsavel_id")
     private Responsavel responsavel;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "OansistaManual",
             joinColumns = @JoinColumn(name = "oansista_id"),
@@ -46,7 +46,7 @@ public class Oansista {
     private List<Manual> manuais = new ArrayList<>();
 
     @OneToMany(mappedBy = "oansista", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OansistaAtividade> oansistaAtividades = new ArrayList<>();
+    private List<OansistaSecao> oansistaSecao = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -112,12 +112,12 @@ public class Oansista {
 		this.manuais = manuais;
 	}
 
-	public List<OansistaAtividade> getOansistaAtividades() {
-		return oansistaAtividades;
+	public List<OansistaSecao> getOansistaSecao() {
+		return oansistaSecao;
 	}
 
-	public void setOansistaAtividades(List<OansistaAtividade> oansistaAtividades) {
-		this.oansistaAtividades = oansistaAtividades;
+	public void setOansistaSecao(List<OansistaSecao> oansistaSecao) {
+		this.oansistaSecao = oansistaSecao;
 	}
 	
 }

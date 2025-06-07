@@ -1,4 +1,4 @@
-package br.com.igrejabatistadocordeiro.oanse.model;
+package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class Trilha {
     private Manual manual;
 
     @OneToMany(mappedBy = "trilha", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Atividade> atividades = new ArrayList<>();
+    private List<Secao> atividades = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -50,11 +50,11 @@ public class Trilha {
 		this.manual = manual;
 	}
 
-	public List<Atividade> getAtividades() {
+	public List<Secao> getAtividades() {
 		return atividades;
 	}
 
-	public void setAtividades(List<Atividade> atividades) {
+	public void setAtividades(List<Secao> atividades) {
 		this.atividades = atividades;
 	}
     

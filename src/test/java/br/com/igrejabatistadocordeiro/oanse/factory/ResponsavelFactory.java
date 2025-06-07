@@ -1,6 +1,6 @@
 package br.com.igrejabatistadocordeiro.oanse.factory;
 
-import br.com.igrejabatistadocordeiro.oanse.model.Responsavel;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.Responsavel;
 
 public class ResponsavelFactory {
 	

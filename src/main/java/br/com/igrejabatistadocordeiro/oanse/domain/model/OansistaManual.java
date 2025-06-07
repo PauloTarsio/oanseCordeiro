@@ -1,4 +1,4 @@
-package br.com.igrejabatistadocordeiro.oanse.model;
+package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
 import java.util.Date;
 
@@ -15,8 +15,8 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name="OANSISTA_ATIVIDADE")
-public class OansistaAtividade {
+@Table(name="OANSISTA_MANUAL")
+public class OansistaManual {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,15 +25,15 @@ public class OansistaAtividade {
     private Oansista oansista;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "atividade_id")
-    private Atividade atividade;
+    @JoinColumn(name = "manual_id")
+    private Manual manual;
 
     @Temporal(TemporalType.DATE)
     @Column(name="data_inicio")
     private Date dataInicio;
     @Temporal(TemporalType.DATE)
     @Column(name="data_conclusao")
-    private Date dataConclusao;
+    private Date dataConclusao;    
     private Boolean concluido;
 	public Long getId() {
 		return id;
@@ -47,11 +47,11 @@ public class OansistaAtividade {
 	public void setOansista(Oansista oansista) {
 		this.oansista = oansista;
 	}
-	public Atividade getAtividade() {
-		return atividade;
+	public Manual getManual() {
+		return manual;
 	}
-	public void setAtividade(Atividade atividade) {
-		this.atividade = atividade;
+	public void setManual(Manual manual) {
+		this.manual = manual;
 	}
 	public Date getDataInicio() {
 		return dataInicio;

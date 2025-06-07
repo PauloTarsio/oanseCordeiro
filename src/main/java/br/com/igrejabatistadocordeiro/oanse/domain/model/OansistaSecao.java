@@ -1,4 +1,4 @@
-package br.com.igrejabatistadocordeiro.oanse.model;
+package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
 import java.util.Date;
 
@@ -15,8 +15,8 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name="OANSISTA_MANUAL")
-public class OansistaManual {
+@Table(name="OANSISTA_SECAO")
+public class OansistaSecao {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,16 +25,16 @@ public class OansistaManual {
     private Oansista oansista;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "manual_id")
-    private Manual manual;
-
+    @JoinColumn(name = "secao_id")
+    private Secao secao;
+    
     @Temporal(TemporalType.DATE)
     @Column(name="data_inicio")
     private Date dataInicio;
     @Temporal(TemporalType.DATE)
     @Column(name="data_conclusao")
-    private Date dataConclusao;    
-    private Boolean concluido;
+    private Date dataConclusao;
+    private Boolean concluida;
 	public Long getId() {
 		return id;
 	}
@@ -47,11 +47,11 @@ public class OansistaManual {
 	public void setOansista(Oansista oansista) {
 		this.oansista = oansista;
 	}
-	public Manual getManual() {
-		return manual;
+	public Secao getSecao() {
+		return secao;
 	}
-	public void setManual(Manual manual) {
-		this.manual = manual;
+	public void setSecao(Secao secao) {
+		this.secao = secao;
 	}
 	public Date getDataInicio() {
 		return dataInicio;
@@ -65,11 +65,11 @@ public class OansistaManual {
 	public void setDataConclusao(Date dataConclusao) {
 		this.dataConclusao = dataConclusao;
 	}
-	public Boolean getConcluido() {
-		return concluido;
+	public Boolean getConcluida() {
+		return concluida;
 	}
-	public void setConcluido(Boolean concluido) {
-		this.concluido = concluido;
+	public void setConcluida(Boolean concluida) {
+		this.concluida = concluida;
 	}
     
 }
