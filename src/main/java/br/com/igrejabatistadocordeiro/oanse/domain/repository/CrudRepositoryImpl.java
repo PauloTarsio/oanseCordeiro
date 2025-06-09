@@ -2,11 +2,14 @@ package br.com.igrejabatistadocordeiro.oanse.domain.repository;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 
+@Transactional
 public class CrudRepositoryImpl<T> implements CrudRepository<T> {
 
 	@PersistenceContext
@@ -34,11 +37,11 @@ public class CrudRepositoryImpl<T> implements CrudRepository<T> {
 	}
 
 	@Override
-	public void deleta(Long id) {
-		T t = carrega(id);
-		if (t != null) {
-			entityManager.remove(t);
-		}
+	public void deleta(Long t) {
+		T t1 = carrega(t);
+		if (t1 == null)
+			return;
+		entityManager.remove(t1);
 	}
 
 	@Override

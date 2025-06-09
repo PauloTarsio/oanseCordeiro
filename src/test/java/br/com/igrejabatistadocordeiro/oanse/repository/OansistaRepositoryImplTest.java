@@ -23,7 +23,7 @@ import dbUnit.DbUnit;
 
 @SpringBootTest
 @Import(DbUnit.class)
-public class OansistaRepositoryTest {
+public class OansistaRepositoryImplTest {
 	
 	@Autowired
 	private OansistaRepository repository;
@@ -34,7 +34,7 @@ public class OansistaRepositoryTest {
     @BeforeEach
     public void setUp() {
     	dbUnit.setTableName("oansista");
-    	dbUnit.setDatasetPath("src/test/resources/xml/OansistaRepositoryTest.xml");
+    	dbUnit.setDatasetPath("src/test/resources/xml/OansistaRepositoryImplTest.xml");
     }
 	
 	@Test
@@ -86,11 +86,10 @@ public class OansistaRepositoryTest {
 		Oansista oansistaSalvo = repository.carrega(-1l);
 		assertEquals(oansistaSalvo.getNome(), "nome atualizado");
 	}
-	
-	@Test
-	public void deveriaDeletar() {
-        repository.deleta(-1l);
-	    assertNull(repository.carrega(-1L));
-	}
 
+	@Test
+	public void deveriaRemover() {
+		repository.deleta(-1l);
+		assertNull(repository.carrega(-1l));
+	}
 }

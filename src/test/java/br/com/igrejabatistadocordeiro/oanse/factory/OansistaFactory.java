@@ -12,6 +12,11 @@ public class OansistaFactory {
 		oansista = new Oansista();
 	}
 	
+	public OansistaFactory comId(int i) {
+		this.oansista.setId(Long.valueOf(i));
+		return this;
+	}
+	
 	public OansistaFactory comNome(String nome) {
 		this.oansista.setNome(nome);
 		return this;

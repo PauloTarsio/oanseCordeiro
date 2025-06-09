@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class DataUtilString {
 
     // Define um formato padrão (ex: 01/06/2025)

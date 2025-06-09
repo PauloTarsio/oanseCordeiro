@@ -119,5 +119,21 @@ public class Oansista {
 	public void setOansistaSecao(List<OansistaSecao> oansistaSecao) {
 		this.oansistaSecao = oansistaSecao;
 	}
+
+	public void atualizaCom(Oansista oansista) {
+		this.nome = oansista.getNome();
+		this.dataNascimento = oansista.getDataNascimento();
+		this.rua = oansista.getRua();
+		this.numero = oansista.getNumero();
+		this.bairro = oansista.getBairro();
+		if (oansista.getResponsavel() != null) {
+			if (this.responsavel == null) {
+				this.responsavel = new Responsavel();
+			}
+			this.responsavel.setId(oansista.getResponsavel().getId());
+		} else {
+			this.responsavel = null;
+		}		
+	}
 	
 }

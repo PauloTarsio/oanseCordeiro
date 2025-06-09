@@ -11,7 +11,7 @@ public interface OansistaService {
 	public List<Oansista> pesquisa(OansistaFilter filtro);
 	public List<Oansista> listaTudo();	
 	public void salva(Oansista oansista);
-	public void atualiza(Long id, Oansista oansista);
+	public void atualiza(Oansista oansista);
 	public void remove(Long id);
 	
 }
