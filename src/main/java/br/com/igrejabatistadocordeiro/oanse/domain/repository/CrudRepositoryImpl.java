@@ -28,7 +28,7 @@ public class CrudRepositoryImpl<T> implements CrudRepository<T> {
 
 	@Override
 	public void salva(T t) {
-		entityManager.persist(t);		
+		entityManager.persist(t);
 	}
 
 	@Override

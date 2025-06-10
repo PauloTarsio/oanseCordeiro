@@ -28,7 +28,9 @@ public class OansistaRepositoryImpl extends CrudRepositoryImpl<Oansista> impleme
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Oansista> cq = cb.createQuery(Oansista.class);
 		Root<Oansista> root = cq.from(Oansista.class);
-		if (StringUtils.isNotBlank(filtro.getNome()))
+		if (filtro != null && filtro.getId() != null)
+			cq.where(cb.equal(root.get("id"), filtro.getId()));
+		if (filtro != null && StringUtils.isNotBlank(filtro.getNome()))
 		    cq.where(cb.like(cb.lower(root.get("nome")), "%" + filtro.getNome().toLowerCase() + "%"));
 		return entityManager.createQuery(cq).getResultList();
 	}

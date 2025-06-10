@@ -10,20 +10,6 @@ import org.springframework.stereotype.Component;
 public class DataUtil {
 
     /**
-     * Verifica se a data está no passado.
-     */
-    public boolean isDataPassada(Date data) {
-        return data.before(new Date());
-    }
-
-    /**
-     * Verifica se a data está no futuro.
-     */
-    public boolean isDataFutura(Date data) {
-        return data.after(new Date());
-    }
-
-    /**
      * Verifica se duas datas são iguais (ignorando horas/minutos/segundos).
      */
     public boolean isMesmaData(Date d1, Date d2) {
@@ -69,18 +55,5 @@ public class DataUtil {
         }
 
         return idade;
-    }
-
-    /**
-     * Zera a hora, minuto, segundo e milissegundo da data.
-     */
-    public Date zerarHorario(Date data) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(data);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTime();
     }
 }

@@ -1,35 +1,28 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class Response {
 	
 	private StatusIntegracao status;
-	private List<String> detalhe;
+	private List<String> erros;
 	
 	public Response(StatusIntegracao statusIntegracao) {
 		this.status = statusIntegracao;
 	}
 	
-	public Response(StatusIntegracao statusIntegracao, String detalhe) {
+	public Response(StatusIntegracao statusIntegracao, List<String> erros) {
         this.status = statusIntegracao;
-        this.detalhe = new ArrayList<String>();
-        this.detalhe.add(detalhe);
+        this.erros = erros;
 	}
 	
-	public Response(StatusIntegracao statusIntegracao, List<String> detalhes) {
-		this.status = statusIntegracao;
-		this.detalhe = detalhes;
-	}
-
 	public StatusIntegracao getStatus() {
 		return status;
 	}
 
-	public List<String> getDetalhes() {
-		return detalhe;
+	public List<String> getErros() {
+		return erros;
 	}
 }

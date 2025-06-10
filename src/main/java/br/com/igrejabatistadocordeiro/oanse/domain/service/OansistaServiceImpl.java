@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.OanseValildationException;
 import br.com.igrejabatistadocordeiro.oanse.domain.filter.OansistaFilter;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Oansista;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.Responsavel;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.OansistaRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.util.DataUtil;
 import br.com.igrejabatistadocordeiro.oanse.domain.util.DiferencasUtil;
@@ -91,8 +92,21 @@ public class OansistaServiceImpl implements OansistaService {
 			erros.add("A data de nascimento do Oansista é obrigatória.");
 		else {
 			Integer idade = dataUtil.calcularIdade(oansista.getDataNascimento());
-			if (idade < 6 || idade > 14)
-				erros.add("Oansista deve ter entre 6 e 14 anos de idade.");
+			if (idade < 4 || idade > 14)
+				erros.add("Idade: "+idade+", deve ter entre 4 e 14 anos de idade.");
+		}
+		if (oansista.getResponsavel() != null) {
+			Responsavel responsavel = oansista.getResponsavel();
+			if (StringUtils.isBlank(responsavel.getNome()))
+				erros.add("O nome do responsável é obrigatório.");
+			else if (responsavel.getNome().length() > 255)
+				erros.add("O nome do responsável não pode ser tão grande.");
+			else if (responsavel.getNome().length() < 3)
+				erros.add("O nome do responsável deve ter pelo menos 3 caracteres.");
+			if (!StringUtils.isBlank(responsavel.getTelefone()) && !StringUtils.isTelefoneValido(responsavel.getTelefone()))
+				erros.add("O telefone do responsável deve ser válido, utilize o formato (XX) XXXXX-XXXX ou (XX) XXXX-XXXX.");
+			if (!StringUtils.isBlank(responsavel.getEmail()) && !StringUtils.isEmailValido(responsavel.getEmail()))
+				erros.add("O email do responsável deve ser válido");
 		}
 		return erros;
 	}
@@ -113,6 +127,12 @@ public class OansistaServiceImpl implements OansistaService {
 		if (oansista1.getResponsavel() != null && oansista2.getResponsavel() != null) {
 			if (diferencasUtil.temDiferenca(oansista1.getResponsavel().getId(), oansista2.getResponsavel().getId()))
 				return true;
+			if (diferencasUtil.temDiferenca(oansista1.getResponsavel().getNome(), oansista2.getResponsavel().getNome()))
+				return true;
+			if (diferencasUtil.temDiferenca(oansista1.getResponsavel().getTelefone(), oansista2.getResponsavel().getTelefone()))
+				return true;
+			if (diferencasUtil.temDiferenca(oansista1.getResponsavel().getEmail(), oansista2.getResponsavel().getEmail()))
+				return true;			
 		}
 		return false;
 	}

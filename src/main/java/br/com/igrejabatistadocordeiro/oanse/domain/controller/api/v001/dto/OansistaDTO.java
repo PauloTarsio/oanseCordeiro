@@ -1,14 +1,18 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
+import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.OanseValildationException;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Oansista;
 
 public class OansistaDTO {
-
+	
 	private Long id;
 	private String nome;
 	private String dataNascimento;
 	private String rua;
-	private String numero;
+	private Integer numero;
 	private String bairro;
 	private ResponsavelDTO responsavel;
 
@@ -20,7 +24,7 @@ public class OansistaDTO {
 		this.nome = oansista.getNome() != null ? oansista.getNome() : null;
 		this.dataNascimento = oansista.getDataNascimento() != null ? oansista.getDataNascimento().toString() : null;
 		this.rua = oansista.getRua() != null ? oansista.getRua() : null;
-		this.numero = oansista.getNumero() != null ? oansista.getNumero().toString() : null;
+		this.numero = oansista.getNumero() != null ? oansista.getNumero() : null;
 		this.bairro = oansista.getBairro() != null ? oansista.getBairro() : null;
 		if (oansista.getResponsavel() != null) {
 			this.responsavel = new ResponsavelDTO(oansista.getResponsavel());
@@ -32,10 +36,16 @@ public class OansistaDTO {
 	public Oansista toOansista() {
 		Oansista oansista = new Oansista();
 		oansista.setId(this.id);
-		oansista.setNome(this.nome);
-		oansista.setDataNascimento(this.dataNascimento != null ? java.time.LocalDate.parse(this.dataNascimento) : null);
+		oansista.setNome(this.nome);	
+		if (this.dataNascimento != null) {
+			try {
+				oansista.setDataNascimento(LocalDate.parse(this.dataNascimento));
+			} catch (DateTimeParseException e) {
+				throw new OanseValildationException(String.format("Erro ao analisar a data '%s'. Por favor, utilize o formato yyyy-MM-dd.", this.dataNascimento));
+			}
+		}			
 		oansista.setRua(this.rua);
-		oansista.setNumero(this.numero != null ? Integer.parseInt(this.numero) : null);
+		oansista.setNumero(this.numero);
 		oansista.setBairro(this.bairro);
 		if (this.responsavel != null) {
 			oansista.setResponsavel(this.responsavel.toResponsavel());
@@ -75,11 +85,11 @@ public class OansistaDTO {
 		this.rua = rua;
 	}
 
-	public String getNumero() {
+	public Integer getNumero() {
 		return numero;
 	}
 
-	public void setNumero(String numero) {
+	public void setNumero(Integer numero) {
 		this.numero = numero;
 	}
 

@@ -69,7 +69,7 @@ public class Oansista {
 	}
 
 	public void setDataNascimento(LocalDate dataNascimento) {
-		this.dataNascimento = Date.valueOf(dataNascimento);
+		this.dataNascimento = dataNascimento == null ? null : Date.valueOf(dataNascimento);
 	}
 
 	public String getRua() {
@@ -130,7 +130,9 @@ public class Oansista {
 			if (this.responsavel == null) {
 				this.responsavel = new Responsavel();
 			}
-			this.responsavel.setId(oansista.getResponsavel().getId());
+			this.responsavel.setNome(oansista.getResponsavel().getNome());
+			this.responsavel.setTelefone(oansista.getResponsavel().getTelefone());
+			this.responsavel.setEmail(oansista.getResponsavel().getEmail());
 		} else {
 			this.responsavel = null;
 		}		
