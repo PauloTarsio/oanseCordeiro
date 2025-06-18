@@ -5,6 +5,8 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +18,8 @@ public class Manual {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String clube;
+	@Enumerated(EnumType.STRING)
+    private Clube clube;
     private String descricao;
 
     @ManyToMany(mappedBy = "manuais")
@@ -31,14 +34,6 @@ public class Manual {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getClube() {
-		return clube;
-	}
-
-	public void setClube(String clube) {
-		this.clube = clube;
 	}
 
 	public String getDescricao() {
@@ -63,6 +58,14 @@ public class Manual {
 
 	public void setTrilhas(List<Trilha> trilhas) {
 		this.trilhas = trilhas;
+	}
+
+	public Clube getClube() {
+		return clube;
+	}
+
+	public void setClube(Clube clube) {
+		this.clube = clube;
 	}
     
 }

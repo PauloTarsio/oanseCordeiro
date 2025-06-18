@@ -46,7 +46,7 @@ public class Oansista {
     private List<Manual> manuais = new ArrayList<>();
 
     @OneToMany(mappedBy = "oansista", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OansistaSecao> oansistaSecao = new ArrayList<>();
+    private List<OansistaSessao> oansistaSessao = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -112,12 +112,12 @@ public class Oansista {
 		this.manuais = manuais;
 	}
 
-	public List<OansistaSecao> getOansistaSecao() {
-		return oansistaSecao;
+	public List<OansistaSessao> getOansistaSessao() {
+		return oansistaSessao;
 	}
 
-	public void setOansistaSecao(List<OansistaSecao> oansistaSecao) {
-		this.oansistaSecao = oansistaSecao;
+	public void setOansistaSessao(List<OansistaSessao> oansistaSessao) {
+		this.oansistaSessao = oansistaSessao;
 	}
 
 	public void atualizaCom(Oansista oansista) {

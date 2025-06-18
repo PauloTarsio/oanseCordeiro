@@ -2,14 +2,11 @@ package br.com.igrejabatistadocordeiro.oanse.domain.repository;
 
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 
-@Transactional
 public class CrudRepositoryImpl<T> implements CrudRepository<T> {
 
 	@PersistenceContext

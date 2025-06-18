@@ -28,10 +28,10 @@ public class OansistaController extends GeneralController {
 	private OansistaService service;
 	
 	@GetMapping("/api/v001/oansista/{id}")
-	public ResponseEntity<OansistaDTO> carrega(@PathVariable Long id) {
+	public ResponseEntity<?> carrega(@PathVariable Long id) {
 		Oansista oansistaBase = service.carrega(id);
 		if (oansistaBase == null)
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			return adicionaMensagemDeErro("Oansista não encontrado.");
 		return ResponseEntity.ok(new OansistaDTO(oansistaBase));
 	}
 	

@@ -15,8 +15,8 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name="OANSISTA_SECAO")
-public class OansistaSecao {
+@Table(name="OANSISTA_SESSAO")
+public class OansistaSessao {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,8 +25,8 @@ public class OansistaSecao {
     private Oansista oansista;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "secao_id")
-    private Secao secao;
+    @JoinColumn(name = "sessao_id")
+    private Sessao sessao;
     
     @Temporal(TemporalType.DATE)
     @Column(name="data_inicio")
@@ -47,11 +47,11 @@ public class OansistaSecao {
 	public void setOansista(Oansista oansista) {
 		this.oansista = oansista;
 	}
-	public Secao getSecao() {
-		return secao;
+	public Sessao getSessao() {
+		return sessao;
 	}
-	public void setSecao(Secao secao) {
-		this.secao = secao;
+	public void setSessao(Sessao sessao) {
+		this.sessao = sessao;
 	}
 	public Date getDataInicio() {
 		return dataInicio;

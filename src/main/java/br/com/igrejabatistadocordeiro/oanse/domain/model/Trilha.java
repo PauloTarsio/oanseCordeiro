@@ -24,7 +24,7 @@ public class Trilha {
     private Manual manual;
 
     @OneToMany(mappedBy = "trilha", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Secao> atividades = new ArrayList<>();
+    private List<Sessao> sessoes = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -50,12 +50,12 @@ public class Trilha {
 		this.manual = manual;
 	}
 
-	public List<Secao> getAtividades() {
-		return atividades;
+	public List<Sessao> getSessoes() {
+		return sessoes;
 	}
 
-	public void setAtividades(List<Secao> atividades) {
-		this.atividades = atividades;
+	public void setSessoes(List<Sessao> sessoes) {
+		this.sessoes = sessoes;
 	}
     
 }
