@@ -4,12 +4,12 @@ import br.com.igrejabatistadocordeiro.oanse.domain.model.Manual;
 
 public class ManualDTO {
 
-	private Long id;
+	private Long idManual;
 	private String clube;
 	private String descricao;
 	
 	public ManualDTO(Manual manual) {
-		this.id = manual.getId();
+		this.setIdManual(manual.getId());
 		this.clube = manual.getClube().getNome();
 		this.descricao = manual.getDescricao();
 	}
@@ -27,11 +27,12 @@ public class ManualDTO {
 		this.descricao = descricao;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getIdManual() {
+		return idManual;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdManual(Long idManual) {
+		this.idManual = idManual;
 	}
+	
 }

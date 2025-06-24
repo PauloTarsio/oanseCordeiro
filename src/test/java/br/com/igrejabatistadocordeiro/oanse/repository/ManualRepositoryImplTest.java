@@ -63,7 +63,7 @@ public class ManualRepositoryImplTest {
 	
 	@Test
 	public void deveriaPesquisarTodos() {
-		List<Manual> resultado = repository.pesquisa(null);
+		List<Manual> resultado = repository.pesquisa(new ManualFilter());
 		assertEquals(5, resultado.size());
 	}
 

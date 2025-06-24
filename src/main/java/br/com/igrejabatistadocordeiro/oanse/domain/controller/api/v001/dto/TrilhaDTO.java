@@ -4,23 +4,23 @@ import br.com.igrejabatistadocordeiro.oanse.domain.model.Trilha;
 
 public class TrilhaDTO {
 
-	private Long id;
+	private Long idTrilha;
 	private String nome;
 	private Long idManual;
 	private String nomeManual;
 	
 	public TrilhaDTO(Trilha trilha) {
-		this.id = trilha.getId();
+		this.idTrilha = trilha.getId();
         this.nome = trilha.getNome();
         this.idManual = trilha.getManual() != null ? trilha.getManual().getId() : null;
         this.nomeManual = trilha.getManual() != null ? trilha.getManual().getDescricao() : null;
 	}
 	
-	public Long getId() {
-		return id;
+	public Long getIdTrilha() {
+		return idTrilha;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdTrilha(Long id) {
+		this.idTrilha = id;
 	}
 	public String getNome() {
 		return nome;

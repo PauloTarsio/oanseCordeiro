@@ -27,7 +27,7 @@ public class TrilhaRepositoryImplTest {
 	
     @BeforeEach
     public void setUp() {
-    	dbUnit.setTableName("oansista");
+    	dbUnit.setTableName("trilha");
     	dbUnit.setDatasetPath("src/test/resources/xml/TrilhaRepositoryImplTest.xml");
     }
     
