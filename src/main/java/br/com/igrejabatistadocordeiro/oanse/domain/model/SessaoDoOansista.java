@@ -16,10 +16,12 @@ import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name="OANSISTA_SESSAO")
-public class OansistaSessao {
+public class SessaoDoOansista {
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "oansista_id")
     private Oansista oansista;
@@ -31,11 +33,14 @@ public class OansistaSessao {
     @Temporal(TemporalType.DATE)
     @Column(name="data_inicio")
     private Date dataInicio;
+    
     @Temporal(TemporalType.DATE)
     @Column(name="data_conclusao")
     private Date dataConclusao;
-    private Boolean concluida;
-	public Long getId() {
+    
+    private Boolean concluido;
+	
+    public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
@@ -65,11 +70,11 @@ public class OansistaSessao {
 	public void setDataConclusao(Date dataConclusao) {
 		this.dataConclusao = dataConclusao;
 	}
-	public Boolean getConcluida() {
-		return concluida;
+	public Boolean getConcluido() {
+		return concluido;
 	}
-	public void setConcluida(Boolean concluida) {
-		this.concluida = concluida;
+	public void setConcluido(Boolean concluido) {
+		this.concluido = concluido;
 	}
     
 }

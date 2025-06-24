@@ -13,8 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
@@ -26,27 +24,28 @@ public class Oansista {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
-    @Temporal(TemporalType.DATE)
+    
+	private String nome;
+    
+	@Temporal(TemporalType.DATE)
     @Column(name="data_nascimento")
     private Date dataNascimento;
-    private String rua;
-    private Integer numero;
-    private String bairro;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "responsavel_id")
+    
+	private String rua;
+    
+	private Integer numero;
+    
+	private String bairro;
+    
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "responsavel_id")
     private Responsavel responsavel;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "OansistaManual",
-            joinColumns = @JoinColumn(name = "oansista_id"),
-            inverseJoinColumns = @JoinColumn(name = "manual_id")
-    )
-    private List<Manual> manuais = new ArrayList<>();
+    @OneToMany(mappedBy = "oansista", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ManualDoOansista> manuais = new ArrayList<>();
 
     @OneToMany(mappedBy = "oansista", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OansistaSessao> oansistaSessao = new ArrayList<>();
+    private List<SessaoDoOansista> sessoes = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -104,20 +103,20 @@ public class Oansista {
 		this.responsavel = responsavel;
 	}
 
-	public List<Manual> getManuais() {
+	public List<ManualDoOansista> getManuais() {
 		return manuais;
 	}
 
-	public void setManuais(List<Manual> manuais) {
+	public void setManuais(List<ManualDoOansista> manuais) {
 		this.manuais = manuais;
 	}
 
-	public List<OansistaSessao> getOansistaSessao() {
-		return oansistaSessao;
+	public List<SessaoDoOansista> getSessoes() {
+		return sessoes;
 	}
 
-	public void setOansistaSessao(List<OansistaSessao> oansistaSessao) {
-		this.oansistaSessao = oansistaSessao;
+	public void setSessoes(List<SessaoDoOansista> sessoes) {
+		this.sessoes = sessoes;
 	}
 
 	public void atualizaCom(Oansista oansista) {

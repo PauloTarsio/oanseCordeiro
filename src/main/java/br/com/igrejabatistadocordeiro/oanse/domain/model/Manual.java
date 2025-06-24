@@ -10,20 +10,22 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 @Entity
 public class Manual {
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	
 	@Enumerated(EnumType.STRING)
     private Clubes clube;
-    private String descricao;
+    
+	private String descricao;
 
-    @ManyToMany(mappedBy = "manuais")
-    private List<Oansista> oansistas = new ArrayList<>();
+    @OneToMany(mappedBy = "manual")
+    private List<ManualDoOansista> manuaisDoOansista = new ArrayList<>();
 
     @OneToMany(mappedBy = "manual", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Trilha> trilhas = new ArrayList<>();
@@ -44,14 +46,6 @@ public class Manual {
 		this.descricao = descricao;
 	}
 
-	public List<Oansista> getOansistas() {
-		return oansistas;
-	}
-
-	public void setOansistas(List<Oansista> oansistas) {
-		this.oansistas = oansistas;
-	}
-
 	public List<Trilha> getTrilhas() {
 		return trilhas;
 	}
@@ -66,6 +60,14 @@ public class Manual {
 
 	public void setClube(Clubes clube) {
 		this.clube = clube;
+	}
+
+	public List<ManualDoOansista> getManuaisDoOansista() {
+		return manuaisDoOansista;
+	}
+
+	public void setManuaisDoOansista(List<ManualDoOansista> manuaisDoOansista) {
+		this.manuaisDoOansista = manuaisDoOansista;
 	}
     
 }

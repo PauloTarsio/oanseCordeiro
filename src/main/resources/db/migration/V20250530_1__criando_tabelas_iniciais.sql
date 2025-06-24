@@ -38,7 +38,7 @@ CREATE TABLE Oansista_Manual (
     manual_id INTEGER REFERENCES Manual(id) ON DELETE CASCADE,
     data_inicio DATE,
     data_conclusao DATE,
-    concluida BOOLEAN
+    concluido BOOLEAN
 );
 
 CREATE TABLE Oansista_sessao (
@@ -47,7 +47,7 @@ CREATE TABLE Oansista_sessao (
     sessao_id INTEGER REFERENCES Sessao(id) ON DELETE CASCADE,
     data_inicio DATE,
     data_conclusao DATE,
-    concluida BOOLEAN
+    concluido BOOLEAN
 );
 
 ALTER TABLE Oansista

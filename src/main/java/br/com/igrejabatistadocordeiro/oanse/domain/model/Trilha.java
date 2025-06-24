@@ -15,11 +15,14 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Trilha {
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
-    @ManyToOne(fetch = FetchType.LAZY)
+    
+	private String nome;
+    
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manual_id")
     private Manual manual;
 

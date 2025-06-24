@@ -15,16 +15,19 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Sessao {
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer numero;
-    @ManyToOne(fetch = FetchType.LAZY)
+    
+	private Integer numero;
+    
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trilha_id")
     private Trilha trilha;
 
     @OneToMany(mappedBy = "sessao", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OansistaSessao> oansistaSessao = new ArrayList<>();
+    private List<SessaoDoOansista> oansistaSessao = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -42,11 +45,11 @@ public class Sessao {
 		this.trilha = trilha;
 	}
 
-	public List<OansistaSessao> getOansistaAtividades() {
+	public List<SessaoDoOansista> getOansistaAtividades() {
 		return oansistaSessao;
 	}
 
-	public void setOansistaAtividades(List<OansistaSessao> oansistaAtividades) {
+	public void setOansistaAtividades(List<SessaoDoOansista> oansistaAtividades) {
 		this.oansistaSessao = oansistaAtividades;
 	}
 
