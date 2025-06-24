@@ -33,11 +33,11 @@ public class Oansista {
     private String rua;
     private Integer numero;
     private String bairro;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "responsavel_id")
     private Responsavel responsavel;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "OansistaManual",
             joinColumns = @JoinColumn(name = "oansista_id"),

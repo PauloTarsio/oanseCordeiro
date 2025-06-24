@@ -1,5 +1,6 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 @Repository
@@ -28,11 +30,14 @@ public class OansistaRepositoryImpl extends CrudRepositoryImpl<Oansista> impleme
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Oansista> cq = cb.createQuery(Oansista.class);
 		Root<Oansista> root = cq.from(Oansista.class);
-		if (filtro != null && filtro.getId() != null)
-			cq.where(cb.equal(root.get("id"), filtro.getId()));
-		if (filtro != null && StringUtils.isNotBlank(filtro.getNome()))
-		    cq.where(cb.like(cb.lower(root.get("nome")), "%" + filtro.getNome().toLowerCase() + "%"));
-		return entityManager.createQuery(cq).getResultList();
+		List<Predicate> predicates = new ArrayList<>();
+        if (filtro.getId() != null)
+            predicates.add(cb.equal(root.get("id"), filtro.getId()));
+        if (StringUtils.isNotBlank(filtro.getNome()))
+            predicates.add(cb.like(cb.lower(root.get("nome")),"%" + filtro.getNome().toLowerCase() + "%"));
+	    if (!predicates.isEmpty())
+	        cq.where(cb.and(predicates.toArray(new Predicate[0])));
+	    return entityManager.createQuery(cq).getResultList();
 	}
 	
 }

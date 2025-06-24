@@ -8,15 +8,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.OansistaDTO;
-import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.OanseValildationException;
+import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.OanseValidationException;
 import br.com.igrejabatistadocordeiro.oanse.domain.filter.OansistaFilter;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Oansista;
 import br.com.igrejabatistadocordeiro.oanse.domain.service.OansistaService;
@@ -31,21 +31,17 @@ public class OansistaController extends GeneralController {
 	public ResponseEntity<?> carrega(@PathVariable Long id) {
 		Oansista oansistaBase = service.carrega(id);
 		if (oansistaBase == null)
-			return adicionaMensagemDeErro("Oansista não encontrado.");
+			return adicionaMensagemDeErro(MSG_NAO_ENCONTRADO);
 		return ResponseEntity.ok(new OansistaDTO(oansistaBase));
 	}
 	
 	@GetMapping("/api/v001/oansista")
-	public ResponseEntity<List<OansistaDTO>> pesquisa(
-			@RequestParam(name = "filtro.id", required = false) Long id,
-			@RequestParam(name = "filtro.descricao", required = false) String nome) {
-		OansistaFilter filtro = new OansistaFilter();
-		filtro.setId(id);
-		filtro.setNome(nome);
-		List<Oansista> pesquisa = service.pesquisa(filtro);
-		if (pesquisa.isEmpty())
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		return ResponseEntity.ok(pesquisa.stream().map(value -> new OansistaDTO(value)).collect(Collectors.toList()));
+	public ResponseEntity<?> pesquisa(@ModelAttribute OansistaFilter filter) {
+		List<Oansista> resultado = service.pesquisa(filter);
+		if (resultado == null || resultado.isEmpty())
+            return adicionaMensagemDeErro(MSG_NAO_ENCONTRADO);
+		List<OansistaDTO> dtos = resultado.stream().map(value -> new OansistaDTO(value)).collect(Collectors.toList());
+		return ResponseEntity.ok(dtos);
 	}
 
 	@PostMapping("/api/v001/oansista")
@@ -54,7 +50,7 @@ public class OansistaController extends GeneralController {
 	        Oansista oansista = dto.toOansista();
 	        service.salva(oansista);
 	        return ResponseEntity.status(HttpStatus.CREATED).body(new Response(StatusIntegracao.SUCESSO));
-	    } catch (OanseValildationException e) {
+	    } catch (OanseValidationException e) {
 	        return ResponseEntity.badRequest().body(new Response(StatusIntegracao.FALHA, e.getErros()));
 	    }
 	}
@@ -66,7 +62,7 @@ public class OansistaController extends GeneralController {
 	        oansista.setId(id);
 	        service.atualiza(oansista);
 	        return ResponseEntity.ok(new Response(StatusIntegracao.SUCESSO));
-	    } catch (OanseValildationException e) {
+	    } catch (OanseValidationException e) {
 	        return ResponseEntity.badRequest().body(new Response(StatusIntegracao.FALHA, e.getErros()));
 	    }
 	}
@@ -76,7 +72,7 @@ public class OansistaController extends GeneralController {
 	    try {
 	        service.remove(id);
 	        return ResponseEntity.noContent().build();
-	    } catch (OanseValildationException e) {
+	    } catch (OanseValidationException e) {
 	        return ResponseEntity.badRequest().body(new Response(StatusIntegracao.FALHA, e.getErros()));
 	    }
 	}

@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.OanseValildationException;
+import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.OanseValidationException;
 import br.com.igrejabatistadocordeiro.oanse.domain.filter.OansistaFilter;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Oansista;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Responsavel;
@@ -48,7 +48,7 @@ public class OansistaServiceImpl implements OansistaService {
 		if (oansista.getId() != null)
 			erros.add("Não deve imformar o ID, o mesmo será gerado automaticamente.");
 		if (!erros.isEmpty())
-			throw new OanseValildationException(erros);
+			throw new OanseValidationException(erros);
 		repository.salva(oansista);
 	}
 
@@ -63,7 +63,7 @@ public class OansistaServiceImpl implements OansistaService {
 				erros.add("Não é possível atualizar, cadastro não encontrado.");
 		}
 	    if (!erros.isEmpty())
-			throw new OanseValildationException(erros);
+			throw new OanseValidationException(erros);
 	    if (temDiferencas(oansistaBase, oansista)) {
 	    	oansistaBase.atualizaCom(oansista);
 	    	repository.atualiza(oansistaBase);
@@ -74,13 +74,13 @@ public class OansistaServiceImpl implements OansistaService {
 	public void remove(Long id) {
 		Oansista oansistaBase = carrega(id);
 		if (oansistaBase == null)
-			throw new OanseValildationException("Não é possível remover, cadastro não encontrado.");
+			throw new OanseValidationException("Não é possível remover, cadastro não encontrado.");
 		repository.deleta(id);
 	}
 	
 	private List<String> valida(Oansista oansista) {
 		if (oansista == null)
-			throw new OanseValildationException("Dados inválidos!");
+			throw new OanseValidationException("Dados inválidos!");
 		List<String> erros = new ArrayList<>();
 		if (StringUtils.isBlank(oansista.getNome()))
 			erros.add("O nome do Oansista é obrigatório.");

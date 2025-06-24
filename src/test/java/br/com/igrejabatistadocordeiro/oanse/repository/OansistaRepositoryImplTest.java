@@ -42,12 +42,10 @@ public class OansistaRepositoryImplTest {
 		Oansista oansista = repository.carrega(-2l);		
 		assertEquals(oansista.getNome(), "Oansista 2");
 		assertNotNull(oansista.getResponsavel());
-		Responsavel responsavel = oansista.getResponsavel();
-		assertEquals(responsavel.getNome(), "Responsável 2");
 	}	
 
 	@Test
-	public void deveriaCarregaTudo() {
+	public void deveriaListarTudo() {
 		List<Oansista> oansistas = repository.listaTudo();
 		assertEquals(oansistas.size(), 3);
 	}

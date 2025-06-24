@@ -20,7 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.OanseValildationException;
+import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.OanseValidationException;
 import br.com.igrejabatistadocordeiro.oanse.domain.filter.OansistaFilter;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Oansista;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.OansistaRepository;
@@ -115,7 +115,7 @@ public class OansistaServiceImplTest {
 		ArgumentCaptor<Oansista> captor = ArgumentCaptor.forClass(Oansista.class);
 		try {
 			service.salva(oansista);
-		} catch (OanseValildationException e) {
+		} catch (OanseValidationException e) {
 			assertEquals(e.getErros().get(0), "Não deve imformar o ID, o mesmo será gerado automaticamente.");
 		}
 		verify(repository, times(0)).salva(captor.capture());		
@@ -129,7 +129,7 @@ public class OansistaServiceImplTest {
 		try {
 			service.atualiza(oansistaAtualizado);
 			fail();
-		} catch (OanseValildationException e) {
+		} catch (OanseValidationException e) {
 			assertEquals(e.getErros().get(0), "O ID do Oansista é obrigatório.");
 		}
 		verify(repository, times(0)).atualiza(captor.capture());		
@@ -144,7 +144,7 @@ public class OansistaServiceImplTest {
 		try {
 			service.atualiza(oansistaAtualizado);
 			fail();
-		} catch (OanseValildationException e) {
+		} catch (OanseValidationException e) {
 			assertEquals(e.getErros().get(0), "Não é possível atualizar, cadastro não encontrado.");
 		}
 		verify(repository, times(0)).atualiza(captor.capture());
@@ -156,7 +156,7 @@ public class OansistaServiceImplTest {
 		try {
 			service.remove(78l);
 			fail();
-		} catch (OanseValildationException e) {
+		} catch (OanseValidationException e) {
 			assertEquals(e.getErros().get(0), "Não é possível remover, cadastro não encontrado.");
 		}
 		verify(repository, times(0)).deleta(78l);

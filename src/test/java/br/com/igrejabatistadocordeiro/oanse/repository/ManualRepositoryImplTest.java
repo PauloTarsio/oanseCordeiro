@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Clube;
+import br.com.igrejabatistadocordeiro.oanse.domain.filter.ManualFilter;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Manual;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.ManualRepository;
 import dbUnit.DbUnit;
@@ -38,14 +38,33 @@ public class ManualRepositoryImplTest {
 	}
 	
 	@Test
-	public void deveriaPesquisarPeloClube() {
-		List<Manual> pesquisa = repository.pesquisa(Clube.FAISCA);
-		assertEquals(2, pesquisa.size());
-		
-		List<Manual> pesquisa2 = repository.pesquisa(Clube.FLAMA);
-		assertEquals(0, pesquisa2.size());
-		
-		List<Manual> pesquisa3 = repository.pesquisa(Clube.TOCHA);
-		assertEquals(2, pesquisa3.size());
+	public void deveriaPesquisarDoisManuaisParaClubeFaisca() {
+		ManualFilter filtro = new ManualFilter();
+		filtro.setClube("faisca");
+	    List<Manual> resultado = repository.pesquisa(filtro);
+	    assertEquals(2, resultado.size());
 	}
+
+	@Test
+	public void deveriaPesquisarNenhumManualParaClubeFlama() {
+		ManualFilter filtro = new ManualFilter();
+		filtro.setClube("flama");
+	    List<Manual> resultado = repository.pesquisa(filtro);
+	    assertEquals(0, resultado.size());
+	}
+
+	@Test
+	public void deveriaPesquisarDoisManuaisParaClubeTocha() {
+		ManualFilter filtro = new ManualFilter();
+		filtro.setClube("tocha");
+	    List<Manual> resultado = repository.pesquisa(filtro);
+	    assertEquals(2, resultado.size());
+	}
+	
+	@Test
+	public void deveriaPesquisarTodos() {
+		List<Manual> resultado = repository.pesquisa(null);
+		assertEquals(5, resultado.size());
+	}
+
 }

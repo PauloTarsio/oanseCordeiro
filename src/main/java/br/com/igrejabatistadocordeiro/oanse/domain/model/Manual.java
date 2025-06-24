@@ -19,7 +19,7 @@ public class Manual {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	@Enumerated(EnumType.STRING)
-    private Clube clube;
+    private Clubes clube;
     private String descricao;
 
     @ManyToMany(mappedBy = "manuais")
@@ -60,11 +60,11 @@ public class Manual {
 		this.trilhas = trilhas;
 	}
 
-	public Clube getClube() {
+	public Clubes getClube() {
 		return clube;
 	}
 
-	public void setClube(Clube clube) {
+	public void setClube(Clubes clube) {
 		this.clube = clube;
 	}
     

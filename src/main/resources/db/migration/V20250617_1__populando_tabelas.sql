@@ -13,11 +13,19 @@ SELECT s.num, t.id
 FROM generate_series(1, 6) AS s(num)
 JOIN Trilha t ON t.nome = 'Prova de ingresso';
 
+-- Sessões para "Trilha da Prova de Ingresso"
+INSERT INTO Sessao (numero, trilha_id)
+SELECT s.num, t.id
+FROM generate_series(1, 6) AS s(num)
+JOIN Trilha t ON t.nome = 'Prova de Ingresso'
+JOIN Manual m ON t.manual_id = m.id
+WHERE m.clube = 'CLUBE' AND m.descricao = 'Prova de Ingresso';
 
--- FAISCAS - Manual do Saltador -----------------------------------------------------------------------------------
+
+-- FAISCA - Manual do Saltador -----------------------------------------------------------------------------------
 WITH manual_saltador_insert AS (
   INSERT INTO Manual (clube, descricao)
-  VALUES ('FAISCAS', 'Manual do Saltador')
+  VALUES ('FAISCA', 'Manual do Saltador')
   RETURNING id
 )
 INSERT INTO Trilha (nome, manual_id) VALUES
@@ -38,7 +46,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 6) AS s(num)
 JOIN Trilha t ON t.nome = 'Trilha do Grau'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Saltador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Saltador';
 
 -- Sessões para "Joia Vermelha 1"
 INSERT INTO Sessao (numero, trilha_id)
@@ -46,7 +54,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 4) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Vermelha 1'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Saltador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Saltador';
 
 -- Sessões para "Joia Vermelha 2"
 INSERT INTO Sessao (numero, trilha_id)
@@ -54,7 +62,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 4) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Vermelha 2'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Saltador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Saltador';
 
 -- Sessões para "Joia Vermelha 3"
 INSERT INTO Sessao (numero, trilha_id)
@@ -62,7 +70,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 9) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Vermelha 3'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Saltador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Saltador';
 
 -- Sessões para "Joia Vermelha 4"
 INSERT INTO Sessao (numero, trilha_id)
@@ -70,7 +78,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 6) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Vermelha 4'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Saltador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Saltador';
 
 -- Sessões para "Joia Verde 1"
 INSERT INTO Sessao (numero, trilha_id)
@@ -78,7 +86,7 @@ VALUES (1, (
   SELECT t.id
   FROM Trilha t
   JOIN Manual m ON t.manual_id = m.id
-  WHERE t.nome = 'Joia Verde 1' AND m.clube = 'FAISCAS' AND m.descricao = 'Manual do Saltador'
+  WHERE t.nome = 'Joia Verde 1' AND m.clube = 'FAISCA' AND m.descricao = 'Manual do Saltador'
 ));
 
 -- Sessões para "Joia Verde 2"
@@ -87,7 +95,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 2) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Verde 2'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Saltador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Saltador';
 
 -- Sessões para "Joia Verde 3"
 INSERT INTO Sessao (numero, trilha_id)
@@ -95,7 +103,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 4) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Verde 3'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Saltador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Saltador';
 
 -- Sessões para "Joia Verde 4"
 INSERT INTO Sessao (numero, trilha_id)
@@ -103,7 +111,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 2) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Verde 4'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Saltador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Saltador';
 
 -- Sessões para "Campina do Saltador"
 INSERT INTO Sessao (numero, trilha_id)
@@ -111,12 +119,12 @@ SELECT s.num, t.id
 FROM generate_series(1, 7) AS s(num)
 JOIN Trilha t ON t.nome = 'Campina do Saltador'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Saltador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Saltador';
 
--- FAISCAS - Manual do Caminhante -----------------------------------------------------------------------------------
+-- FAISCA - Manual do Caminhante -----------------------------------------------------------------------------------
 WITH manual_caminhante_insert AS (
   INSERT INTO Manual (clube, descricao)
-  VALUES ('FAISCAS', 'Manual do Caminhante')
+  VALUES ('FAISCA', 'Manual do Caminhante')
   RETURNING id
 )
 INSERT INTO Trilha (nome, manual_id) VALUES
@@ -136,7 +144,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 6) AS s(num)
 JOIN Trilha t ON t.nome = 'Trilha do Grau'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Caminhante';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Caminhante';
 
 -- Sessões para "Joia Vermelha 1"
 INSERT INTO Sessao (numero, trilha_id)
@@ -144,7 +152,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 6) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Vermelha 1'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Caminhante';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Caminhante';
 
 -- Sessões para "Joia Vermelha 2"
 INSERT INTO Sessao (numero, trilha_id)
@@ -152,7 +160,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 5) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Vermelha 2'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Caminhante';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Caminhante';
 
 -- Sessões para "Joia Vermelha 3"
 INSERT INTO Sessao (numero, trilha_id)
@@ -160,7 +168,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 10) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Vermelha 3'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Caminhante';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Caminhante';
 
 -- Sessões para "Joia Vermelha 4"
 INSERT INTO Sessao (numero, trilha_id)
@@ -168,7 +176,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 8) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Vermelha 4'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Caminhante';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Caminhante';
 
 -- Sessões para "Joia Verde 1"
 INSERT INTO Sessao (numero, trilha_id)
@@ -176,7 +184,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 2) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Verde 1'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Caminhante';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Caminhante';
 
 -- Sessões para "Joia Verde 2"
 INSERT INTO Sessao (numero, trilha_id)
@@ -184,7 +192,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 3) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Verde 2'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Caminhante';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Caminhante';
 
 -- Sessões para "Joia Verde 3"
 INSERT INTO Sessao (numero, trilha_id)
@@ -192,7 +200,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 5) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Verde 3'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Caminhante';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Caminhante';
 
 -- Sessões para "Joia Verde 4"
 INSERT INTO Sessao (numero, trilha_id)
@@ -200,7 +208,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 4) AS s(num)
 JOIN Trilha t ON t.nome = 'Joia Verde 4'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Caminhante';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Caminhante';
 
 -- Sessões para "Campina do Caminhante"
 INSERT INTO Sessao (numero, trilha_id)
@@ -208,12 +216,12 @@ SELECT s.num, t.id
 FROM generate_series(1, 7) AS s(num)
 JOIN Trilha t ON t.nome = 'Campina do Caminhante'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Caminhante';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Caminhante';
 
--- FAISCAS - Manual do Escalador -----------------------------------------------------------------------------------
+-- FAISCA - Manual do Escalador -----------------------------------------------------------------------------------
 WITH manual_escalador_insert AS (
   INSERT INTO Manual (clube, descricao)
-  VALUES ('FAISCAS', 'Manual do Escalador')
+  VALUES ('FAISCA', 'Manual do Escalador')
   RETURNING id
 )
 INSERT INTO Trilha (nome, manual_id) VALUES
@@ -234,7 +242,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 6) s(num)
 JOIN Trilha t ON t.nome = 'Trilha do Grau'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Escalador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Escalador';
 
 -- Joia Vermelha 1
 INSERT INTO Sessao (numero, trilha_id)
@@ -242,7 +250,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 7) s(num)
 JOIN Trilha t ON t.nome = 'Joia Vermelha 1'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Escalador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Escalador';
 
 -- Joia Vermelha 2
 INSERT INTO Sessao (numero, trilha_id)
@@ -250,7 +258,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 7) s(num)
 JOIN Trilha t ON t.nome = 'Joia Vermelha 2'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Escalador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Escalador';
 
 -- Joia Vermelha 3
 INSERT INTO Sessao (numero, trilha_id)
@@ -258,7 +266,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 7) s(num)
 JOIN Trilha t ON t.nome = 'Joia Vermelha 3'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Escalador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Escalador';
 
 -- Joia Vermelha 4
 INSERT INTO Sessao (numero, trilha_id)
@@ -266,7 +274,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 7) s(num)
 JOIN Trilha t ON t.nome = 'Joia Vermelha 4'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Escalador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Escalador';
 
 -- Joia Verde 1
 INSERT INTO Sessao (numero, trilha_id)
@@ -274,7 +282,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 3) s(num)
 JOIN Trilha t ON t.nome = 'Joia Verde 1'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Escalador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Escalador';
 
 -- Joia Verde 2
 INSERT INTO Sessao (numero, trilha_id)
@@ -282,7 +290,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 4) s(num)
 JOIN Trilha t ON t.nome = 'Joia Verde 2'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Escalador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Escalador';
 
 -- Joia Verde 3
 INSERT INTO Sessao (numero, trilha_id)
@@ -290,7 +298,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 6) s(num)
 JOIN Trilha t ON t.nome = 'Joia Verde 3'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Escalador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Escalador';
 
 -- Joia Verde 4
 INSERT INTO Sessao (numero, trilha_id)
@@ -298,7 +306,7 @@ SELECT s.num, t.id
 FROM generate_series(1, 1) s(num)
 JOIN Trilha t ON t.nome = 'Joia Verde 4'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Escalador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Escalador';
 
 -- Planalto do Escalador
 INSERT INTO Sessao (numero, trilha_id)
@@ -306,4 +314,4 @@ SELECT s.num, t.id
 FROM generate_series(1, 7) s(num)
 JOIN Trilha t ON t.nome = 'Planalto do Escalador'
 JOIN Manual m ON t.manual_id = m.id
-WHERE m.clube = 'FAISCAS' AND m.descricao = 'Manual do Escalador';
+WHERE m.clube = 'FAISCA' AND m.descricao = 'Manual do Escalador';
