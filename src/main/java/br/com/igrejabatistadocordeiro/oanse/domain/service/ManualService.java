@@ -9,5 +9,6 @@ public interface ManualService {
 
 	public List<Manual> listaTudo();
 	public List<Manual> pesquisa(ManualFilter filtro);
+	public Manual carrega(Long idManual);
 	
 }

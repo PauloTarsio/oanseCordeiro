@@ -54,7 +54,7 @@ public class DbUnit {
 	private void resetSequences() throws Exception {
 		try (Connection connection = DriverManager.getConnection(JDBC, USER, PASSWORD);
 			Statement statement = connection.createStatement()) {
-			String sequenceName = tableName.toLowerCase() + "_id_seq";
+			String sequenceName = StringUtils.isNotBlank(tableName) ? tableName.toLowerCase() + "_id_seq" : null;
 			if (StringUtils.isNotBlank(sequenceName))
 				statement.executeUpdate("ALTER SEQUENCE " + sequenceName + " RESTART WITH 1");
 		}

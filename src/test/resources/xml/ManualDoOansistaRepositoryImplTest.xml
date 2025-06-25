@@ -1,0 +1,18 @@
+<dataset>
+	<responsavel id="-1" nome="Responsável 1" telefone="1234567890" email="responsavel1@example.com" />
+  	<responsavel id="-2" nome="Responsável 2" telefone="9876543210" email="responsavel2@example.com" />
+	
+	<oansista id="-1" nome="Oansista 1" data_nascimento="2020-01-01" rua="rua" numero="1" bairro="bairro" responsavel_id="-1" />
+  	<oansista id="-2" nome="Oansista 2" data_nascimento="2021-05-15" rua="rua" numero="1" bairro="bairro" responsavel_id="-2" />
+  	<oansista id="-3" nome="Oansista 3" data_nascimento="2022-10-20" rua="rua" numero="1" bairro="bairro" responsavel_id="-1" />
+  	
+  	<manual id="-1" clube="FAISCA" descricao="Manual do Saltador" />
+	<manual id="-2" clube="FAISCA" descricao="Manual do Caminhante" />
+	<manual id="-3" clube="TOCHA" descricao="Carneiro" />
+	<manual id="-4" clube="CLUBE" descricao="Prova de Ingresso" />
+	<manual id="-5" clube="TOCHA" descricao="Leão" />
+	
+	<oansista_manual id="-1" oansista_id="-1" manual_id="-1" data_inicio="2020-06-01" data_conclusao="2023-06-30" concluido="true"/>
+	<oansista_manual id="-2" oansista_id="-1" manual_id="-2" data_inicio="2023-07-01" concluido="false"/>
+	<oansista_manual id="-3" oansista_id="-2" manual_id="-3" data_inicio="2020-06-01" concluido="false"/>
+</dataset>

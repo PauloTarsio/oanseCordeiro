@@ -1,7 +1,6 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +40,10 @@ public class Oansista {
 	@JoinColumn(name = "responsavel_id")
     private Responsavel responsavel;
 
-    @OneToMany(mappedBy = "oansista", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "oansista", cascade = CascadeType.ALL)
     private List<ManualDoOansista> manuais = new ArrayList<>();
 
-    @OneToMany(mappedBy = "oansista", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "oansista", cascade = CascadeType.ALL)
     private List<SessaoDoOansista> sessoes = new ArrayList<>();
 
 	public Long getId() {
@@ -67,8 +66,8 @@ public class Oansista {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(LocalDate dataNascimento) {
-		this.dataNascimento = dataNascimento == null ? null : Date.valueOf(dataNascimento);
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 
 	public String getRua() {

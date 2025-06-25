@@ -1,6 +1,6 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.time.format.DateTimeParseException;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.OanseValidationException;
@@ -39,7 +39,7 @@ public class OansistaDTO {
 		oansista.setNome(this.nome);	
 		if (this.dataNascimento != null) {
 			try {
-				oansista.setDataNascimento(LocalDate.parse(this.dataNascimento));
+				oansista.setDataNascimento(Date.valueOf(this.dataNascimento));
 			} catch (DateTimeParseException e) {
 				throw new OanseValidationException(String.format("Erro ao analisar a data '%s'. Por favor, utilize o formato yyyy-MM-dd.", this.dataNascimento));
 			}

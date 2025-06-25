@@ -22,5 +22,9 @@ public class GeneralController {
 	protected ResponseEntity<?> adicionaMensagemDeErro(String msg) {
 		return ResponseEntity.badRequest().body(new Response(StatusIntegracao.FALHA, msg));
 	}
+	
+	protected ResponseEntity<?> adicionaMensagem(String msg) {
+		return ResponseEntity.ok().body(new Response(StatusIntegracao.SUCESSO, msg));
+	}
 
 }

@@ -25,4 +25,9 @@ public class ManualServiceImpl implements ManualService {
 		return repository.pesquisa(filtro);
 	}
 
+	@Override
+	public Manual carrega(Long idManual) {
+		return repository.carrega(idManual);
+	}
+
 }

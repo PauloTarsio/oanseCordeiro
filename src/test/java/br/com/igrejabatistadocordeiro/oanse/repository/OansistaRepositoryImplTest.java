@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class OansistaRepositoryImplTest {
 	
 	@Test
 	public void deveriaSalvar() {
-		Oansista oansista = new OansistaFactory().comNome("nome 2").comDataNascimento(LocalDate.of(2020, 1, 17)).build();
+		Oansista oansista = new OansistaFactory().comNome("nome 2").comDataNascimento(Date.valueOf(LocalDate.of(2020, 1, 17))).build();
 		repository.salva(oansista);		
 		OansistaFilter filtro = new OansistaFilter();
 		filtro.setNome("nome 2");
@@ -63,7 +64,7 @@ public class OansistaRepositoryImplTest {
 	
 	@Test
 	public void deveriaSalvar2() {
-		Oansista oansista = new OansistaFactory().comNome("nome 2").comDataNascimento(LocalDate.of(2020, 1, 17)).build();
+		Oansista oansista = new OansistaFactory().comNome("nome 2").comDataNascimento(Date.valueOf(LocalDate.of(2020, 1, 17))).build();
 		Responsavel responsavel = new ResponsavelFactory().comNome("responsavel").build();
 		oansista.setResponsavel(responsavel);
 		repository.salva(oansista);

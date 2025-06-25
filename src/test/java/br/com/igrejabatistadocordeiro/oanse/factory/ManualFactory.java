@@ -11,6 +11,11 @@ public class ManualFactory {
 		manual = new Manual();
 	}
 	
+	public ManualFactory comId(Long i) {
+		this.manual.setId(i);
+		return this;
+	}
+	
 	public ManualFactory comClube(Clubes clube) {
 		this.manual.setClube(clube);
 		return this;

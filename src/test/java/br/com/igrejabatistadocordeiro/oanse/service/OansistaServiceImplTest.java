@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -50,7 +51,7 @@ public class OansistaServiceImplTest {
 	
 	@Test
 	public void deveriaCarregar() {
-		when(repository.carrega(1l)).thenReturn(new OansistaFactory().comNome("Paulo").comDataNascimento(LocalDate.of(1982, 11, 5)).build());
+		when(repository.carrega(1l)).thenReturn(new OansistaFactory().comNome("Paulo").comDataNascimento(Date.valueOf(LocalDate.of(1982, 11, 5))).build());
 		Oansista oansista = service.carrega(1l);
 		assertNotNull(oansista);
 		assertEquals("Paulo", oansista.getNome());
@@ -60,7 +61,7 @@ public class OansistaServiceImplTest {
 	public void deveriaPesquisar() {
 		OansistaFilter filtro = new OansistaFilter();
 		filtro.setNome("Paulo");
-		when(repository.pesquisa(filtro)).thenReturn(Arrays.asList(new OansistaFactory().comNome("Paulo").comDataNascimento(LocalDate.of(1982, 11, 5)).build()));
+		when(repository.pesquisa(filtro)).thenReturn(Arrays.asList(new OansistaFactory().comNome("Paulo").comDataNascimento(Date.valueOf(LocalDate.of(1982, 11, 5))).build()));
 		List<Oansista> pesquisa = service.pesquisa(filtro);
 		assertNotNull(pesquisa);
 		assertEquals(1, pesquisa.size());
@@ -69,7 +70,7 @@ public class OansistaServiceImplTest {
 	
 	@Test
 	public void deveriaListarTudo() {
-		when(repository.listaTudo()).thenReturn(Arrays.asList(new OansistaFactory().comNome("Paulo").comDataNascimento(LocalDate.of(1982, 11, 5)).build()));
+		when(repository.listaTudo()).thenReturn(Arrays.asList(new OansistaFactory().comNome("Paulo").comDataNascimento(Date.valueOf(LocalDate.of(1982, 11, 5))).build()));
 		List<Oansista> oansistas = service.listaTudo();
 		assertNotNull(oansistas);
 		assertEquals(1, oansistas.size());
@@ -77,7 +78,7 @@ public class OansistaServiceImplTest {
 	
 	@Test
 	public void deveriaSalvar() {
-		Oansista oansista = new OansistaFactory().comNome("Paulo").comDataNascimento(LocalDate.of(1982, 11, 5)).build();
+		Oansista oansista = new OansistaFactory().comNome("Paulo").comDataNascimento(Date.valueOf(LocalDate.of(1982, 11, 5))).build();
 		when(dataUtil.calcularIdade(oansista.getDataNascimento())).thenReturn(10);
 		ArgumentCaptor<Oansista> captor = ArgumentCaptor.forClass(Oansista.class);		
 		service.salva(oansista);		
@@ -88,8 +89,8 @@ public class OansistaServiceImplTest {
 
 	@Test
 	public void deveriaAtualizar() {
-		Oansista oansistaAtualizado = new OansistaFactory().comId(75).comNome("Paulo Alves").comDataNascimento(LocalDate.of(1982, 11, 5)).build();
-		Oansista oansistaBase = new OansistaFactory().comId(75).comNome("Paulo Araujo").comDataNascimento(LocalDate.of(1982, 11, 5)).build();
+		Oansista oansistaAtualizado = new OansistaFactory().comId(75).comNome("Paulo Alves").comDataNascimento(Date.valueOf(LocalDate.of(1982, 11, 5))).build();
+		Oansista oansistaBase = new OansistaFactory().comId(75).comNome("Paulo Araujo").comDataNascimento(Date.valueOf(LocalDate.of(1982, 11, 5))).build();
 		when(dataUtil.calcularIdade(oansistaAtualizado.getDataNascimento())).thenReturn(10);
 		when(diferencasUtil.temDiferenca(anyString(), anyString())).thenReturn(true);
 		when(repository.carrega(anyLong())).thenReturn(oansistaBase);
@@ -102,7 +103,7 @@ public class OansistaServiceImplTest {
 	
 	@Test
 	public void deveriaRemover() {
-		Oansista oansistaBase = new OansistaFactory().comId(50).comNome("Paulo").comDataNascimento(LocalDate.of(1982, 11, 5)).build();
+		Oansista oansistaBase = new OansistaFactory().comId(50).comNome("Paulo").comDataNascimento(Date.valueOf(LocalDate.of(1982, 11, 5))).build();
 		when(repository.carrega(78l)).thenReturn(oansistaBase);
 		service.remove(78l);
 		verify(repository, times(1)).deleta(78l);
@@ -110,7 +111,7 @@ public class OansistaServiceImplTest {
 	
 	@Test
 	public void deveriaDarErroAoSalvar1() {
-		Oansista oansista = new OansistaFactory().comId(50).comNome("Paulo").comDataNascimento(LocalDate.of(1982, 11, 5)).build();
+		Oansista oansista = new OansistaFactory().comId(50).comNome("Paulo").comDataNascimento(Date.valueOf(LocalDate.of(1982, 11, 5))).build();
 		when(dataUtil.calcularIdade(oansista.getDataNascimento())).thenReturn(10);
 		ArgumentCaptor<Oansista> captor = ArgumentCaptor.forClass(Oansista.class);
 		try {
@@ -123,7 +124,7 @@ public class OansistaServiceImplTest {
 	
 	@Test
 	public void deveriaDarErroAoAtualizar1() {
-		Oansista oansistaAtualizado = new OansistaFactory().comNome("Paulo Alves").comDataNascimento(LocalDate.of(1982, 11, 5)).build();
+		Oansista oansistaAtualizado = new OansistaFactory().comNome("Paulo Alves").comDataNascimento(Date.valueOf(LocalDate.of(1982, 11, 5))).build();
 		when(dataUtil.calcularIdade(oansistaAtualizado.getDataNascimento())).thenReturn(10);
 		ArgumentCaptor<Oansista> captor = ArgumentCaptor.forClass(Oansista.class);
 		try {
@@ -137,7 +138,7 @@ public class OansistaServiceImplTest {
 	
 	@Test
 	public void deveriaDarErroAoAtualizar2() {
-		Oansista oansistaAtualizado = new OansistaFactory().comId(75).comNome("Paulo Alves").comDataNascimento(LocalDate.of(1982, 11, 5)).build();
+		Oansista oansistaAtualizado = new OansistaFactory().comId(75).comNome("Paulo Alves").comDataNascimento(Date.valueOf(LocalDate.of(1982, 11, 5))).build();
 		when(dataUtil.calcularIdade(oansistaAtualizado.getDataNascimento())).thenReturn(10);
 		when(repository.carrega(anyLong())).thenReturn(null);
 		ArgumentCaptor<Oansista> captor = ArgumentCaptor.forClass(Oansista.class);
