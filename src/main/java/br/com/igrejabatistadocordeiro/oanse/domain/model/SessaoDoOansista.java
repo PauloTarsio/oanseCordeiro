@@ -38,6 +38,10 @@ public class SessaoDoOansista {
     @Column(name="data_conclusao")
     private Date dataConclusao;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "oansista_manual_id")
+    private ManualDoOansista manualDoOansista;
+    
     private Boolean concluido;
 	
     public Long getId() {
@@ -75,6 +79,12 @@ public class SessaoDoOansista {
 	}
 	public void setConcluido(Boolean concluido) {
 		this.concluido = concluido;
+	}
+	public ManualDoOansista getManualDoOansista() {
+		return manualDoOansista;
+	}
+	public void setManualDoOansista(ManualDoOansista manualDoOansista) {
+		this.manualDoOansista = manualDoOansista;
 	}
     
 }

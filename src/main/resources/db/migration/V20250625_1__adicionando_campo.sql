@@ -1,0 +1,5 @@
+ALTER TABLE OANSISTA_SESSAO
+ADD COLUMN oansista_manual_id BIGINT NOT NULL,
+ADD CONSTRAINT fk_oansista_manual
+    FOREIGN KEY (oansista_manual_id)
+    REFERENCES OANSISTA_MANUAL(id);

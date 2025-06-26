@@ -45,20 +45,20 @@ public class Sessao {
 		this.trilha = trilha;
 	}
 
-	public List<SessaoDoOansista> getOansistaAtividades() {
-		return oansistaSessao;
-	}
-
-	public void setOansistaAtividades(List<SessaoDoOansista> oansistaAtividades) {
-		this.oansistaSessao = oansistaAtividades;
-	}
-
 	public Integer getNumero() {
 		return numero;
 	}
 
 	public void setNumero(Integer numero) {
 		this.numero = numero;
+	}
+
+	public List<SessaoDoOansista> getOansistaSessao() {
+		return oansistaSessao;
+	}
+
+	public void setOansistaSessao(List<SessaoDoOansista> oansistaSessao) {
+		this.oansistaSessao = oansistaSessao;
 	}
     
 }

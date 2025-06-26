@@ -35,7 +35,7 @@ public class ManualDoOansistaController extends GeneralController {
 	}
 	
 	@PostMapping("/api/v001/manualDoOansista")
-	public ResponseEntity<Response> novo(@RequestBody ManualDoOansistaDTO dto) {
+	public ResponseEntity<Response> iniciarManualParaOansista(@RequestBody ManualDoOansistaDTO dto) {
 		try {			
 			service.salvar(dto);
 			return ResponseEntity.status(HttpStatus.CREATED).body(new Response(StatusIntegracao.SUCESSO));
