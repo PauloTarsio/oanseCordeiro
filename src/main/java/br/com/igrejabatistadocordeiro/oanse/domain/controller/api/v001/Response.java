@@ -8,30 +8,30 @@ import java.util.List;
 public class Response {
 	
 	private StatusIntegracao status;
-	private List<String> erros;
+	private List<String> detalhes;
 	
 	public Response(StatusIntegracao statusIntegracao) {
 		this.status = statusIntegracao;
-		this.erros = new ArrayList<>();
+		this.detalhes = new ArrayList<>();
 	}
 	
-	public Response(StatusIntegracao statusIntegracao, String erro) {
+	public Response(StatusIntegracao statusIntegracao, String detalhes) {
 		this.status = statusIntegracao;
-		if (this.erros == null)
-			this.erros = new ArrayList<>();
-		this.erros.add(erro);
+		if (this.detalhes == null)
+			this.detalhes = new ArrayList<>();
+		this.detalhes.add(detalhes);
 	}
 	
-	public Response(StatusIntegracao statusIntegracao, List<String> erros) {
+	public Response(StatusIntegracao statusIntegracao, List<String> detalhes) {
         this.status = statusIntegracao;
-        this.erros = erros;
+        this.detalhes = detalhes;
 	}
 
 	public StatusIntegracao getStatus() {
 		return status;
 	}
 
-	public List<String> getErros() {
-		return erros;
+	public List<String> getDetalhes() {
+		return detalhes;
 	}
 }

@@ -1,5 +1,7 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto;
 
+import java.util.Date;
+
 import br.com.igrejabatistadocordeiro.oanse.domain.model.SessaoDoOansista;
 
 public class SessaoDoOansistaDTO {
@@ -12,7 +14,8 @@ public class SessaoDoOansistaDTO {
 	private Long idTrilha;
 	private String nomeDaTrilha;
 	private Integer numeroDaSessao;
-	private Boolean concluido;
+	private Date dataConlusao;
+	private Boolean concluido = false;
 	
 	public SessaoDoOansistaDTO() {}
 	
@@ -25,6 +28,7 @@ public class SessaoDoOansistaDTO {
 		this.idTrilha = sessaoDoOansista.getSessao().getTrilha().getId();
 		this.nomeDaTrilha = sessaoDoOansista.getSessao().getTrilha().getNome();
 		this.numeroDaSessao = sessaoDoOansista.getSessao().getNumero();
+		this.dataConlusao = sessaoDoOansista.getDataConclusao(); 
 		this.concluido = sessaoDoOansista.getConcluido();
 	}
 
@@ -52,45 +56,40 @@ public class SessaoDoOansistaDTO {
 	public void setIdTrilha(Long idTrilha) {
 		this.idTrilha = idTrilha;
 	}
-
 	public Integer getNumeroDaSessao() {
 		return numeroDaSessao;
 	}
-
 	public void setNumeroDaSessao(Integer numeroDaSessao) {
 		this.numeroDaSessao = numeroDaSessao;
 	}
-
 	public String getNomeDoOansista() {
 		return nomeDoOansista;
 	}
-
 	public void setNomeDoOansista(String nomeDoOansista) {
 		this.nomeDoOansista = nomeDoOansista;
 	}
-
 	public String getNomeDoManual() {
 		return nomeDoManual;
 	}
-
 	public void setNomeDoManual(String nomeDoManual) {
 		this.nomeDoManual = nomeDoManual;
 	}
-
 	public String getNomeDaTrilha() {
 		return nomeDaTrilha;
 	}
-
 	public void setNomeDaTrilha(String nomeDaTrilha) {
 		this.nomeDaTrilha = nomeDaTrilha;
 	}
-
 	public String getClube() {
 		return clube;
 	}
-
 	public void setClube(String clube) {
 		this.clube = clube;
 	}
-	
+	public Date getDataConlusao() {
+		return dataConlusao;
+	}
+	public void setDataConlusao(Date dataConlusao) {
+		this.dataConlusao = dataConlusao;
+	}
 }

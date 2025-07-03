@@ -1,5 +1,6 @@
 package br.com.igrejabatistadocordeiro.oanse.repository;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,6 +32,12 @@ public class SessaoDoOansistaRepositoryImplTest {
 	@BeforeEach
 	public void setUp() {		
 		dbUnit.setDatasetPath("src/test/resources/xml/SessaoDoOansistaRepositoryImplTest.xml");
+	}
+	
+	@Test
+	public void deveriaCarregarUmaSessaoDoOansista() {
+		SessaoDoOansista sessaoDoOansista = sessaoDoOansistaRepository.carrega(-1l, -1l, -1l, 1);
+		assertNotNull(sessaoDoOansista);
 	}
 	
 	@Test
@@ -75,7 +82,7 @@ public class SessaoDoOansistaRepositoryImplTest {
 	public void deveriaFiltrarPeloOansistaENumeroDaSessao() {
 		SessaoDoOansistaFilter filtro = new SessaoDoOansistaFilter();
 		filtro.setIdOansista(-1L);
-		filtro.setNumero(1L);
+		filtro.setNumeroDaSessao(1);
 		
 		List<SessaoDoOansista> resultados = sessaoDoOansistaRepository.pesquisa(filtro);
 		assertEquals(2, resultados.size());

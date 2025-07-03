@@ -23,7 +23,7 @@ public class SessaoController extends GeneralController {
 	public ResponseEntity<?> pesquisa(@ModelAttribute SessaoFilter filter) {
         List<Sessao> resultado = service.pesquisa(filter);
         if (resultado == null || resultado.isEmpty())
-            return adicionaMensagemDeErro(MSG_NAO_ENCONTRADO);
+            return mensagemDeErro(MSG_NAO_ENCONTRADO);
         List<SessaoDTO> dtos = resultado.stream().map(SessaoDTO::new).toList();
         return ResponseEntity.ok(dtos);
 	}

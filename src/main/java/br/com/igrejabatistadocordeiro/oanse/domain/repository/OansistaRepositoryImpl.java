@@ -37,6 +37,7 @@ public class OansistaRepositoryImpl extends CrudRepositoryImpl<Oansista> impleme
             predicates.add(cb.like(cb.lower(root.get("nome")),"%" + filtro.getNome().toLowerCase() + "%"));
 	    if (!predicates.isEmpty())
 	        cq.where(cb.and(predicates.toArray(new Predicate[0])));
+	    cq.orderBy(cb.asc(root.get("id")));
 	    return entityManager.createQuery(cq).getResultList();
 	}
 	

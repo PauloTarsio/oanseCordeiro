@@ -92,6 +92,7 @@ public class ManualDoOansistaServiceImpl implements ManualDoOansistaService {
 	    		sessaoDoOansista.setManualDoOansista(manualDoOansista);
 	    		sessaoDoOansista.setOansista(oansista);
 	    		sessaoDoOansista.setSessao(sessao);
+	    		sessaoDoOansista.setDataInicio(Date.valueOf(LocalDate.now()));
 	    		sessaoDoOansista.setConcluido(false);
 	    		sessaoDoOansistaRepository.salva(sessaoDoOansista);
 	    	}

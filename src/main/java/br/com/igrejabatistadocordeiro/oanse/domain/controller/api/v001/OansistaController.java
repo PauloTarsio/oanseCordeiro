@@ -31,7 +31,7 @@ public class OansistaController extends GeneralController {
 	public ResponseEntity<?> carrega(@PathVariable Long id) {
 		Oansista oansistaBase = service.carrega(id);
 		if (oansistaBase == null)
-			return adicionaMensagemDeErro(MSG_NAO_ENCONTRADO);
+			return mensagemDeInformacao(MSG_NAO_ENCONTRADO);
 		return ResponseEntity.ok(new OansistaDTO(oansistaBase));
 	}
 	
@@ -39,7 +39,7 @@ public class OansistaController extends GeneralController {
 	public ResponseEntity<?> pesquisa(@ModelAttribute OansistaFilter filter) {
 		List<Oansista> resultado = service.pesquisa(filter);
 		if (resultado == null || resultado.isEmpty())
-            return adicionaMensagemDeErro(MSG_NAO_ENCONTRADO);
+            return mensagemDeInformacao(MSG_NAO_ENCONTRADO);
 		List<OansistaDTO> dtos = resultado.stream().map(value -> new OansistaDTO(value)).collect(Collectors.toList());
 		return ResponseEntity.ok(dtos);
 	}
@@ -51,7 +51,7 @@ public class OansistaController extends GeneralController {
 	        service.salva(oansista);
 	        return ResponseEntity.status(HttpStatus.CREATED).body(new Response(StatusIntegracao.SUCESSO));
 	    } catch (OanseValidationException e) {
-	        return ResponseEntity.badRequest().body(new Response(StatusIntegracao.FALHA, e.getErros()));
+	        return ResponseEntity.badRequest().body(new Response(StatusIntegracao.ERRO, e.getErros()));
 	    }
 	}
 	
@@ -63,7 +63,7 @@ public class OansistaController extends GeneralController {
 	        service.atualiza(oansista);
 	        return ResponseEntity.ok(new Response(StatusIntegracao.SUCESSO));
 	    } catch (OanseValidationException e) {
-	        return ResponseEntity.badRequest().body(new Response(StatusIntegracao.FALHA, e.getErros()));
+	        return ResponseEntity.badRequest().body(new Response(StatusIntegracao.ERRO, e.getErros()));
 	    }
 	}
 	
@@ -73,7 +73,7 @@ public class OansistaController extends GeneralController {
 	        service.remove(id);
 	        return ResponseEntity.noContent().build();
 	    } catch (OanseValidationException e) {
-	        return ResponseEntity.badRequest().body(new Response(StatusIntegracao.FALHA, e.getErros()));
+	        return ResponseEntity.badRequest().body(new Response(StatusIntegracao.ERRO, e.getErros()));
 	    }
 	}
 

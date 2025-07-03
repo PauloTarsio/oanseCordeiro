@@ -24,7 +24,7 @@ public class ManualController extends GeneralController {
 		List<Manual> resultado;
 		resultado  = service.pesquisa(filter);
 		if (resultado == null || resultado.isEmpty())
-            return adicionaMensagemDeErro(MSG_NAO_ENCONTRADO);		
+            return mensagemDeErro(MSG_NAO_ENCONTRADO);		
 		List<ManualDTO> dtos = resultado.stream().map(ManualDTO::new).toList();
 		return ResponseEntity.ok(dtos);
 	}

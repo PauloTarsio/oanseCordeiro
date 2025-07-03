@@ -23,7 +23,7 @@ public class TrilhaController extends GeneralController {
 	public ResponseEntity<?> pesquisa(@ModelAttribute TrilhaFilter filter) {
         List<Trilha> resultado = service.pesquisa(filter);
         if (resultado == null || resultado.isEmpty())
-            return adicionaMensagemDeErro(MSG_NAO_ENCONTRADO);
+            return mensagemDeErro(MSG_NAO_ENCONTRADO);
         List<TrilhaDTO> dtos = resultado.stream().map(TrilhaDTO::new).toList();
         return ResponseEntity.ok(dtos);
 	}

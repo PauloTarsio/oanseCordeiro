@@ -21,7 +21,7 @@ public class SessaoFactory {
 		return this;
 	}
 	
-	public SessaoFactory comTrilhia(Trilha trilha) {
+	public SessaoFactory comTrilha(Trilha trilha) {
 		this.sessao.setTrilha(trilha);
 		return this;
 	}

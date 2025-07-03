@@ -42,7 +42,7 @@ public class SessaoDoOansista {
     @JoinColumn(name = "oansista_manual_id")
     private ManualDoOansista manualDoOansista;
     
-    private Boolean concluido;
+    private Boolean concluido = false;
 	
     public Long getId() {
 		return id;

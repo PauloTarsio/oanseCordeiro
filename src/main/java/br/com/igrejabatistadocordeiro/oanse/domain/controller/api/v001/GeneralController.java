@@ -1,5 +1,7 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +21,19 @@ public class GeneralController {
 	
 	protected Response response;
 	
-	protected ResponseEntity<?> adicionaMensagemDeErro(String msg) {
-		return ResponseEntity.badRequest().body(new Response(StatusIntegracao.FALHA, msg));
+	protected ResponseEntity<?> mensagemDeErro(String msg) {
+		return ResponseEntity.badRequest().body(new Response(StatusIntegracao.ERRO, msg));
 	}
 	
-	protected ResponseEntity<?> adicionaMensagem(String msg) {
+	protected ResponseEntity<?> mensagemDeErro(List<String> erros) {
+		return ResponseEntity.badRequest().body(new Response(StatusIntegracao.ERRO, erros));
+	}
+	
+	protected ResponseEntity<?> mensagemDeInformacao(String msg) {
+		return ResponseEntity.ok().body(new Response(StatusIntegracao.SUCESSO, msg));
+	}
+	
+	protected ResponseEntity<?> mensagemDeSucesso(String msg) {
 		return ResponseEntity.ok().body(new Response(StatusIntegracao.SUCESSO, msg));
 	}
 
