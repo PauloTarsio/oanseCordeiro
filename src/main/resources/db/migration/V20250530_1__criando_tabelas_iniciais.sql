@@ -49,6 +49,3 @@ CREATE TABLE Oansista_sessao (
     data_conclusao DATE,
     concluido BOOLEAN
 );
-
-ALTER TABLE Oansista
-ADD COLUMN responsavel_id INTEGER REFERENCES Responsavel(id) ON DELETE CASCADE;

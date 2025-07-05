@@ -3,12 +3,15 @@ package dbUnit;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.ext.postgresql.PostgresqlDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.event.annotation.AfterTestExecution;
@@ -31,6 +34,10 @@ public class DbUnit {
 	@BeforeTestExecution
 	public void setUp() throws Exception {
 		iDatabaseTester = new JdbcDatabaseTester(DRIVER, JDBC, USER, PASSWORD);
+		
+		 // Adiciona a configuração do tipo de dado específico do PostgreSQL
+	    iDatabaseTester.getConnection().getConfig()
+	        .setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new PostgresqlDataTypeFactory());
 
 		iDatabaseTester.onTearDown();
 		resetSequences();
@@ -52,13 +59,25 @@ public class DbUnit {
 	}
 
 	private void resetSequences() throws Exception {
-		try (Connection connection = DriverManager.getConnection(JDBC, USER, PASSWORD);
-			Statement statement = connection.createStatement()) {
-			String sequenceName = StringUtils.isNotBlank(tableName) ? tableName.toLowerCase() + "_id_seq" : null;
-			if (StringUtils.isNotBlank(sequenceName))
-				statement.executeUpdate("ALTER SEQUENCE " + sequenceName + " RESTART WITH 1");
-		}
+	    try (Connection connection = DriverManager.getConnection(JDBC, USER, PASSWORD);
+	         Statement statement = connection.createStatement()) {
+	        
+	        String sequenceName = StringUtils.isNotBlank(tableName) ? tableName.toLowerCase() + "_id_seq" : null;
+	        if (StringUtils.isNotBlank(sequenceName)) {
+	            // Verifica se a sequência existe
+	            String checkSeqSql = "SELECT 1 FROM pg_class WHERE relkind = 'S' AND relname = '" + sequenceName + "'";
+	            try (ResultSet rs = statement.executeQuery(checkSeqSql)) {
+	                if (rs.next()) {
+	                    // Sequência existe, reseta
+	                    statement.executeUpdate("ALTER SEQUENCE " + sequenceName + " RESTART WITH 1");
+	                } else {
+	                    System.out.println("Sequência " + sequenceName + " não existe. Ignorando reset.");
+	                }
+	            }
+	        }
+	    }
 	}
+
 
 	public String getDatasetPath() {
 		return datasetPath;

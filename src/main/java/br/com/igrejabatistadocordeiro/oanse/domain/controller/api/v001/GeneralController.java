@@ -25,7 +25,7 @@ public class GeneralController {
 		return ResponseEntity.badRequest().body(new Response(StatusIntegracao.ERRO, msg));
 	}
 	
-	protected ResponseEntity<?> mensagemDeErro(List<String> erros) {
+	protected ResponseEntity<Response> mensagemDeErro(List<String> erros) {
 		return ResponseEntity.badRequest().body(new Response(StatusIntegracao.ERRO, erros));
 	}
 	

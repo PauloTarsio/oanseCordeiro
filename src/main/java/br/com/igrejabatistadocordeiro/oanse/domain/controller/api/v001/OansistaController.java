@@ -20,6 +20,7 @@ import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.OanseValidationExc
 import br.com.igrejabatistadocordeiro.oanse.domain.filter.OansistaFilter;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Oansista;
 import br.com.igrejabatistadocordeiro.oanse.domain.service.OansistaService;
+import jakarta.validation.Valid;
 
 @RestController
 public class OansistaController extends GeneralController {
@@ -31,7 +32,7 @@ public class OansistaController extends GeneralController {
 	public ResponseEntity<?> carrega(@PathVariable Long id) {
 		Oansista oansistaBase = service.carrega(id);
 		if (oansistaBase == null)
-			return mensagemDeInformacao(MSG_NAO_ENCONTRADO);
+			return ResponseEntity.noContent().build();
 		return ResponseEntity.ok(new OansistaDTO(oansistaBase));
 	}
 	
@@ -39,31 +40,31 @@ public class OansistaController extends GeneralController {
 	public ResponseEntity<?> pesquisa(@ModelAttribute OansistaFilter filter) {
 		List<Oansista> resultado = service.pesquisa(filter);
 		if (resultado == null || resultado.isEmpty())
-            return mensagemDeInformacao(MSG_NAO_ENCONTRADO);
+			return ResponseEntity.noContent().build();
 		List<OansistaDTO> dtos = resultado.stream().map(value -> new OansistaDTO(value)).collect(Collectors.toList());
 		return ResponseEntity.ok(dtos);
 	}
 
 	@PostMapping("/api/v001/oansista")
-	public ResponseEntity<Response> novo(@RequestBody OansistaDTO dto) {
+	public ResponseEntity<Response> novo(@Valid @RequestBody OansistaDTO dto) {
 	    try {
 	        Oansista oansista = dto.toOansista();
 	        service.salva(oansista);
-	        return ResponseEntity.status(HttpStatus.CREATED).body(new Response(StatusIntegracao.SUCESSO));
+	        return ResponseEntity.status(HttpStatus.CREATED).build();
 	    } catch (OanseValidationException e) {
-	        return ResponseEntity.badRequest().body(new Response(StatusIntegracao.ERRO, e.getErros()));
+	        return mensagemDeErro(e.getErros());
 	    }
 	}
 	
 	@PutMapping("/api/v001/oansista/{id}")
-	public ResponseEntity<Response> edita(@PathVariable Long id, @RequestBody OansistaDTO dto) {
+	public ResponseEntity<Response> edita(@PathVariable Long id, @Valid @RequestBody OansistaDTO dto) {
 	    try {
 	        Oansista oansista = dto.toOansista();
 	        oansista.setId(id);
 	        service.atualiza(oansista);
-	        return ResponseEntity.ok(new Response(StatusIntegracao.SUCESSO));
+	        return ResponseEntity.ok().build();
 	    } catch (OanseValidationException e) {
-	        return ResponseEntity.badRequest().body(new Response(StatusIntegracao.ERRO, e.getErros()));
+	    	return mensagemDeErro(e.getErros());
 	    }
 	}
 	
@@ -73,7 +74,7 @@ public class OansistaController extends GeneralController {
 	        service.remove(id);
 	        return ResponseEntity.noContent().build();
 	    } catch (OanseValidationException e) {
-	        return ResponseEntity.badRequest().body(new Response(StatusIntegracao.ERRO, e.getErros()));
+	    	return mensagemDeErro(e.getErros());
 	    }
 	}
 

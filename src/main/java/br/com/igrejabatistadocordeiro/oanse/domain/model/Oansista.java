@@ -7,12 +7,12 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -36,9 +36,13 @@ public class Oansista {
     
 	private String bairro;
     
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "responsavel_id")
-    private Responsavel responsavel;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+	    name = "Oansista_Responsavel",
+	    joinColumns = @JoinColumn(name = "oansista_id"),
+	    inverseJoinColumns = @JoinColumn(name = "responsavel_id")
+	)
+	private List<Responsavel> responsaveis = new ArrayList<>();
 
     @OneToMany(mappedBy = "oansista", cascade = CascadeType.ALL)
     private List<ManualDoOansista> manuais = new ArrayList<>();
@@ -94,14 +98,6 @@ public class Oansista {
 		this.bairro = bairro;
 	}
 
-	public Responsavel getResponsavel() {
-		return responsavel;
-	}
-
-	public void setResponsavel(Responsavel responsavel) {
-		this.responsavel = responsavel;
-	}
-
 	public List<ManualDoOansista> getManuais() {
 		return manuais;
 	}
@@ -119,21 +115,27 @@ public class Oansista {
 	}
 
 	public void atualizaCom(Oansista oansista) {
-		this.nome = oansista.getNome();
-		this.dataNascimento = oansista.getDataNascimento();
-		this.rua = oansista.getRua();
-		this.numero = oansista.getNumero();
-		this.bairro = oansista.getBairro();
-		if (oansista.getResponsavel() != null) {
-			if (this.responsavel == null) {
-				this.responsavel = new Responsavel();
-			}
-			this.responsavel.setNome(oansista.getResponsavel().getNome());
-			this.responsavel.setTelefone(oansista.getResponsavel().getTelefone());
-			this.responsavel.setEmail(oansista.getResponsavel().getEmail());
-		} else {
-			this.responsavel = null;
-		}		
+	    this.nome = oansista.getNome();
+	    this.dataNascimento = oansista.getDataNascimento();
+	    this.rua = oansista.getRua();
+	    this.numero = oansista.getNumero();
+	    this.bairro = oansista.getBairro();
+
+	    if (!oansista.getResponsaveis().isEmpty()) {
+	        this.responsaveis.clear();
+	        for (Responsavel r : oansista.getResponsaveis())
+	            this.responsaveis.add(r);
+	    } else {
+	        this.responsaveis.clear();
+	    }
+	}
+
+	public List<Responsavel> getResponsaveis() {
+		return responsaveis;
+	}
+
+	public void setResponsaveis(List<Responsavel> responsaveis) {
+		this.responsaveis = responsaveis;
 	}
 	
 }

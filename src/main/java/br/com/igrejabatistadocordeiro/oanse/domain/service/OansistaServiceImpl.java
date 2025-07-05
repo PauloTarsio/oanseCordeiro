@@ -11,9 +11,10 @@ import br.com.igrejabatistadocordeiro.oanse.domain.filter.OansistaFilter;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Oansista;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Responsavel;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.OansistaRepository;
-import br.com.igrejabatistadocordeiro.oanse.domain.util.DataUtil;
-import br.com.igrejabatistadocordeiro.oanse.domain.util.DiferencasUtil;
-import br.com.igrejabatistadocordeiro.oanse.domain.util.StringUtils;
+import br.com.igrejabatistadocordeiro.oanse.domain.repository.ResponsavelRepository;
+import de.danielbechler.diff.ObjectDiffer;
+import de.danielbechler.diff.ObjectDifferBuilder;
+import de.danielbechler.diff.node.DiffNode;
 
 @Service
 public class OansistaServiceImpl implements OansistaService {
@@ -21,9 +22,7 @@ public class OansistaServiceImpl implements OansistaService {
 	@Autowired
 	private OansistaRepository repository;
 	@Autowired
-	private DataUtil dataUtil;
-	@Autowired
-	private DiferencasUtil diferencasUtil;
+	private ResponsavelRepository responsavelRepository;
 	
 	@Override
 	public Oansista carrega(Long id) {
@@ -44,30 +43,44 @@ public class OansistaServiceImpl implements OansistaService {
 
 	@Override
 	public void salva(Oansista oansista) {
-		List<String> erros = valida(oansista);
-		if (oansista.getId() != null)
-			erros.add("Não deve imformar o ID, o mesmo será gerado automaticamente.");
-		if (!erros.isEmpty())
-			throw new OanseValidationException(erros);
-		repository.salva(oansista);
+		List<String> erros = new ArrayList<>();
+	    if (oansista.getId() != null)
+	        erros.add("Não deve informar o ID, o mesmo será gerado automaticamente.");
+	    if (repository.existe(oansista))
+	        erros.add("Já existe um Oansista com mesmo nome e data de nascimento.");
+	    if (!erros.isEmpty())
+	        throw new OanseValidationException(erros);
+
+	    try {
+	    	resolveResponsaveis(oansista);
+	    	repository.salva(oansista);			
+		} catch (Exception e) {
+			throw new OanseValidationException("Erro não tratado: " + e.getMessage());
+		}
 	}
 
 	@Override
 	public void atualiza(Oansista oansista) {
-		List<String> erros = valida(oansista);
-		Oansista oansistaBase = null;
+		List<String> erros = new ArrayList<String>();
 		if (oansista.getId() == null)
 			erros.add("O ID do Oansista é obrigatório.");		
-		else {
-			if ((oansistaBase = carrega(oansista.getId())) == null)
-				erros.add("Não é possível atualizar, cadastro não encontrado.");
-		}
-	    if (!erros.isEmpty())
+		Oansista oansistaBase = null;
+		if ((oansistaBase = carrega(oansista.getId())) == null)
+			erros.add("Não é possível atualizar, cadastro não encontrado.");
+		if (repository.existe(oansista))
+			erros.add("Já existe um Oansista na base com mesmo nome e data de nascimento.");
+		if (!erros.isEmpty())
 			throw new OanseValidationException(erros);
-	    if (temDiferencas(oansistaBase, oansista)) {
-	    	oansistaBase.atualizaCom(oansista);
-	    	repository.atualiza(oansistaBase);
-	    }
+	    
+		if (temDiferencas(oansistaBase, oansista)) {
+		    try {
+		        resolveResponsaveis(oansista);
+		        oansistaBase.atualizaCom(oansista);
+		        repository.atualiza(oansistaBase);
+		    } catch (Exception e) {
+		        throw new OanseValidationException("Erro não tratado: " + e.getMessage());
+		    }
+		}
 	}
 
 	@Override
@@ -78,63 +91,24 @@ public class OansistaServiceImpl implements OansistaService {
 		repository.deleta(id);
 	}
 	
-	private List<String> valida(Oansista oansista) {
-		if (oansista == null)
-			throw new OanseValidationException("Dados inválidos!");
-		List<String> erros = new ArrayList<>();
-		if (StringUtils.isBlank(oansista.getNome()))
-			erros.add("O nome do Oansista é obrigatório.");
-		else if (oansista.getNome().length() > 255)
-			erros.add("O nome do Oansista não pode ser tão grande.");
-		else if (oansista.getNome().length() < 3)
-			erros.add("O nome do Oansista deve ter pelo menos 3 caracteres.");
-		if (oansista.getDataNascimento() == null)
-			erros.add("A data de nascimento do Oansista é obrigatória.");
-		else {
-			Integer idade = dataUtil.calcularIdade(oansista.getDataNascimento());
-			if (idade < 4 || idade > 14)
-				erros.add("Idade: "+idade+", deve ter entre 4 e 14 anos de idade.");
-		}
-		if (oansista.getResponsavel() != null) {
-			Responsavel responsavel = oansista.getResponsavel();
-			if (StringUtils.isBlank(responsavel.getNome()))
-				erros.add("O nome do responsável é obrigatório.");
-			else if (responsavel.getNome().length() > 255)
-				erros.add("O nome do responsável não pode ser tão grande.");
-			else if (responsavel.getNome().length() < 3)
-				erros.add("O nome do responsável deve ter pelo menos 3 caracteres.");
-			if (!StringUtils.isBlank(responsavel.getTelefone()) && !StringUtils.isTelefoneValido(responsavel.getTelefone()))
-				erros.add("O telefone do responsável deve ser válido, utilize o formato (XX) XXXXX-XXXX ou (XX) XXXX-XXXX.");
-			if (!StringUtils.isBlank(responsavel.getEmail()) && !StringUtils.isEmailValido(responsavel.getEmail()))
-				erros.add("O email do responsável deve ser válido");
-		}
-		return erros;
+	private boolean temDiferencas(Oansista oansista1, Oansista oansista2) {
+		ObjectDiffer differ = ObjectDifferBuilder.startBuilding().inclusion().exclude().propertyName("id").and().build();
+		DiffNode diff = differ.compare(oansista1, oansista2);
+		return !diff.isUntouched();
 	}
 	
-	private boolean temDiferencas(Oansista oansista1, Oansista oansista2) {
-		if (
-			diferencasUtil.temDiferenca(oansista1.getNome(), oansista2.getNome()) ||
-			!dataUtil.isMesmaData(oansista1.getDataNascimento(), oansista2.getDataNascimento()) ||
-			diferencasUtil.temDiferenca(oansista1.getRua(), oansista2.getRua()) ||
-			diferencasUtil.temDiferenca(oansista1.getNumero(), oansista2.getNumero()) ||
-			diferencasUtil.temDiferenca(oansista1.getBairro(), oansista2.getBairro())
-		) return true;
-		
-		if (oansista1.getResponsavel() == null && oansista2.getResponsavel() != null)
-			return true;
-		if (oansista1.getResponsavel() != null && oansista2.getResponsavel() == null)
-			return true;
-		if (oansista1.getResponsavel() != null && oansista2.getResponsavel() != null) {
-			if (diferencasUtil.temDiferenca(oansista1.getResponsavel().getId(), oansista2.getResponsavel().getId()))
-				return true;
-			if (diferencasUtil.temDiferenca(oansista1.getResponsavel().getNome(), oansista2.getResponsavel().getNome()))
-				return true;
-			if (diferencasUtil.temDiferenca(oansista1.getResponsavel().getTelefone(), oansista2.getResponsavel().getTelefone()))
-				return true;
-			if (diferencasUtil.temDiferenca(oansista1.getResponsavel().getEmail(), oansista2.getResponsavel().getEmail()))
-				return true;			
-		}
-		return false;
+	private void resolveResponsaveis(Oansista oansista) {
+		List<Responsavel> responsaveisAtualizados = new ArrayList<>();
+	    for (Responsavel responsavel : oansista.getResponsaveis()) {
+	        Responsavel existente = repository.carregaPor(responsavel.getTelefone(),responsavel.getEmail());
+	        if (existente != null) {
+	            responsaveisAtualizados.add(existente);
+	        } else {
+	            responsavelRepository.salva(responsavel);
+	            responsaveisAtualizados.add(responsavel);
+	        }
+	    }
+	    oansista.setResponsaveis(responsaveisAtualizados);
 	}
 
 }

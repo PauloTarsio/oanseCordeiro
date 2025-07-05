@@ -29,7 +29,7 @@ public class ManualDoOansistaController extends GeneralController {
 	public ResponseEntity<?> pesquisa(@ModelAttribute ManualDoOansistaFilter filter) {
 		List<ManualDoOansista> pesquisa = service.pesquisa(filter);
 		if (pesquisa.isEmpty())
-			return mensagemDeSucesso(MSG_NAO_ENCONTRADO);
+			return ResponseEntity.noContent().build();
 		List<ManualDoOansistaDTO> dtos = pesquisa.stream().map(ManualDoOansistaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok(dtos);
 	}
@@ -38,9 +38,9 @@ public class ManualDoOansistaController extends GeneralController {
 	public ResponseEntity<Response> iniciarManualParaOansista(@RequestBody ManualDoOansistaDTO dto) {
 		try {			
 			service.salvar(dto);
-			return ResponseEntity.status(HttpStatus.CREATED).body(new Response(StatusIntegracao.SUCESSO));
+			return ResponseEntity.status(HttpStatus.CREATED).build();
 	    } catch (OanseValidationException e) {
-	        return ResponseEntity.badRequest().body(new Response(StatusIntegracao.ERRO, e.getErros()));
+	    	return mensagemDeErro(e.getErros());
 	    }
 	}
 	
@@ -48,9 +48,9 @@ public class ManualDoOansistaController extends GeneralController {
 	public ResponseEntity<Response> concluir(@RequestBody ManualDoOansistaDTO dto) {
 		try {			
 			service.atualizar(dto);
-			return ResponseEntity.ok(new Response(StatusIntegracao.SUCESSO));
+			return ResponseEntity.ok().build();
 		} catch (OanseValidationException e) {
-			return ResponseEntity.badRequest().body(new Response(StatusIntegracao.ERRO, e.getErros()));
+			return mensagemDeErro(e.getErros());
 		}
 	}
 }

@@ -1,35 +1,55 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.OanseValidationException;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Oansista;
+import br.com.igrejabatistadocordeiro.oanse.domain.validations.IdadeOansista;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class OansistaDTO {
 	
 	private Long id;
+	
+	@NotBlank(message = "O nome do Oansista é obrigatório.")
+    @Size(min = 3, max = 255, message = "O nome do Oansista deve ter entre 3 e 255 caracteres.")
 	private String nome;
-	private String dataNascimento;
-	private String rua;
-	private Integer numero;
-	private String bairro;
-	private ResponsavelDTO responsavel;
 
-	public OansistaDTO() {
-	}
+	@IdadeOansista
+	private LocalDate dataNascimento;
+	
+	private String rua;
+	
+	private Integer numero;
+	
+	private String bairro;
+	
+	@Valid
+	private List<ResponsavelDTO> responsaveis = new ArrayList<ResponsavelDTO>();
+
+	public OansistaDTO() {}
 
 	public OansistaDTO(Oansista oansista) {
 		this.id = oansista.getId() != null ? oansista.getId() : null;
 		this.nome = oansista.getNome() != null ? oansista.getNome() : null;
-		this.dataNascimento = oansista.getDataNascimento() != null ? oansista.getDataNascimento().toString() : null;
+		this.dataNascimento = oansista.getDataNascimento() != null ? LocalDate.parse(oansista.getDataNascimento().toString()) : null;
 		this.rua = oansista.getRua() != null ? oansista.getRua() : null;
 		this.numero = oansista.getNumero() != null ? oansista.getNumero() : null;
 		this.bairro = oansista.getBairro() != null ? oansista.getBairro() : null;
-		if (oansista.getResponsavel() != null) {
-			this.responsavel = new ResponsavelDTO(oansista.getResponsavel());
+		if (oansista.getResponsaveis() != null && !oansista.getResponsaveis().isEmpty()) {
+			this.setResponsaveis(oansista.getResponsaveis()
+				.stream()
+				.map(ResponsavelDTO::new)
+				.collect(Collectors.toList()));
 		} else {
-			this.responsavel = null;
+			this.setResponsaveis(new ArrayList<>());
 		}
 	}
 	
@@ -47,9 +67,8 @@ public class OansistaDTO {
 		oansista.setRua(this.rua);
 		oansista.setNumero(this.numero);
 		oansista.setBairro(this.bairro);
-		if (this.responsavel != null) {
-			oansista.setResponsavel(this.responsavel.toResponsavel());
-		}
+		if (!this.responsaveis.isEmpty())
+			oansista.setResponsaveis(this.responsaveis.stream().map(ResponsavelDTO::toResponsavel).collect(Collectors.toList()));
 		return oansista;
 	}
 
@@ -61,11 +80,11 @@ public class OansistaDTO {
 		this.nome = nome;
 	}
 	
-	public String getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(String dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
@@ -101,11 +120,11 @@ public class OansistaDTO {
 		this.bairro = bairro;
 	}
 
-	public ResponsavelDTO getResponsavel() {
-		return responsavel;
+	public List<ResponsavelDTO> getResponsaveis() {
+		return responsaveis;
 	}
 
-	public void setResponsavel(ResponsavelDTO responsavel) {
-		this.responsavel = responsavel;
+	public void setResponsaveis(List<ResponsavelDTO> responsaveis) {
+		this.responsaveis = responsaveis;
 	}
 }

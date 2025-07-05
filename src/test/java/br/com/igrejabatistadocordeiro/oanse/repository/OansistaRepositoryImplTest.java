@@ -3,11 +3,13 @@ package br.com.igrejabatistadocordeiro.oanse.repository;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +43,7 @@ public class OansistaRepositoryImplTest {
 	@Test
 	public void deveriaCarregar() {
 		Oansista oansista = repository.carrega(-2l);		
-		assertEquals(oansista.getNome(), "Oansista 2");
-		assertNotNull(oansista.getResponsavel());
+		assertEquals(oansista.getNome(), "Oansista 2");		
 	}	
 
 	@Test
@@ -53,7 +54,7 @@ public class OansistaRepositoryImplTest {
 	
 	@Test
 	public void deveriaSalvar() {
-		Oansista oansista = new OansistaFactory().comNome("nome 2").comDataNascimento(Date.valueOf(LocalDate.of(2020, 1, 17))).build();
+		Oansista oansista = new OansistaFactory().comNome("nome 2").comDataNascimento(Date.valueOf(LocalDate.of(2020, 1, 17))).build();		
 		repository.salva(oansista);		
 		OansistaFilter filtro = new OansistaFilter();
 		filtro.setNome("nome 2");
@@ -66,7 +67,7 @@ public class OansistaRepositoryImplTest {
 	public void deveriaSalvar2() {
 		Oansista oansista = new OansistaFactory().comNome("nome 2").comDataNascimento(Date.valueOf(LocalDate.of(2020, 1, 17))).build();
 		Responsavel responsavel = new ResponsavelFactory().comNome("responsavel").build();
-		oansista.setResponsavel(responsavel);
+		oansista.setResponsaveis(Lists.list(responsavel));
 		repository.salva(oansista);
 		OansistaFilter filtro = new OansistaFilter();
 		filtro.setNome("nome 2");
@@ -74,7 +75,7 @@ public class OansistaRepositoryImplTest {
 		assertNotNull(pesquisa);
 		assertEquals(pesquisa.size(), 1);
 		Oansista oansistaSalvo = pesquisa.get(0);
-		assertNotNull(oansistaSalvo.getResponsavel());
+		assertFalse(oansistaSalvo.getResponsaveis().isEmpty());
 	}
 	
 	@Test

@@ -28,12 +28,10 @@ public class SessoesDoOansistaController extends GeneralController {
 	public ResponseEntity<?> pesquisa(@ModelAttribute SessaoDoOansistaFilter filter) {
 	    List<SessaoDoOansista> sessoes = service.pesquisa(filter);
 	    if (sessoes.isEmpty())
-	        return mensagemDeSucesso(MSG_NAO_ENCONTRADO);
-
+	        return ResponseEntity.noContent().build();
 	    List<SessaoDoOansistaDTO> sessoesDTO = sessoes.stream().map(SessaoDoOansistaDTO::new).collect(Collectors.toList());
 	    SessoesDoOansistaDTO resposta = new SessoesDoOansistaDTO();
 	    resposta.setSessoesDoOansista(sessoesDTO);
-
 	    return ResponseEntity.ok(resposta);
 	}
 	
@@ -41,7 +39,7 @@ public class SessoesDoOansistaController extends GeneralController {
 	public ResponseEntity<?> concluirSessao(@RequestBody SessaoDoOansistaDTO dto) {
         try {        	
         	service.concluirSessao(dto);
-        	return mensagemDeSucesso(MSG_PROCESSO_SUCESSO);
+        	return ResponseEntity.ok().build();
         } catch (OanseValidationException e) {
 			return mensagemDeErro(e.getErros());
 		} catch (Exception e) {

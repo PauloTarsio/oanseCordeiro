@@ -117,7 +117,7 @@ public class OansistaServiceImplTest {
 		try {
 			service.salva(oansista);
 		} catch (OanseValidationException e) {
-			assertEquals(e.getErros().get(0), "Não deve imformar o ID, o mesmo será gerado automaticamente.");
+			assertEquals(e.getErros().get(0), "Não deve informar o ID, o mesmo será gerado automaticamente.");
 		}
 		verify(repository, times(0)).salva(captor.capture());		
 	}
