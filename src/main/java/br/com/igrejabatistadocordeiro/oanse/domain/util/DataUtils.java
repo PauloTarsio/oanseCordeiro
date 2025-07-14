@@ -4,10 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.stereotype.Component;
-
-@Component
-public class DataUtil {
+public class DataUtils {
 
     /**
      * Verifica se duas datas são iguais (ignorando horas/minutos/segundos).

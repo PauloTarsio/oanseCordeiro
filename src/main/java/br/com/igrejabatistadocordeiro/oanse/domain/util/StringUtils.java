@@ -1,5 +1,9 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.util;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 public class StringUtils {
@@ -10,6 +14,8 @@ public class StringUtils {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
     private static final Pattern PHONE_PATTERN = Pattern.compile("\\(\\d{2}\\)\\s\\d{4,5}-\\d{4}");
     private static final Pattern NUMERIC_PATTERN = Pattern.compile("-?\\d+(\\.\\d+)?");
+    
+    private static final DateTimeFormatter FORMATADOR_PADRAO = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
 	public static boolean isBlank(String str) {
 		return str == null || str.trim().isEmpty();
@@ -152,5 +158,88 @@ public class StringUtils {
      */
     public static String apenasNumeros(String str) {
         return str != null ? str.replaceAll("\\D", "") : null;
+    }
+    
+    public static boolean temDiferenca(String s1, String s2) {
+		if (s1 == null && s2 == null)
+			return false;
+		if (s1 == null || s2 == null)
+			return true;
+		return !s1.equals(s2);
+	}
+
+	public static boolean temDiferenca(Boolean b1, Boolean b2) {
+    	return b1 != b2;
+    }
+	
+	public static boolean temDiferenca(boolean b1, boolean b2) {
+		return b1 != b2;
+	}
+
+	public static boolean temDiferenca(Double d1, Double d2) {
+    	return d1.compareTo(d2)!=0;
+    }
+	
+	public static boolean temDiferenca(double d1, double d2) {
+		return d1 != d2;
+	}
+	
+	public static boolean temDiferenca(Integer i1, Integer i2) {
+		return i1.compareTo(i2)!=0;
+	}
+	
+	public static boolean temDiferenca(int i1, int i2) {
+		return i1 != i2;
+	}
+	
+	public static boolean temDiferenca(BigDecimal d1, BigDecimal d2) {
+    	return d1.compareTo(d2)!=0;
+    }
+	
+	 /**
+     * Verifica se a String é uma data válida no formato dd/MM/yyyy
+     */
+    public static boolean isDataValida(String dataStr) {
+        try {
+            LocalDate.parse(dataStr, FORMATADOR_PADRAO);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Converte uma String para LocalDate (formato dd/MM/yyyy)
+     */
+    public static LocalDate paraLocalDate(String dataStr) {
+        return LocalDate.parse(dataStr, FORMATADOR_PADRAO);
+    }
+
+    /**
+     * Converte LocalDate para String (formato dd/MM/yyyy)
+     */
+    public static String paraString(LocalDate data) {
+        return data.format(FORMATADOR_PADRAO);
+    }
+
+    /**
+     * Retorna true se a data for no passado
+     */
+    public static boolean isDataPassada(LocalDate data) {
+        return data.isBefore(LocalDate.now());
+    }
+
+    /**
+     * Retorna true se a data for no futuro
+     */
+    public static boolean isDataFutura(LocalDate data) {
+        return data.isAfter(LocalDate.now());
+    }
+
+    /**
+     * Calcula idade com base em uma data de nascimento
+     */
+    public static int calcularIdade(LocalDate dataNascimento) {
+        return LocalDate.now().getYear() - dataNascimento.getYear();
     }
 }
