@@ -1,8 +1,6 @@
 spring:
-
   application:
     name: oanse
-
   datasource:
     url: jdbc:postgresql://localhost:5432/oanse
     username: postgres
@@ -15,10 +13,8 @@ spring:
     security:
       user: #credenciais para request base64 encoded
         name: oanse 
-        password: 123456  
-
+        password: 123456
   #profiles:
     #active: test
-
 server:
   port: 8081

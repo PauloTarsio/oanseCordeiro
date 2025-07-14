@@ -1,0 +1,16 @@
+{
+  "pessoa": {
+    "descricao": "Igreja Batista do Amor",
+    "cnpj": "33322211100898",
+    "dataNascimento": "1972-08-15",
+    "telefone1": "11999998888",
+    "email": "joao@igreja.com",
+    "endereco": {
+      "rua": "Rua da Esperança",
+      "numero": "200",
+      "bairro": "Centro",
+      "cidade": "São Paulo",
+      "uf": "SP"
+    }
+  }
+}

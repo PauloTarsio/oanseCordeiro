@@ -1,0 +1,18 @@
+{
+  "descricao": "Maria Oliveira",
+  "rg": "321456789",
+  "cpf": "321.654.987-00",
+  "cnpj": null,
+  "dataNascimento": "1990-04-15",
+  "telefone1": "(11) 98888-7777",
+  "telefone2": null,
+  "telefone3": null,
+  "email": "maria.oliveira@example.com",
+  "endereco": {
+    "rua": "Rua do Sol",
+    "numero": "456",
+    "bairro": "Jardim Primavera",
+    "cidade": "Curitiba",
+    "uf": "PR"
+  }
+}

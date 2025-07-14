@@ -1,0 +1,34 @@
+{
+  "pessoa": {
+    "descricao": "Maria Líder",
+    "cpf": "11122233344",
+    "rg": "MG998877",
+    "dataNascimento": "1985-05-10",
+    "telefone1": "31977777777",
+    "email": "maria@lider.com",
+    "endereco": {
+      "rua": "Rua das Flores",
+      "numero": "101",
+      "bairro": "Primavera",
+      "cidade": "Belo Horizonte",
+      "uf": "MG"
+    }
+  },
+  "igreja": {
+    "pessoa": {
+      "descricao": "Pr. Antonio",
+      "cpf": "99988877766",
+      "rg": "MG112233",
+      "dataNascimento": "1970-04-04",
+      "telefone1": "31988881234",
+      "email": "antonio@igreja.com",
+      "endereco": {
+        "rua": "Rua da Fé",
+        "numero": "789",
+        "bairro": "Cristo Rei",
+        "cidade": "Belo Horizonte",
+        "uf": "MG"
+      }
+    }
+  }
+}

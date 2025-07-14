@@ -1,0 +1,34 @@
+{
+  "pessoa": {
+    "descricao": "Carlos Aluno",
+    "cpf": "12345678900",
+    "rg": "MG123456",
+    "dataNascimento": "1995-07-14",
+    "telefone1": "31999999999",
+    "email": "carlos@exemplo.com",
+    "endereco": {
+      "rua": "Rua Estudante",
+      "numero": "123",
+      "bairro": "Centro",
+      "cidade": "Belo Horizonte",
+      "uf": "MG"
+    }
+  },
+  "igreja": {
+    "pessoa": {
+      "descricao": "Igreja de Jesus",
+      "cpf": "98765432100",
+      "rg": "MG654321",
+      "dataNascimento": "1980-01-01",
+      "telefone1": "31988888888",
+      "email": "joao@igreja.com",
+      "endereco": {
+        "rua": "Rua da Igreja",
+        "numero": "456",
+        "bairro": "Bairro Santo",
+        "cidade": "Belo Horizonte",
+        "uf": "MG"
+      }
+    }
+  }
+}
