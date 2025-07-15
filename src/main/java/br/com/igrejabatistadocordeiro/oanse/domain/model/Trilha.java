@@ -28,7 +28,7 @@ public class Trilha {
     private String descricao;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "l_livro_id", nullable = false)
+    @JoinColumn(name = "t_livro_id", nullable = false)
     private Livro livro;
 
     @OneToMany(mappedBy = "trilha", cascade = CascadeType.ALL, orphanRemoval = true)

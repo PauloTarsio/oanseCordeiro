@@ -1,5 +1,5 @@
 {
-  "pessoa": {
+  "dadosPessoais": {
     "descricao": "Maria Líder",
     "cpf": "11122233344",
     "rg": "MG998877",
@@ -15,7 +15,7 @@
     }
   },
   "igreja": {
-    "pessoa": {
+    "dadosPessoais": {
       "descricao": "Pr. Antonio",
       "cpf": "99988877766",
       "rg": "MG112233",

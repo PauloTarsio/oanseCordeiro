@@ -18,10 +18,10 @@ import br.com.igrejabatistadocordeiro.oanse.domain.model.DadosPessoais;
 @SpringBootTest
 @ActiveProfiles("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class PessoaRepositoryTest {
+public class DadosPessoaisRepositoryTest {
 
     @Autowired
-    private PessoaRepository pessoaRepository;
+    private DadosPessoaisRepository repository;
     
     @Autowired
     private ObjectMapper objectMapper;
@@ -38,10 +38,10 @@ public class PessoaRepositoryTest {
     }
 
     private void criarPessoaComEndereco() throws Exception {
-        String json = Files.readString(Paths.get("src/test/resources/json/pessoa.json"));
+        String json = Files.readString(Paths.get("src/test/resources/json/dadosPessoais.json"));
         DadosPessoais pessoa = objectMapper.readValue(json, DadosPessoais.class);
 
-        DadosPessoais salvo = pessoaRepository.save(pessoa);
+        DadosPessoais salvo = repository.save(pessoa);
 
         Assertions.assertNotNull(salvo.getId());
         Assertions.assertNotNull(salvo.getEndereco().getId());
@@ -52,13 +52,13 @@ public class PessoaRepositoryTest {
     }
 
     private void buscarPessoaPorId() {
-        Optional<DadosPessoais> pessoaOpt = pessoaRepository.findById(pessoaId);
+        Optional<DadosPessoais> pessoaOpt = repository.findById(pessoaId);
         Assertions.assertTrue(pessoaOpt.isPresent());
         System.out.println("✔️ Pessoa encontrada: " + pessoaOpt.get().getDescricao());
     }
 
     private void atualizarPessoa() {
-        DadosPessoais pessoa = pessoaRepository.findById(pessoaId).orElseThrow();
+        DadosPessoais pessoa = repository.findById(pessoaId).orElseThrow();
 
         pessoa.setEmail("nova.email@exemplo.com");
         pessoa.setDescricao("Nome Atualizado");
@@ -66,7 +66,7 @@ public class PessoaRepositoryTest {
         pessoa.getEndereco().setId(enderecoId);
         pessoa.getEndereco().setRua("Endereço Atualizado");
 
-        DadosPessoais atualizada = pessoaRepository.save(pessoa);
+        DadosPessoais atualizada = repository.save(pessoa);
 
         Assertions.assertEquals("nova.email@exemplo.com", atualizada.getEmail());
         Assertions.assertEquals("Nome Atualizado", atualizada.getDescricao());
@@ -75,9 +75,9 @@ public class PessoaRepositoryTest {
     }
 
     private void deletarPessoa() {
-        pessoaRepository.deleteById(pessoaId);
+        repository.deleteById(pessoaId);
 
-        Optional<DadosPessoais> excluida = pessoaRepository.findById(pessoaId);
+        Optional<DadosPessoais> excluida = repository.findById(pessoaId);
         Assertions.assertTrue(excluida.isEmpty());
         System.out.println("✔️ Pessoa deletada com sucesso.");
     }

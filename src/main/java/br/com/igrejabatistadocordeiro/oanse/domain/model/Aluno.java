@@ -22,11 +22,11 @@ public class Aluno {
     private Long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "dp_dados_pessoais_id")
+    @JoinColumn(name = "dados_pessoais_dp_id")
     private DadosPessoais dadosPessoais;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "pessoa_igreja_id")
+    @JoinColumn(name = "igreja_i_id")
     private Igreja igreja;
 
 	public Long getId() {

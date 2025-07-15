@@ -1,5 +1,5 @@
 {
-  "pessoa": {
+  "dadosPessoais": {
     "descricao": "Carlos Aluno",
     "cpf": "12345678900",
     "rg": "MG123456",
@@ -15,7 +15,7 @@
     }
   },
   "igreja": {
-    "pessoa": {
+    "dadosPessoais": {
       "descricao": "Igreja de Jesus",
       "cpf": "98765432100",
       "rg": "MG654321",

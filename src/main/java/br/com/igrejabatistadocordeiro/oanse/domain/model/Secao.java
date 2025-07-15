@@ -23,7 +23,7 @@ public class Secao {
     private Integer numero;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "t_trilha_id", nullable = false)
+    @JoinColumn(name = "s_trilha_id", nullable = false)
     private Trilha trilha;
 
 	public Long getId() {
