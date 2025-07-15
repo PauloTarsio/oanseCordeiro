@@ -14,42 +14,43 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "pessoa")
-public class Pessoa {
+@Table(name = "dados_pessoais")
+public class DadosPessoais {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "dp_id")
     private Long id;
 
-    @Column(name = "descricao", nullable = false)
+    @Column(name = "dp_descricao", nullable = false)
     private String descricao;
     
-    @Column(name = "rg")
+    @Column(name = "dp_rg")
     private String rg;
     
-    @Column(name = "cpf")
+    @Column(name = "dp_cpf")
     private String cpf;
     
-    @Column(name = "cnpj")
+    @Column(name = "dp_cnpj")
     private String cnpj;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "endereco_id")
+    @JoinColumn(name = "e_endereco_id")
     private Endereco endereco;
 
-    @Column(name = "data_nascimento", nullable = false)
+    @Column(name = "dp_data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
-    @Column(name = "telefone1")
+    @Column(name = "dp_telefone1")
     private String telefone1;
     
-    @Column(name = "telefone2")
+    @Column(name = "dp_telefone2")
     private String telefone2;
     
-    @Column(name = "telefone3")
+    @Column(name = "dp_telefone3")
     private String telefone3;
     
-    @Column(name = "email")
+    @Column(name = "dp_email")
     private String email;
 
 	public Long getId() {
@@ -145,13 +146,13 @@ public class Pessoa {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Pessoa other = (Pessoa) obj;
+		DadosPessoais other = (DadosPessoais) obj;
 		return Objects.equals(dataNascimento, other.dataNascimento) && Objects.equals(descricao, other.descricao);
 	}
 
 	@Override
 	public String toString() {
-		return "Pessoa [id=" + id + ", descricao=" + descricao + ", telefone1=" + telefone1 + ", telefone2=" + telefone2
+		return "Dados pessoais [id=" + id + ", descricao=" + descricao + ", telefone1=" + telefone1 + ", telefone2=" + telefone2
 				+ ", telefone3=" + telefone3 + "]";
 	}
 

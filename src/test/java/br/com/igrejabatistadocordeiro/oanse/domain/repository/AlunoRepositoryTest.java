@@ -45,13 +45,13 @@ public class AlunoRepositoryTest {
         Aluno salvo = alunoRepository.save(aluno);
 
         Assertions.assertNotNull(salvo.getId());
-        Assertions.assertNotNull(salvo.getPessoa().getId());
-        Assertions.assertNotNull(salvo.getPessoa().getEndereco().getId());
+        Assertions.assertNotNull(salvo.getDadosPessoais().getId());
+        Assertions.assertNotNull(salvo.getDadosPessoais().getEndereco().getId());
         Assertions.assertNotNull(salvo.getIgreja().getId());
 
         this.alunoId = salvo.getId();
-        this.enderecoIdAluno = salvo.getPessoa().getEndereco().getId(); // guarda o ID do endereço
-        this.enderecoIdIgreja = salvo.getIgreja().getPessoa().getEndereco().getId(); // guarda o ID do endereço da igreja
+        this.enderecoIdAluno = salvo.getDadosPessoais().getEndereco().getId(); // guarda o ID do endereço
+        this.enderecoIdIgreja = salvo.getIgreja().getDadosPessoais().getEndereco().getId(); // guarda o ID do endereço da igreja
 
         System.out.println("✔️ Aluno criado com ID: " + salvo.getId());
     }
@@ -59,22 +59,22 @@ public class AlunoRepositoryTest {
     private void buscarAlunoPorId() {
         Optional<Aluno> alunoOpt = alunoRepository.findById(alunoId);
         Assertions.assertTrue(alunoOpt.isPresent());
-        System.out.println("✔️ Aluno encontrado: " + alunoOpt.get().getPessoa().getDescricao());
+        System.out.println("✔️ Aluno encontrado: " + alunoOpt.get().getDadosPessoais().getDescricao());
     }
 
     private void atualizarAluno() {
         Aluno aluno = alunoRepository.findById(alunoId).orElseThrow();
 
-        aluno.getPessoa().setDescricao("Carlos Aluno Atualizado");
-        aluno.getPessoa().setEmail("carlos.novo@exemplo.com");
+        aluno.getDadosPessoais().setDescricao("Carlos Aluno Atualizado");
+        aluno.getDadosPessoais().setEmail("carlos.novo@exemplo.com");
         
-        aluno.getPessoa().getEndereco().setId(enderecoIdAluno);
-        aluno.getIgreja().getPessoa().getEndereco().setId(enderecoIdIgreja);
+        aluno.getDadosPessoais().getEndereco().setId(enderecoIdAluno);
+        aluno.getIgreja().getDadosPessoais().getEndereco().setId(enderecoIdIgreja);
 
         Aluno atualizado = alunoRepository.save(aluno);
 
-        Assertions.assertEquals("Carlos Aluno Atualizado", atualizado.getPessoa().getDescricao());
-        Assertions.assertEquals("carlos.novo@exemplo.com", atualizado.getPessoa().getEmail());
+        Assertions.assertEquals("Carlos Aluno Atualizado", atualizado.getDadosPessoais().getDescricao());
+        Assertions.assertEquals("carlos.novo@exemplo.com", atualizado.getDadosPessoais().getEmail());
 
         System.out.println("✔️ Aluno atualizado com sucesso.");
     }

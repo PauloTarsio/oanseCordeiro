@@ -43,7 +43,7 @@ public class IgrejaRepositoryTest {
         Igreja salva = igrejaRepository.save(igreja);
 
         Assertions.assertNotNull(salva.getId());
-        Assertions.assertNotNull(salva.getPessoa().getId());
+        Assertions.assertNotNull(salva.getDadosPessoais().getId());
 
         this.igrejaId = salva.getId();
 
@@ -53,19 +53,19 @@ public class IgrejaRepositoryTest {
     private void buscarIgrejaPorId() {
         Optional<Igreja> encontrada = igrejaRepository.findById(igrejaId);
         Assertions.assertTrue(encontrada.isPresent());
-        System.out.println("✔️ Igreja encontrada: " + encontrada.get().getPessoa().getDescricao());
+        System.out.println("✔️ Igreja encontrada: " + encontrada.get().getDadosPessoais().getDescricao());
     }
 
     private void atualizarIgreja() {
         Igreja igreja = igrejaRepository.findById(igrejaId).orElseThrow();
 
-        igreja.getPessoa().setDescricao("Pr. João Atualizado");
-        igreja.getPessoa().setEmail("joao.atualizado@igreja.com");
+        igreja.getDadosPessoais().setDescricao("Pr. João Atualizado");
+        igreja.getDadosPessoais().setEmail("joao.atualizado@igreja.com");
 
         Igreja atualizada = igrejaRepository.save(igreja);
 
-        Assertions.assertEquals("Pr. João Atualizado", atualizada.getPessoa().getDescricao());
-        Assertions.assertEquals("joao.atualizado@igreja.com", atualizada.getPessoa().getEmail());
+        Assertions.assertEquals("Pr. João Atualizado", atualizada.getDadosPessoais().getDescricao());
+        Assertions.assertEquals("joao.atualizado@igreja.com", atualizada.getDadosPessoais().getEmail());
 
         System.out.println("✔️ Igreja atualizada com sucesso.");
     }

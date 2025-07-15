@@ -17,19 +17,19 @@ public class Endereco {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "rua", nullable = false)	
+    @Column(name = "e_rua", nullable = false, length = 200)	
 	private String rua;
     
-    @Column(name = "numero", nullable = false)
+    @Column(name = "e_numero", nullable = false, length = 10)
     private String numero;
     
-    @Column(name = "bairro")
+    @Column(name = "e_bairro", length = 100)
     private String bairro;
     
-    @Column(name = "cidade")
+    @Column(name = "e_cidade", length = 100)
     private String cidade;
     
-    @Column(name = "uf")
+    @Column(name = "e_uf", length = 2)
     private String uf;
 
 	public Long getId() {

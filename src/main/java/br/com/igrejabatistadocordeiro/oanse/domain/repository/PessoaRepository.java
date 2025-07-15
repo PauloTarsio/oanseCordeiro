@@ -2,7 +2,7 @@ package br.com.igrejabatistadocordeiro.oanse.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Pessoa;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.DadosPessoais;
 
-public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
+public interface PessoaRepository extends JpaRepository<DadosPessoais, Long> {
 }

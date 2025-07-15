@@ -45,12 +45,12 @@ public class LiderRepositoryTest {
         Lider salvo = liderRepository.save(lider);
 
         Assertions.assertNotNull(salvo.getId());
-        Assertions.assertNotNull(salvo.getPessoa().getId());
+        Assertions.assertNotNull(salvo.getDadosPessoais().getId());
         Assertions.assertNotNull(salvo.getIgreja().getId());
 
         this.liderId = salvo.getId();
-        this.enderecoIdLider = salvo.getPessoa().getEndereco().getId();
-        this.enderecoIdIgreja = salvo.getIgreja().getPessoa().getEndereco().getId();
+        this.enderecoIdLider = salvo.getDadosPessoais().getEndereco().getId();
+        this.enderecoIdIgreja = salvo.getIgreja().getDadosPessoais().getEndereco().getId();
 
         System.out.println("✔️ Líder criado com ID: " + salvo.getId());
     }
@@ -58,22 +58,22 @@ public class LiderRepositoryTest {
     private void buscarLiderPorId() {
         Optional<Lider> liderOpt = liderRepository.findById(liderId);
         Assertions.assertTrue(liderOpt.isPresent());
-        System.out.println("✔️ Líder encontrado: " + liderOpt.get().getPessoa().getDescricao());
+        System.out.println("✔️ Líder encontrado: " + liderOpt.get().getDadosPessoais().getDescricao());
     }
 
     private void atualizarLider() {
         Lider lider = liderRepository.findById(liderId).orElseThrow();
 
-        lider.getPessoa().setDescricao("Maria Líder Atualizada");
-        lider.getPessoa().setEmail("maria.nova@lider.com");
+        lider.getDadosPessoais().setDescricao("Maria Líder Atualizada");
+        lider.getDadosPessoais().setEmail("maria.nova@lider.com");
         
-        lider.getPessoa().getEndereco().setId(enderecoIdLider);
-        lider.getIgreja().getPessoa().getEndereco().setId(enderecoIdIgreja);
+        lider.getDadosPessoais().getEndereco().setId(enderecoIdLider);
+        lider.getIgreja().getDadosPessoais().getEndereco().setId(enderecoIdIgreja);
 
         Lider atualizado = liderRepository.save(lider);
 
-        Assertions.assertEquals("Maria Líder Atualizada", atualizado.getPessoa().getDescricao());
-        Assertions.assertEquals("maria.nova@lider.com", atualizado.getPessoa().getEmail());
+        Assertions.assertEquals("Maria Líder Atualizada", atualizado.getDadosPessoais().getDescricao());
+        Assertions.assertEquals("maria.nova@lider.com", atualizado.getDadosPessoais().getEmail());
 
         System.out.println("✔️ Líder atualizado com sucesso.");
     }

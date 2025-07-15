@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Pessoa;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.DadosPessoais;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -39,9 +39,9 @@ public class PessoaRepositoryTest {
 
     private void criarPessoaComEndereco() throws Exception {
         String json = Files.readString(Paths.get("src/test/resources/json/pessoa.json"));
-        Pessoa pessoa = objectMapper.readValue(json, Pessoa.class);
+        DadosPessoais pessoa = objectMapper.readValue(json, DadosPessoais.class);
 
-        Pessoa salvo = pessoaRepository.save(pessoa);
+        DadosPessoais salvo = pessoaRepository.save(pessoa);
 
         Assertions.assertNotNull(salvo.getId());
         Assertions.assertNotNull(salvo.getEndereco().getId());
@@ -52,13 +52,13 @@ public class PessoaRepositoryTest {
     }
 
     private void buscarPessoaPorId() {
-        Optional<Pessoa> pessoaOpt = pessoaRepository.findById(pessoaId);
+        Optional<DadosPessoais> pessoaOpt = pessoaRepository.findById(pessoaId);
         Assertions.assertTrue(pessoaOpt.isPresent());
         System.out.println("✔️ Pessoa encontrada: " + pessoaOpt.get().getDescricao());
     }
 
     private void atualizarPessoa() {
-        Pessoa pessoa = pessoaRepository.findById(pessoaId).orElseThrow();
+        DadosPessoais pessoa = pessoaRepository.findById(pessoaId).orElseThrow();
 
         pessoa.setEmail("nova.email@exemplo.com");
         pessoa.setDescricao("Nome Atualizado");
@@ -66,7 +66,7 @@ public class PessoaRepositoryTest {
         pessoa.getEndereco().setId(enderecoId);
         pessoa.getEndereco().setRua("Endereço Atualizado");
 
-        Pessoa atualizada = pessoaRepository.save(pessoa);
+        DadosPessoais atualizada = pessoaRepository.save(pessoa);
 
         Assertions.assertEquals("nova.email@exemplo.com", atualizada.getEmail());
         Assertions.assertEquals("Nome Atualizado", atualizada.getDescricao());
@@ -77,7 +77,7 @@ public class PessoaRepositoryTest {
     private void deletarPessoa() {
         pessoaRepository.deleteById(pessoaId);
 
-        Optional<Pessoa> excluida = pessoaRepository.findById(pessoaId);
+        Optional<DadosPessoais> excluida = pessoaRepository.findById(pessoaId);
         Assertions.assertTrue(excluida.isEmpty());
         System.out.println("✔️ Pessoa deletada com sucesso.");
     }

@@ -3,6 +3,7 @@ package br.com.igrejabatistadocordeiro.oanse.domain.model;
 import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,16 +13,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "pessoa_igreja")
+@Table(name = "igreja")
 public class Igreja {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "i_id")
     private Long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "pessoa_id")
-    private Pessoa pessoa;
+    @JoinColumn(name = "dp_dados_pessoais_id")
+    private DadosPessoais dadosPessoais;
 
 	public Long getId() {
 		return id;
@@ -31,17 +33,17 @@ public class Igreja {
 		this.id = id;
 	}
 
-	public Pessoa getPessoa() {
-		return pessoa;
+	public DadosPessoais getDadosPessoais() {
+		return dadosPessoais;
 	}
 
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
+	public void setDadosPessoais(DadosPessoais dadosPessoais) {
+		this.dadosPessoais = dadosPessoais;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(pessoa);
+		return Objects.hash(dadosPessoais);
 	}
 
 	@Override
@@ -53,12 +55,12 @@ public class Igreja {
 		if (getClass() != obj.getClass())
 			return false;
 		Igreja other = (Igreja) obj;
-		return Objects.equals(pessoa, other.pessoa);
+		return Objects.equals(dadosPessoais, other.dadosPessoais);
 	}
 
 	@Override
 	public String toString() {
-		return "Igreja [id=" + id + ", pessoa=" + pessoa + "]";
+		return "Igreja [id=" + id + ", dadosPessoais=" + dadosPessoais + "]";
 	}
 	
 	

@@ -1,39 +1,39 @@
 CREATE TABLE endereco (
-    id SERIAL PRIMARY KEY,
-    rua VARCHAR(255),
-    numero VARCHAR(20),
-    bairro VARCHAR(100),
-    cidade VARCHAR(100),
-    uf CHAR(2)
+    e_id SERIAL PRIMARY KEY,
+    e_rua VARCHAR(255),
+    e_numero VARCHAR(20),
+    e_bairro VARCHAR(100),
+    e_cidade VARCHAR(100),
+    e_uf CHAR(2)
 );
 
-CREATE TABLE pessoa (
-    id SERIAL PRIMARY KEY,
-    descricao VARCHAR(255),
-    rg VARCHAR(20),
-    cpf VARCHAR(20),
-    cnpj VARCHAR(20),
-    data_nascimento DATE,
-    telefone1 VARCHAR(20),
-    telefone2 VARCHAR(20),
-    telefone3 VARCHAR(20),
-    email VARCHAR(100),
-    endereco_id INTEGER REFERENCES endereco(id)
+CREATE TABLE dados_pessoais (
+    dp_id SERIAL PRIMARY KEY,
+    dp_descricao VARCHAR(255),
+    dp_rg VARCHAR(20),
+    dp_cpf VARCHAR(20),
+    dp_cnpj VARCHAR(20),
+    dp_data_nascimento DATE,
+    dp_telefone1 VARCHAR(20),
+    dp_telefone2 VARCHAR(20),
+    dp_telefone3 VARCHAR(20),
+    dp_email VARCHAR(100),
+    dp_endereco_id INTEGER REFERENCES endereco(e_id)
 );
 
-CREATE TABLE pessoa_igreja (
-    id SERIAL PRIMARY KEY,
-    pessoa_id INTEGER REFERENCES pessoa(id)
+CREATE TABLE igreja (
+    i_id SERIAL PRIMARY KEY,
+    i_dados_pessoais_id INTEGER REFERENCES dados_pessoais(dp_id)
 );
 
-CREATE TABLE pessoa_lider (
-    id SERIAL PRIMARY KEY,
-    pessoa_id INTEGER REFERENCES pessoa(id),
-    pessoa_igreja_id INTEGER REFERENCES pessoa_igreja(id)
+CREATE TABLE lider (
+    l_id SERIAL PRIMARY KEY,
+    l_dados_pessoais_id INTEGER REFERENCES dados_pessoais(dp_id),
+    l_igreja_id INTEGER REFERENCES igreja(i_id)
 );
 
-CREATE TABLE pessoa_aluno_igreja (
-    id SERIAL PRIMARY KEY,
-    pessoa_id INTEGER REFERENCES pessoa(id),
-    pessoa_igreja_id INTEGER REFERENCES pessoa_igreja(id)
+CREATE TABLE aluno (
+    a_id SERIAL PRIMARY KEY,
+    a_dados_pessoais_id INTEGER REFERENCES dados_pessoais(dp_id),
+    a_igreja_id INTEGER REFERENCES igreja(i_id)
 );

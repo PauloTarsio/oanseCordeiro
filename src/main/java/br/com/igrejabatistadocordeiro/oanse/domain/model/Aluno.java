@@ -3,6 +3,7 @@ package br.com.igrejabatistadocordeiro.oanse.domain.model;
 import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,16 +13,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "pessoa_aluno_igreja")
+@Table(name = "aluno")
 public class Aluno {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "a_id")
     private Long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "pessoa_id")
-    private Pessoa pessoa;
+    @JoinColumn(name = "dp_dados_pessoais_id")
+    private DadosPessoais dadosPessoais;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "pessoa_igreja_id")
@@ -35,12 +37,12 @@ public class Aluno {
 		this.id = id;
 	}
 
-	public Pessoa getPessoa() {
-		return pessoa;
+	public DadosPessoais getDadosPessoais() {
+		return dadosPessoais;
 	}
 
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
+	public void setDadosPessoais(DadosPessoais dadosPessoais) {
+		this.dadosPessoais = dadosPessoais;
 	}
 
 	public Igreja getIgreja() {
@@ -53,7 +55,7 @@ public class Aluno {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(igreja, pessoa);
+		return Objects.hash(igreja, dadosPessoais);
 	}
 
 	@Override
@@ -65,11 +67,11 @@ public class Aluno {
 		if (getClass() != obj.getClass())
 			return false;
 		Aluno other = (Aluno) obj;
-		return Objects.equals(igreja, other.igreja) && Objects.equals(pessoa, other.pessoa);
+		return Objects.equals(igreja, other.igreja) && Objects.equals(dadosPessoais, other.dadosPessoais);
 	}
 
 	@Override
 	public String toString() {
-		return "Aluno [id=" + id + ", pessoa=" + pessoa + ", igreja=" + igreja + "]";
+		return "Aluno [id=" + id + ", dadosPessoais=" + dadosPessoais + ", igreja=" + igreja + "]";
 	}
 }

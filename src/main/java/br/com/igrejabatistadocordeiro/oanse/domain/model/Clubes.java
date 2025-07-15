@@ -2,9 +2,7 @@ package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
 import java.util.Arrays;
 
-public enum Clubes {
-	
-	CLUBE("Clube"),
+public enum Clubes {	
 	URSINHO("Ursinho"),
 	FAISCA("Faisca"),
 	FLAMA("Flama"),
