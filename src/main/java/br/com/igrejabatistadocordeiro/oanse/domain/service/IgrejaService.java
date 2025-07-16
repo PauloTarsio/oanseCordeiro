@@ -1,16 +1,11 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.service;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.DadosPessoaisDTO;
-import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.EnderecoDTO;
-import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.IgrejaDTO;
-import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.IgrejaResumoDTO;
 import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.RegistroDuplicadoException;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.DadosPessoais;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Igreja;
@@ -26,7 +21,12 @@ public class IgrejaService {
 		this.igrejaRepository = igrejaRepository;
 	}
 	
-	public List<Igreja> pesquisaByExample(String descricao, String rg, String cpf, String cnpj, boolean ativo) {
+	public Igreja carrega(Long id) {
+		return igrejaRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Igreja não encontrada com o ID: " + id));
+	}
+	
+	public List<Igreja> pesquisa(String descricao, String rg, String cpf, String cnpj, boolean ativo) {
 		Igreja igreja = new Igreja();
 		igreja.setAtivo(ativo);
 		DadosPessoais dadosPessoais = new DadosPessoais();
@@ -34,19 +34,16 @@ public class IgrejaService {
 		dadosPessoais.setRg(rg);
 		dadosPessoais.setCpf(cpf);
 		dadosPessoais.setCnpj(cnpj);
-		igreja.setDadosPessoais(dadosPessoais);
-		
+		igreja.setDadosPessoais(dadosPessoais);		
 		ExampleMatcher matcher = ExampleMatcher
 				.matching()
 				.withIgnoreNullValues()
 				.withIgnoreCase()
-				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-		
+				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);		
 		Example<Igreja> example = Example.of(igreja, matcher);		
-		
 		return igrejaRepository.findAll(example);
 		
-	}
+	}	
 
 	public void salva(Igreja igreja) {
 		if (igreja.getId() != null)
@@ -70,17 +67,12 @@ public class IgrejaService {
 			throw new RegistroDuplicadoException("Igreja com RG, CPF ou CNPJ já cadastrada.");
 		
 		if (igrejaEncontrada == null)
-			igrejaEncontrada = buscarPorId(igreja.getId());
+			igrejaEncontrada = carrega(igreja.getId());
 				
 		igreja.getDadosPessoais().setId(igrejaEncontrada.getDadosPessoais().getId());
 		igreja.getDadosPessoais().getEndereco().setId(igrejaEncontrada.getDadosPessoais().getEndereco().getId());
 		
 		igrejaRepository.save(igreja);
-	}
-	
-	private Igreja buscarPorId(Long id) {
-		return igrejaRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Igreja não encontrada com o ID: " + id));
 	}
 
 	private Igreja buscarPorRgOuCpfOuCnpj(DadosPessoais dadosPessoais) {
@@ -95,40 +87,10 @@ public class IgrejaService {
 	}
 
 	public void inativa(Long id) {
-		igrejaRepository.findById(id).map(igreja -> {
-						igreja.setAtivo(false);
-						return igrejaRepository.save(igreja);
-				}).orElseThrow(() -> new IllegalArgumentException("Igreja não encontrada com o ID: " + id));		
+		igrejaRepository.findById(id)
+						.map(igreja -> {
+							igreja.setAtivo(false);
+							return igrejaRepository.save(igreja);
+						}).orElseThrow(() -> new IllegalArgumentException("Igreja não encontrada com o ID: " + id));
 	}
-
-	public List<IgrejaResumoDTO> pesquisaResumo(boolean ativo) {
-		Collection<Igreja> ativas = igrejaRepository.findByAtivo(ativo);
-		return ativas.stream().map(igreja -> new IgrejaResumoDTO(
-					igreja.getId(),
-					igreja.getDadosPessoais().getDescricao(),
-					igreja.getAtivo()
-				)).toList();
-	}
-
-	public IgrejaDTO carrega(Long id) {
-		return igrejaRepository.findById(id)
-			    .map(igreja -> new IgrejaDTO(
-			        igreja.getId(),
-			        igreja.getAtivo(),
-			        new DadosPessoaisDTO(
-			            igreja.getDadosPessoais().getId(),
-			            igreja.getDadosPessoais().getDescricao(),
-			            igreja.getDadosPessoais().getRg(),
-			            igreja.getDadosPessoais().getCpf(),
-			            igreja.getDadosPessoais().getCnpj(),
-			            igreja.getDadosPessoais().getDataNascimento(),
-			            igreja.getDadosPessoais().getTelefone1(),
-			            igreja.getDadosPessoais().getTelefone2(),
-			            igreja.getDadosPessoais().getTelefone3(),
-			            igreja.getDadosPessoais().getEmail(),
-			            new EnderecoDTO(igreja.getDadosPessoais().getEndereco())
-			        )
-			    ))
-			    .orElse(null);
-	}	
 }

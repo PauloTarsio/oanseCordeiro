@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.br.CPF;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.validators.Telefone;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.DadosPessoais;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -60,21 +59,5 @@ public record DadosPessoaisDTO(
 			@Valid
 			@NotNull(message = "Endereco obrigatório")
 			EnderecoDTO endereco
-		) {
-	
-	public DadosPessoais toDadosPessoais() {
-		DadosPessoais dadosPessoais = new DadosPessoais();
-		dadosPessoais.setId(id);
-		dadosPessoais.setDescricao(descricao);
-		dadosPessoais.setRg(rg);
-		dadosPessoais.setCpf(cpf);
-		dadosPessoais.setCnpj(cnpj);
-		dadosPessoais.setEndereco(endereco.toEndereco());
-		dadosPessoais.setDataNascimento(dataNascimento);
-		dadosPessoais.setTelefone1(telefone1);
-		dadosPessoais.setTelefone2(telefone2);
-		dadosPessoais.setTelefone3(telefone3);
-		dadosPessoais.setEmail(email);
-		return dadosPessoais;
-	}
-}
+			
+		) {}

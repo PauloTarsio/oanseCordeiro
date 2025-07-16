@@ -1,4 +1,4 @@
-package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto;
+package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.erro;
 
 import java.util.List;
 

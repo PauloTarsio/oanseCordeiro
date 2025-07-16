@@ -1,6 +1,6 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.repository;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +13,5 @@ public interface IgrejaRepository extends JpaRepository<Igreja, Long>, QueryByEx
 	public Optional<Igreja> findByDadosPessoaisRg(String rg);
 	public Optional<Igreja> findByDadosPessoaisCpf(String cpf);
 	public Optional<Igreja> findByDadosPessoaisCnpj(String cnpj);
-	public Collection<Igreja> findByAtivo(boolean ativo);
+	public List<Igreja> findByAtivo(boolean ativo);
 }

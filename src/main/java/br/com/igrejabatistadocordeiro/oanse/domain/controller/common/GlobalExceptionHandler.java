@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.ErroCampo;
-import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.ErroResposta;
+import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.erro.ErroCampo;
+import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.erro.ErroResposta;
 
 @RestControllerAdvice //capturar exceções de todo o sistema inclusive as validações de Bean Validation
 public class GlobalExceptionHandler {
