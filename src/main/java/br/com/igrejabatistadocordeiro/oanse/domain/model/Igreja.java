@@ -22,8 +22,11 @@ public class Igreja {
     private Long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "dp_dados_pessoais_id")
+    @JoinColumn(name = "i_dados_pessoais_id")
     private DadosPessoais dadosPessoais;
+    
+    @Column(name = "i_ativo", nullable = false)
+    private boolean ativo = true;
 
 	public Long getId() {
 		return id;
@@ -61,6 +64,14 @@ public class Igreja {
 	@Override
 	public String toString() {
 		return "Igreja [id=" + id + ", dadosPessoais=" + dadosPessoais + "]";
+	}
+
+	public boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 	

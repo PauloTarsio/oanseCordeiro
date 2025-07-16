@@ -15,6 +15,7 @@ public class Endereco {
     
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "e_id")
     private Long id;
 
     @Column(name = "e_rua", nullable = false, length = 200)	

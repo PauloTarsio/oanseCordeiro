@@ -35,7 +35,7 @@ public class DadosPessoais {
     private String cnpj;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "e_endereco_id")
+    @JoinColumn(name = "dp_endereco_id")
     private Endereco endereco;
 
     @Column(name = "dp_data_nascimento", nullable = false)
