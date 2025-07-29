@@ -22,12 +22,15 @@ public class Aluno {
     private Long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "dados_pessoais_dp_id")
+    @JoinColumn(name = "a_dados_pessoais_id")
     private DadosPessoais dadosPessoais;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "igreja_i_id")
+    @JoinColumn(name = "a_igreja_id")
     private Igreja igreja;
+    
+    @Column(name = "a_ativo", nullable = false)
+    private boolean ativo = true;
 
 	public Long getId() {
 		return id;
@@ -73,5 +76,13 @@ public class Aluno {
 	@Override
 	public String toString() {
 		return "Aluno [id=" + id + ", dadosPessoais=" + dadosPessoais + ", igreja=" + igreja + "]";
+	}
+
+	public boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 }

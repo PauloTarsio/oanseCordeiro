@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,13 +15,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.erro.ErroCampo;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.erro.ErroResposta;
+import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.RegistroDuplicadoException;
 
 @RestControllerAdvice //capturar exceções de todo o sistema inclusive as validações de Bean Validation
 public class GlobalExceptionHandler {
+	
+	private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
 
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY) //código 422
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ErroResposta handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+		logger.warn("Erro de validação nos parâmetros: {}", e.getMessage());
+		
 		List<ErroCampo> erros = e.getBindingResult()
 				.getFieldErrors()
 				.stream()
@@ -35,6 +42,8 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST) //código 400 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ErroResposta handleInvalidFormat(HttpMessageNotReadableException ex) {
+		logger.warn("Erro ao ler mensagem HTTP: {}", ex.getMessage());
+		
     	List<ErroCampo> erros = new ArrayList<>();
         Throwable cause = ex.getCause();
         
@@ -45,5 +54,30 @@ public class GlobalExceptionHandler {
 				HttpStatus.BAD_REQUEST.value(),
 				"Erro de validação",
 				erros);
-    }		
+    }	
+	
+	@ResponseStatus(HttpStatus.CONFLICT) //código 409
+	@ExceptionHandler(RegistroDuplicadoException.class)
+	public ErroResposta handleRegistroDuplicadoException(RegistroDuplicadoException e) {
+		logger.error("Registro duplicado detectado: {}", e.getMessage());
+		return ErroResposta.conflito(e.getMessage());
+	}
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST) //código 400
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ErroResposta handleIllegalArgumentException(IllegalArgumentException e) {
+		logger.error("IllegalArgumentException: {}", e.getMessage());
+		return ErroResposta.respostaPadrao(e.getMessage());
+	}
+	
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) //código 500
+	@ExceptionHandler(Exception.class)
+	public ErroResposta handleException(Exception e) {
+		logger.error("Erro inesperado no sistema", e);
+		return new ErroResposta(
+				HttpStatus.INTERNAL_SERVER_ERROR.value(),
+				"Ocorreu um erro inesperado. Entre em contato com o administrador do sistema.",
+				List.of());
+	}	
+	
 }
