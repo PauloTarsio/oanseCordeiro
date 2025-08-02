@@ -22,7 +22,7 @@ public class WebSecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.withUsername("paulo")
-            .password(passwordEncoder().encode("987654321")) // gerar senha codificada em base64 e colocar no header
+            .password(passwordEncoder().encode("987654321")) // Aqui cGF1bG86OTg3NjU0MzIx é o Base64 de paulo:987654321
             .roles("USER")
             .build();
 

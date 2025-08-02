@@ -6,6 +6,8 @@ import java.util.Objects;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,6 +26,10 @@ public class DadosPessoais {
 
     @Column(name = "dp_descricao", nullable = false)
     private String descricao;
+    
+    @Column(name = "dp_tipo", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TipoPessoa tipo;
     
     @Column(name = "dp_rg")
     private String rg;
@@ -162,5 +168,13 @@ public class DadosPessoais {
 
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
+	}
+
+	public TipoPessoa getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoPessoa tipo) {
+		this.tipo = tipo;
 	}
 }

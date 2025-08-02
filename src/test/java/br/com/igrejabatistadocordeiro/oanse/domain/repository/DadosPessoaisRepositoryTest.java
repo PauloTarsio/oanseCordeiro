@@ -39,9 +39,9 @@ public class DadosPessoaisRepositoryTest {
 
     private void criarPessoaComEndereco() throws Exception {
         String json = Files.readString(Paths.get("src/test/resources/json/dadosPessoais.json"));
-        DadosPessoais pessoa = objectMapper.readValue(json, DadosPessoais.class);
+        DadosPessoais dadosPessoais = objectMapper.readValue(json, DadosPessoais.class);
 
-        DadosPessoais salvo = repository.save(pessoa);
+        DadosPessoais salvo = repository.save(dadosPessoais);
 
         Assertions.assertNotNull(salvo.getId());
         Assertions.assertNotNull(salvo.getEndereco().getId());

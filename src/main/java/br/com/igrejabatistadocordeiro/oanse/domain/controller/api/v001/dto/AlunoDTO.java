@@ -4,16 +4,16 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 public record AlunoDTO(
-		
-		Long id,
-		
-		@NotNull(message = "Campo obrigatório")
-		boolean ativo,
-		
-		@Valid
-		@NotNull(message = "Dados pessoais obrigatórios")
-		DadosPessoaisDTO dadosPessoais,
-		
-		@Valid
-		@NotNull(message = "Igreja obrigatória")
-		IgrejaDTO igreja) {}
+	    Long id,
+	    
+	    @NotNull
+	    boolean ativo,
+	    
+	    @Valid
+	    @NotNull
+	    DadosPessoaisDTO dadosPessoais,
+	    
+	    @NotNull
+	    Long igrejaId
+	    
+	) {}

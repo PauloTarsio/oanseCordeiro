@@ -10,6 +10,7 @@ CREATE TABLE endereco (
 CREATE TABLE dados_pessoais (
     dp_id SERIAL PRIMARY KEY,
     dp_descricao VARCHAR(255),
+    dp_tipo VARCHAR(10) NOT NULL,
     dp_rg VARCHAR(20),
     dp_cpf VARCHAR(20),
     dp_cnpj VARCHAR(20),

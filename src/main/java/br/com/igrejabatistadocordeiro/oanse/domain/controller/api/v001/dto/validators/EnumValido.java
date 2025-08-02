@@ -10,12 +10,12 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 @Documented
-@Constraint(validatedBy = TelefoneValidator.class)
+@Constraint(validatedBy = EnumValidator.class)
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Telefone {
-    String message() default "Telefone inválido";
+public @interface EnumValido {
+    String message() default "Valor inválido";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+    Class<? extends Enum<?>> enumClass();
 }
-

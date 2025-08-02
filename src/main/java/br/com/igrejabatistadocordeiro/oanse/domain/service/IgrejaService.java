@@ -13,9 +13,4 @@ public interface IgrejaService {
 	void salva(Igreja igreja);
 
 	void atualiza(Igreja igreja);
-
-	void inativa(Long id);
-
-	void ativa(Long id);
-
 }

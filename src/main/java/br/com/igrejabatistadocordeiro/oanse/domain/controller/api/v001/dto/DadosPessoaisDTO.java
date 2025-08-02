@@ -7,7 +7,10 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.validators.Telefone;
+import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.validators.EnumValido;
+import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.validators.TelefoneValido;
+import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.validators.TipoPessoaValido;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.TipoPessoa;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +18,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
+@TipoPessoaValido
 public record DadosPessoaisDTO(
 		
 			Long id,
@@ -22,6 +26,10 @@ public record DadosPessoaisDTO(
 			@NotBlank(message = "campo obrigatório")
 			@Size(max = 255, message = "Quantidade de caracteres, max 255")
 			String descricao,
+			
+			@NotNull(message = "campo obrigatório")
+		    @EnumValido(enumClass = TipoPessoa.class, message = "Tipo inválido")
+			TipoPessoa tipo,
 			
 			@Size(max = 20, message = "Quantidade de caracteres, max 20")
 			String rg,
@@ -41,15 +49,15 @@ public record DadosPessoaisDTO(
 			
 			@NotBlank(message = "campo obrigatório")
 			@Size(max = 20, message = "Quantidade de caracteres, max 20")
-			@Telefone(message = "Telefone inválido")
+			@TelefoneValido(message = "Telefone inválido")
 			String telefone1,
 			
 			@Size(max = 20, message = "Quantidade de caracteres, max 20")
-			@Telefone(message = "Telefone inválido")
+			@TelefoneValido(message = "Telefone inválido")
 			String telefone2,
 			
 			@Size(max = 20, message = "Quantidade de caracteres, max 20")
-			@Telefone(message = "Telefone inválido")
+			@TelefoneValido(message = "Telefone inválido")
 			String telefone3,
 			
 			@Size(max = 255, message = "Quantidade de caracteres, max 255")

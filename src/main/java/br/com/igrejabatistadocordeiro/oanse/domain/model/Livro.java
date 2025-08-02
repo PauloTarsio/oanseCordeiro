@@ -36,9 +36,6 @@ public class Livro {
 
     @OneToMany(mappedBy = "livro", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Trilha> trilhas = new ArrayList<>();
-    
-    @Column(name = "a_ativo", nullable = false)
-    private boolean ativo = true;
 
 	public Long getId() {
 		return id;
@@ -80,12 +77,4 @@ public class Livro {
 		this.trilhas = trilhas;
 	}
 
-	public boolean getAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
-	}
-       
 }

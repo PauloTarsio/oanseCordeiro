@@ -1,9 +1,8 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001;
 
-import java.util.ArrayList;
+import java.net.URI;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.AlunoDTO;
-import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.AlunoResumoDTO;
+import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.PesquisaAlunoResumidoDTO;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.mappers.AlunoMapper;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Aluno;
 import br.com.igrejabatistadocordeiro.oanse.domain.service.AlunoService;
 import jakarta.validation.Valid;
 
 @RestController
-public class AlunoController {
+public class AlunoController implements GenericController {
 
 	private AlunoService service;
 	private AlunoMapper mapper;
@@ -47,17 +46,7 @@ public class AlunoController {
 				@RequestParam(value = "ativo", required = false) Boolean ativo) {
 		
 		List<Aluno> pesquisa = service.pesquisa(descricao, rg, cpf, cnpj, ativo == null ? true : ativo);
-//		List<AlunoResumoDTO> dtos = pesquisa.stream().map(mapper::toResumoDto).toList();
-//		fazer for manual pra identificar problema...
-		List<AlunoResumoDTO> dtos = new ArrayList<AlunoResumoDTO>();
-		for (Aluno aluno : pesquisa) {
-			AlunoResumoDTO dto = new AlunoResumoDTO(aluno.getId(),
-													aluno.getDadosPessoais().getDescricao(),
-													aluno.getIgreja().getDadosPessoais().getDescricao(),
-													aluno.getAtivo());
-			dtos.add(dto);
-		}
-		
+		List<PesquisaAlunoResumidoDTO> dtos = mapper.toResumoDtoList(pesquisa);
 		return ResponseEntity.ok(dtos);
 	}
 	
@@ -65,20 +54,15 @@ public class AlunoController {
 	public ResponseEntity<Object> salva(@Valid @RequestBody AlunoDTO dto) {
 		Aluno aluno = mapper.toEntity(dto);
 		service.salva(aluno);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		URI uri = getLocation(aluno.getId());
+		return ResponseEntity.created(uri).build();
 	}
 	
 	@PutMapping("api/v001/aluno/{id}")
-	public ResponseEntity<Object> atualiza(@Valid @RequestBody AlunoDTO dto, Long id) {
+	public ResponseEntity<Object> atualiza(@Valid @RequestBody AlunoDTO dto, @PathVariable Long id) {
 		Aluno aluno = mapper.toEntity(dto);
 		aluno.setId(id);
-		service.atualiza(aluno);
-		return ResponseEntity.noContent().build();
-	}
-	
-	@PutMapping("api/v001/aluno/{id}/inativa")
-	public ResponseEntity<Object> inativa(@PathVariable Long id) {
-		service.inativa(id);
+		service.atualiza(aluno);		
 		return ResponseEntity.noContent().build();
 	}
 }

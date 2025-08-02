@@ -1,6 +1,7 @@
 {
   "dadosPessoais": {
     "descricao": "Maria Líder",
+	"tipo": "FISICA",
     "cpf": "11122233344",
     "rg": "MG998877",
     "dataNascimento": "1985-05-10",
@@ -17,6 +18,7 @@
   "igreja": {
     "dadosPessoais": {
       "descricao": "Pr. Antonio",
+	  "tipo": "JURIDICA",
       "cpf": "99988877766",
       "rg": "MG112233",
       "dataNascimento": "1970-04-04",

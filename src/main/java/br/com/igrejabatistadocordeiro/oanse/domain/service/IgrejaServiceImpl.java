@@ -75,20 +75,6 @@ public class IgrejaServiceImpl implements IgrejaService {
 		repository.save(igreja);
 	}
 
-	@Override
-	public void inativa(Long id) {
-		Igreja igreja = carrega(id);
-		igreja.setAtivo(false);
-		repository.save(igreja);
-	}
-	
-	@Override
-	public void ativa(Long id) {
-		Igreja igreja = carrega(id);
-		igreja.setAtivo(true);
-		repository.save(igreja);
-	}
-	
 	private Igreja buscarPorRgOuCpfOuCnpj(DadosPessoais dadosPessoais) {
 		Igreja igrejaEncontrada = null;
 		if (StringUtils.isNotBlank(dadosPessoais.getRg()))

@@ -1,6 +1,7 @@
 {
   "dadosPessoais": {
     "descricao": "Igreja Batista do Amor",
+	"tipo": "JURIDICA",
     "cnpj": "33322211100898",
     "dataNascimento": "1972-08-15",
     "telefone1": "11999998888",

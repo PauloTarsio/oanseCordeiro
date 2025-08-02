@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/oanse_test
     username: postgres
-    password: 123
+    password: senha123
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

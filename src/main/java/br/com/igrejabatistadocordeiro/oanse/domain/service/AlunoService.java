@@ -14,6 +14,4 @@ public interface AlunoService {
 	
 	void atualiza(Aluno aluno);
 	
-	void inativa(Long id);
-	
 }

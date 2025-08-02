@@ -20,7 +20,8 @@ public class AlunoServiceImpl implements AlunoService {
 	private static final String O_ID_NÃO_DEVE_SER_INFORMADO_AO_SALVAR = "O ID do aluno não deve ser informado ao salvar.";
 	private static final String O_ID_DEVE_SER_INFORMADO_AO_ATUALIZAR = "O ID do aluno deve ser informado ao atualizar.";
 	private static final String MSG_ALUNO_NAO_ENCONTRADO = "Aluno não encontrado.";
-	private static final String CONFLITO_DADOS_PESSOAIS = "Número de documento já cadastrado. Pesquise RG, CPF ou CNPJ.";
+	private static final String MSG_IGREJA_NAO_ENCONTRADA = "Igreja não encontrada.";
+	private static final String CONFLITO_DADOS_PESSOAIS = "Número de documento já cadastrado.";
 	
 	private AlunoRepository	repository;
 	private IgrejaRepository igrejaRepository;
@@ -64,7 +65,7 @@ public class AlunoServiceImpl implements AlunoService {
 		}
 		Igreja igrejaEncontrada = pesquisaIgreja(aluno.getIgreja().getId());
 		if (igrejaEncontrada == null)
-			throw new IllegalArgumentException("Igreja do aluno não encontrada.");
+			throw new IllegalArgumentException(MSG_IGREJA_NAO_ENCONTRADA);
 		aluno.setIgreja(igrejaEncontrada);
 		repository.save(aluno);
 	}
@@ -83,20 +84,13 @@ public class AlunoServiceImpl implements AlunoService {
 		repository.save(aluno);
 	}
 
-	@Override
-	public void inativa(Long id) {
-		Aluno aluno = carrega(id);
-		aluno.setAtivo(false);
-		repository.save(aluno);
-	}
-	
 	private Aluno pesquisaDocumentos(DadosPessoais dadosPessoais) {
 		Aluno alunoEncontrado = null;
 		if (StringUtils.isNotBlank(dadosPessoais.getRg()))
 			alunoEncontrado = repository.findByDadosPessoaisRg(dadosPessoais.getRg()).orElse(null);
-		else if (alunoEncontrado == null && StringUtils.isNotBlank(dadosPessoais.getCpf()))
+		if (alunoEncontrado == null && StringUtils.isNotBlank(dadosPessoais.getCpf()))
 			alunoEncontrado = repository.findByDadosPessoaisCpf(dadosPessoais.getCpf()).orElse(null);
-		else if (alunoEncontrado == null && StringUtils.isNotBlank(dadosPessoais.getCnpj()))
+		if (alunoEncontrado == null && StringUtils.isNotBlank(dadosPessoais.getCnpj()))
 			alunoEncontrado = repository.findByDadosPessoaisCnpj(dadosPessoais.getCnpj()).orElse(null);
 		return alunoEncontrado;
 	}

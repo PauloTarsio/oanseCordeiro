@@ -10,7 +10,7 @@ import jakarta.validation.ConstraintValidatorContext;
  * 
  */
 
-public class TelefoneValidator implements ConstraintValidator<Telefone, String> {
+public class TelefoneValidator implements ConstraintValidator<TelefoneValido, String> {
 
     private static final String REGEX = "\\(?\\d{2}\\)?\\s?\\d{4,5}-?\\d{4}";
 

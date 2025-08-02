@@ -1,7 +1,10 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.controller.common;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -39,22 +42,48 @@ public class GlobalExceptionHandler {
 				erros);
 	}
 
-	@ResponseStatus(HttpStatus.BAD_REQUEST) //código 400 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ErroResposta handleInvalidFormat(HttpMessageNotReadableException ex) {
-		logger.warn("Erro ao ler mensagem HTTP: {}", ex.getMessage());
-		
-    	List<ErroCampo> erros = new ArrayList<>();
-        Throwable cause = ex.getCause();
-        
-        if (cause instanceof com.fasterxml.jackson.databind.exc.InvalidFormatException)
-            erros.add(new ErroCampo("dataNascimento", "Formato de data inválido. Use o padrão yyyy-MM-dd"));            
-        
-        return new ErroResposta(
-				HttpStatus.BAD_REQUEST.value(),
-				"Erro de validação",
-				erros);
-    }	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ErroResposta handleInvalidFormat(HttpMessageNotReadableException ex) {
+	    logger.warn("Erro ao ler mensagem HTTP: {}", ex.getMessage());
+
+	    List<ErroCampo> erros = new ArrayList<>();
+
+	    Throwable cause = ex.getCause();
+
+	    if (cause instanceof com.fasterxml.jackson.databind.exc.InvalidFormatException invalidFormat) {
+	        String campo = null;
+
+	        if (!invalidFormat.getPath().isEmpty()) {
+	            campo = invalidFormat.getPath().stream()
+	                    .map(ref -> ref.getFieldName())
+	                    .filter(Objects::nonNull)
+	                    .collect(Collectors.joining("."));
+	        }
+
+	        Class<?> targetType = invalidFormat.getTargetType();
+
+	        if (targetType.equals(LocalDate.class)) {
+	            erros.add(new ErroCampo(campo, "Formato de data inválido. Use o padrão yyyy-MM-dd"));
+	        } else if (targetType.isEnum()) {
+	            String valoresAceitos = Arrays.stream(targetType.getEnumConstants())
+	                                          .map(Object::toString)
+	                                          .collect(Collectors.joining(", "));
+	            erros.add(new ErroCampo(campo, "Valor inválido. Use um dos seguintes: " + valoresAceitos));
+	        } else {
+	            erros.add(new ErroCampo(campo, "Valor inválido para o tipo esperado."));
+	        }
+	    } else {
+	        erros.add(new ErroCampo(null, "Erro ao ler requisição. Verifique o formato dos dados."));
+	    }
+
+	    return new ErroResposta(
+	            HttpStatus.BAD_REQUEST.value(),
+	            "Erro de validação",
+	            erros
+	    );
+	}
+	
 	
 	@ResponseStatus(HttpStatus.CONFLICT) //código 409
 	@ExceptionHandler(RegistroDuplicadoException.class)
