@@ -11,6 +11,7 @@ import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.valid
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.validators.TelefoneValido;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.validators.TipoPessoaValido;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.TipoPessoa;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -19,6 +20,7 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 @TipoPessoaValido
+@Schema(name = "DadosPessoais")
 public record DadosPessoaisDTO(
 		
 			Long id,

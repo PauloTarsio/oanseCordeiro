@@ -27,12 +27,6 @@ CREATE TABLE igreja (
     i_dados_pessoais_id INTEGER REFERENCES dados_pessoais(dp_id)
 );
 
-CREATE TABLE lider (
-    l_id SERIAL PRIMARY KEY,
-    l_dados_pessoais_id INTEGER REFERENCES dados_pessoais(dp_id),
-    l_igreja_id INTEGER REFERENCES igreja(i_id)
-);
-
 CREATE TABLE aluno (
     a_id SERIAL PRIMARY KEY,
     a_dados_pessoais_id INTEGER REFERENCES dados_pessoais(dp_id),

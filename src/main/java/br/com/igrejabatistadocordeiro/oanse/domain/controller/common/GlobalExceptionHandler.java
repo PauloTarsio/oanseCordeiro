@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -40,6 +41,17 @@ public class GlobalExceptionHandler {
 				HttpStatus.UNPROCESSABLE_ENTITY.value(),
 				"Erro de validação",
 				erros);
+	}
+	
+	@ResponseStatus(HttpStatus.FORBIDDEN) //código 403
+	@ExceptionHandler(AuthorizationDeniedException.class)
+	public ErroResposta handleAccesDeniedException(AuthorizationDeniedException e) {
+		logger.warn("Acesso negado: {}", e.getMessage());
+		
+		return new ErroResposta(
+				HttpStatus.FORBIDDEN.value(),
+				"Acesso negado.",
+				List.of());
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -18,3 +18,7 @@ spring:
     #active: test
 server:
   port: 8081
+  
+  
+springdoc:
+  override-with-generic-response: false

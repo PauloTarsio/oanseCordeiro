@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,9 +18,14 @@ import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.Pesqu
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.mappers.AlunoMapper;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Aluno;
 import br.com.igrejabatistadocordeiro.oanse.domain.service.AlunoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
+@Tag(name = "Alunos", description = "Gerenciamento de alunos")
 public class AlunoController implements GenericController {
 
 	private AlunoService service;
@@ -31,6 +37,8 @@ public class AlunoController implements GenericController {
 	}
 
 	@GetMapping("api/v001/aluno/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
+	@Operation(summary = "Carrega um aluno pelo ID")
 	public ResponseEntity<Object> carrega(@PathVariable Long id) {
 		Aluno aluno = service.carrega(id);
 		AlunoDTO alunoDTO = mapper.toDto(aluno);
@@ -38,6 +46,8 @@ public class AlunoController implements GenericController {
 	}
 	
 	@GetMapping("api/v001/aluno")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
+	@Operation(summary = "Pesquisa alunos por critérios")
 	public ResponseEntity<Object> pesquisa(
 				@RequestParam(value = "descricao", required = false) String descricao,
 				@RequestParam(value = "cnpj", required = false) String cnpj,
@@ -51,6 +61,14 @@ public class AlunoController implements GenericController {
 	}
 	
 	@PostMapping("api/v001/aluno")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
+	@Operation(summary = "Salva um novo aluno")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "201", description = "Aluno criado com sucesso"),
+		@ApiResponse(responseCode = "422", description = "Erro de validação nos dados informados"),
+		@ApiResponse(responseCode = "409", description = "Conflito ao tentar criar o aluno, verifique os dados informados"),
+		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+	})
 	public ResponseEntity<Object> salva(@Valid @RequestBody AlunoDTO dto) {
 		Aluno aluno = mapper.toEntity(dto);
 		service.salva(aluno);
@@ -59,6 +77,8 @@ public class AlunoController implements GenericController {
 	}
 	
 	@PutMapping("api/v001/aluno/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
+	@Operation(summary = "Atualiza um aluno existente")
 	public ResponseEntity<Object> atualiza(@Valid @RequestBody AlunoDTO dto, @PathVariable Long id) {
 		Aluno aluno = mapper.toEntity(dto);
 		aluno.setId(id);

@@ -1,8 +1,10 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+@Schema(name = "Endereco")
 public record EnderecoDTO(
 		
 		Long id,
