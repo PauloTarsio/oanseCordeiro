@@ -1,0 +1,108 @@
+body {
+	font-family: 'Fredoka One', cursive;
+	background: linear-gradient(to right, #0077cc, #66ccff);
+	height: 100vh;
+	padding-top: 110px;
+}
+
+.card {
+	border-radius: 20px;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+	background-color: #fff;
+}
+
+.card-header {
+	background-color: #ffc107;
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
+	text-align: center;
+}
+
+.card-header h3 {
+	margin: 0;
+	color: #003366;
+}
+
+.logo {
+	height: 100px;
+}
+
+.form-control {
+	border-radius: 10px;
+}
+
+.btn-primary {
+	background-color: #0077cc;
+	border: none;
+}
+
+.btn-primary:hover {
+	background-color: #005fa3;
+}
+
+.footer {
+	text-align: center;
+	margin-top: 10px;
+	font-size: 0.9em;
+	color: #777;
+}
+
+/* GRID */
+/* Container externo da tabela */
+#tabelaRegistros {
+  width: 100%;  
+}
+
+/* jqGrid estilizado */
+.ui-jqgrid {
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  border-radius: 12px;
+  border: none;
+  background-color: #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Cabeçalho da tabela */
+.ui-jqgrid-hdiv {
+  background-color: #0077cc;
+  color: white;
+  font-weight: bold;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* Células do cabeçalho */
+.ui-jqgrid-htable th {
+  text-align: center;
+  padding: 10px;
+}
+
+/* Linhas da tabela */
+.ui-jqgrid-btable td {
+  background-color: #f9f9f9;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+  padding: 8px;
+  text-transform: uppercase;
+}
+
+/* Linhas alternadas */
+.ui-widget-content.jqgrow:nth-child(even) {
+  background-color: #f0f8ff;
+}
+
+/* Ajuste da altura da área de dados */
+.ui-jqgrid-bdiv {
+  height: 200px !important;
+  max-height: 200px;
+  overflow-y: auto !important;
+}
+
+/* Pager (se houver) */
+.ui-jqgrid-pager {
+  background-color: #e9ecef;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}

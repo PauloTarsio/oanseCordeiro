@@ -18,7 +18,7 @@ public class IgrejaServiceImpl implements IgrejaService {
 	private static final String O_ID_NÃO_DEVE_SER_INFORMADO_AO_SALVAR = "O ID da igreja não deve ser informado ao salvar.";
 	private static final String O_ID_DEVE_SER_INFORMADO_AO_ATUALIZAR = "O ID da igreja deve ser informado ao atualizar.";
 	private static final String MSG_IGREJA_NAO_ENCONTRADA = "Igreja não encontrada.";
-	private static final String CONFLITO_DADOS_PESSOAIS = "Número de documento já cadastrado. Pesquise RG, CPF ou CNPJ.";
+	private static final String CONFLITO_DADOS_PESSOAIS = "RG, CPF ou CNPJ já cadastrado.";
 	
 	private IgrejaRepository repository;
 	
