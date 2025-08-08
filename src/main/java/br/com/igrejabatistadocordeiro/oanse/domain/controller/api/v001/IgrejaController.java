@@ -50,13 +50,9 @@ public class IgrejaController implements GenericController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
 	@Operation(summary = "Pesquisa igrejas por critérios")
 	public ResponseEntity<Object> pesquisa(
-				@RequestParam(value = "descricao", required = false) String descricao,
-				@RequestParam(value = "cnpj", required = false) String cnpj,
-				@RequestParam(value = "cpf", required = false) String cpf,
-				@RequestParam(value = "rg", required = false) String rg,
-				@RequestParam(value = "ativo", required = false) Boolean ativo) {
+				@RequestParam(value = "descricao", required = false) String descricao) {
 
-		List<Igreja> pesquisa = service.pesquisa(descricao, rg, cpf, cnpj, ativo == null ? true : ativo);
+		List<Igreja> pesquisa = service.pesquisa(descricao);
 		List<PesquisaIgrejaResumidaDTO> dtos = pesquisa.stream().map(mapper::toResumoDto).collect(Collectors.toList());		
 		return ResponseEntity.ok(dtos);
 	}

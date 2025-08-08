@@ -27,6 +27,10 @@ body {
 	height: 100px;
 }
 
+.nav-link:hover {	
+	text-decoration: underline;	
+}
+
 .form-control {
 	border-radius: 10px;
 }
@@ -45,64 +49,4 @@ body {
 	margin-top: 10px;
 	font-size: 0.9em;
 	color: #777;
-}
-
-/* GRID */
-/* Container externo da tabela */
-#tabelaRegistros {
-  width: 100%;  
-}
-
-/* jqGrid estilizado */
-.ui-jqgrid {
-  font-family: 'Fredoka One', cursive;
-  font-size: 14px;
-  border-radius: 12px;
-  border: none;
-  background-color: #fff;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Cabeçalho da tabela */
-.ui-jqgrid-hdiv {
-  background-color: #0077cc;
-  color: white;
-  font-weight: bold;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-
-/* Células do cabeçalho */
-.ui-jqgrid-htable th {
-  text-align: center;
-  padding: 10px;
-}
-
-/* Linhas da tabela */
-.ui-jqgrid-btable td {
-  background-color: #f9f9f9;
-  text-align: center;
-  vertical-align: middle;
-  border-bottom: 1px solid #ddd;
-  padding: 8px;
-  text-transform: uppercase;
-}
-
-/* Linhas alternadas */
-.ui-widget-content.jqgrow:nth-child(even) {
-  background-color: #f0f8ff;
-}
-
-/* Ajuste da altura da área de dados */
-.ui-jqgrid-bdiv {
-  height: 200px !important;
-  max-height: 200px;
-  overflow-y: auto !important;
-}
-
-/* Pager (se houver) */
-.ui-jqgrid-pager {
-  background-color: #e9ecef;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
 }

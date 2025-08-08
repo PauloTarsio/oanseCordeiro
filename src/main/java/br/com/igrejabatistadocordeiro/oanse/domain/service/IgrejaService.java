@@ -8,7 +8,7 @@ public interface IgrejaService {
 
 	Igreja carrega(Long id);
 
-	List<Igreja> pesquisa(String descricao, String rg, String cpf, String cnpj, boolean ativo);
+	List<Igreja> pesquisa(String descricao);
 
 	void salva(Igreja igreja);
 

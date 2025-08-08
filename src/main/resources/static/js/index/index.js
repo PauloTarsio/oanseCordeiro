@@ -1,14 +1,6 @@
 $(document).ready(function() {
-
-	$('#btnCadastrarIgreja').click(function(e) {
-		$.gerenciarIgrejas(e);
-	});
-
+    $('#btnCadastrarIgreja').click(function(e) {
+        e.preventDefault(); // evita comportamento padrão se for um botão dentro de um <form>
+        window.location.href = '/igreja/index'; // redireciona para a nova página
+    });
 });
-
-$.gerenciarIgrejas = function(e) {
-	$('#conteudoPrincipal').load('/igreja/index', function() {
-		$.getScript('/js/igreja/index.js');
-		$.getScript('/js/igreja/formulario.js');
-	});
-}

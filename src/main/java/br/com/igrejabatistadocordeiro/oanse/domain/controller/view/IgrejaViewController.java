@@ -8,7 +8,6 @@ public class IgrejaViewController {
 
 	@GetMapping("/igreja/formulario")
 	public String igrejaFormulario() {
-		System.out.println("passou aqui na igrejaViewController");
 		return "/igreja/formulario";
 	}
 

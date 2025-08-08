@@ -1,0 +1,30 @@
+/* ===============================
+   Estilo jqGrid no padrão Formulário
+   =============================== */
+
+/* Títulos das colunas */
+.ui-jqgrid-htable th {
+	font-family: 'Fredoka One', cursive;
+	font-size: 16px;
+	text-align: center;
+	padding: 10px;
+	border: none !important;
+	background-color: transparent !important;
+}
+
+/* Área de dados */
+.ui-jqgrid-bdiv {
+	max-height: 250px;
+	min-height: 250px !important;
+	overflow-y: auto !important;
+}
+
+/* Linhas */
+.ui-jqgrid-btable td {
+	font-family: 'Fredoka One', cursive;
+	text-align: center;
+	vertical-align: middle;
+	padding: 8px;
+	text-transform: uppercase;
+	border-bottom: 1px solid #ddd;
+}
