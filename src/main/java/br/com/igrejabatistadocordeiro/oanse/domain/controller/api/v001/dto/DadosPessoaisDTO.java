@@ -47,7 +47,10 @@ public record DadosPessoaisDTO(
 			@JsonFormat(pattern = "yyyy-MM-dd")
 			@NotNull(message = "campo obrigatório")
 			@Past(message = "Data de nascimento deve ser no passado")
-			LocalDate dataNascimento,
+			LocalDate dataNascimento,			
+			
+			@Size(max = 255, message = "Quantidade de caracteres, max 255")
+			String contato,
 			
 			@NotBlank(message = "campo obrigatório")
 			@Size(max = 20, message = "Quantidade de caracteres, max 20")

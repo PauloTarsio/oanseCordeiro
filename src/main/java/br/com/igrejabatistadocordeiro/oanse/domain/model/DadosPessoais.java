@@ -46,6 +46,9 @@ public class DadosPessoais {
 
     @Column(name = "dp_data_nascimento", nullable = false)
     private LocalDate dataNascimento;
+    
+    @Column(name = "dp_contato")
+    private String contato;
 
     @Column(name = "dp_telefone1")
     private String telefone1;
@@ -55,7 +58,7 @@ public class DadosPessoais {
     
     @Column(name = "dp_telefone3")
     private String telefone3;
-    
+
     @Column(name = "dp_email")
     private String email;
 
@@ -176,5 +179,13 @@ public class DadosPessoais {
 
 	public void setTipo(TipoPessoa tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getContato() {
+		return contato;
+	}
+
+	public void setContato(String contato) {
+		this.contato = contato;
 	}
 }

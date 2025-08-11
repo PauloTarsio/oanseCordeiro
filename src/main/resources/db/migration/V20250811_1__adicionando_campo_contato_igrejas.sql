@@ -1,0 +1,1 @@
+alter table dados_pessoais add column dp_contato varchar(255);

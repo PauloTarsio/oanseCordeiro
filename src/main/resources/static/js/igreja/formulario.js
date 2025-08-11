@@ -75,6 +75,7 @@ function montarJson() {
 		descricao: $("#descricao").val(),
 		tipo: tipo,
 		dataNascimento: $("#dataNascimento").val(),
+		contato: $("#contato").val(),
 		telefone1: $("#telefone1").val(),
 		telefone2: $("#telefone2").val(),
 		telefone3: $("#telefone3").val(),
@@ -102,7 +103,6 @@ function montarJson() {
 	};
 }
 
-
 // Envia os dados com AJAX
 function enviarCadastro(json) {
 	
@@ -118,7 +118,7 @@ function enviarCadastro(json) {
 			$.exibirSucesso("Processo concluído com sucesso!");
 			if (novo) {
 				$("#formIgreja")[0].reset();
-				window.history.back();				
+				window.history.back();
 			}
 		},
 		error: function(xhr) {
@@ -312,6 +312,7 @@ $.preencherFormulario = function(igreja) {
 	$("#cpf").val(dados.cpf || '');	
 	$("#cnpj").val(dados.cnpj || '');
 	$("#dataNascimento").val(dados.dataNascimento || '');
+	$("#contato").val(dados.contato || '');
 	$("#telefone1").val(dados.telefone1 || '');
 	$("#telefone2").val(dados.telefone2 || '');
 	$("#telefone3").val(dados.telefone3 || '');
