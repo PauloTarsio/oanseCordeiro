@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
-@Tag(name = "Alunos", description = "Gerenciamento de alunos")
+@Tag(name="Aluno")
 public class AlunoController implements GenericController {
 
 	private AlunoService service;
@@ -38,7 +38,12 @@ public class AlunoController implements GenericController {
 
 	@GetMapping("api/v001/aluno/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
-	@Operation(summary = "Carrega um aluno pelo ID")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "Aluno carregado com sucesso"),
+		@ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
+		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+	})
+	@Operation(description = "Carrega um aluno pelo ID")
 	public ResponseEntity<Object> carrega(@PathVariable Long id) {
 		Aluno aluno = service.carrega(id);
 		AlunoDTO alunoDTO = mapper.toDto(aluno);
@@ -47,28 +52,28 @@ public class AlunoController implements GenericController {
 	
 	@GetMapping("api/v001/aluno")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
-	@Operation(summary = "Pesquisa alunos por critérios")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "Pesquisa realizada com sucesso"),
+		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+	})
+	@Operation(description = "Pesquisa alunos pelo nome ou parte do nome")
 	public ResponseEntity<Object> pesquisa(
-				@RequestParam(value = "descricao", required = false) String descricao,
-				@RequestParam(value = "cnpj", required = false) String cnpj,
-				@RequestParam(value = "cpf", required = false) String cpf,
-				@RequestParam(value = "rg", required = false) String rg,
-				@RequestParam(value = "ativo", required = false) Boolean ativo) {
+				@RequestParam(value = "descricao", required = false) String descricao) {
 		
-		List<Aluno> pesquisa = service.pesquisa(descricao, rg, cpf, cnpj, ativo == null ? true : ativo);
+		List<Aluno> pesquisa = service.pesquisa(descricao);
 		List<PesquisaAlunoResumidoDTO> dtos = mapper.toResumoDtoList(pesquisa);
 		return ResponseEntity.ok(dtos);
 	}
 	
 	@PostMapping("api/v001/aluno")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
-	@Operation(summary = "Salva um novo aluno")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "201", description = "Aluno criado com sucesso"),
 		@ApiResponse(responseCode = "422", description = "Erro de validação nos dados informados"),
 		@ApiResponse(responseCode = "409", description = "Conflito ao tentar criar o aluno, verifique os dados informados"),
 		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
+	@Operation(description = "Cria um novo aluno")
 	public ResponseEntity<Object> salva(@Valid @RequestBody AlunoDTO dto) {
 		Aluno aluno = mapper.toEntity(dto);
 		service.salva(aluno);
@@ -78,7 +83,13 @@ public class AlunoController implements GenericController {
 	
 	@PutMapping("api/v001/aluno/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
-	@Operation(summary = "Atualiza um aluno existente")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "204", description = "Aluno atualizado com sucesso"),
+		@ApiResponse(responseCode = "422", description = "Erro de validação nos dados informados"),
+		@ApiResponse(responseCode = "409", description = "Conflito ao tentar atualizar o aluno, verifique os dados informados"),
+		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+	})
+	@Operation(description = "Atualiza um aluno por ID")
 	public ResponseEntity<Object> atualiza(@Valid @RequestBody AlunoDTO dto, @PathVariable Long id) {
 		Aluno aluno = mapper.toEntity(dto);
 		aluno.setId(id);

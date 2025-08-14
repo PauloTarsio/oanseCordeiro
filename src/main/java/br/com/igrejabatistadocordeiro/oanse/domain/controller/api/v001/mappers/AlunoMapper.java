@@ -36,6 +36,7 @@ public abstract class AlunoMapper {
     public abstract Aluno toEntity(AlunoDTO dto);
 
     @Mapping(source = "igreja.id", target = "igrejaId")
+    @Mapping(source = "igreja.dadosPessoais.descricao", target = "igrejaDescricao")
     public abstract AlunoDTO toDto(Aluno entity);
 
     @AfterMapping

@@ -1,4 +1,4 @@
-package br.com.igrejabatistadocordeiro.oanse.domain.controller.common;
+package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.common;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

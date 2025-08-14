@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
-@Tag(name = "Igrejas", description = "Gerenciamento de igrejas")
+@Tag(name="Igreja")
 public class IgrejaController implements GenericController {
 	
 	private IgrejaService service;
@@ -39,8 +39,13 @@ public class IgrejaController implements GenericController {
 	
 	@GetMapping("api/v001/igreja/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
-	@Operation(summary = "Carrega uma igreja pelo ID")
-	public ResponseEntity<Object> carrega(@PathVariable Long id) {
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "Igreja carregada com sucesso"),
+		@ApiResponse(responseCode = "404", description = "Igreja não encontrada"),
+		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+	})
+	@Operation(description = "Carrega uma igreja pelo ID")
+	public ResponseEntity<IgrejaDTO> carrega(@PathVariable Long id) {
 		Igreja igreja = service.carrega(id);
 		IgrejaDTO igrejaDTO = mapper.toDto(igreja);
 		return ResponseEntity.ok(igrejaDTO);
@@ -48,8 +53,12 @@ public class IgrejaController implements GenericController {
 	
 	@GetMapping("api/v001/igreja")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
-	@Operation(summary = "Pesquisa igrejas por critérios")
-	public ResponseEntity<Object> pesquisa(
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "Pesquisa realizada com sucesso"),
+		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+	})
+	@Operation(description = "Pesquisa igrejas pelo nome ou parte do nome")
+	public ResponseEntity<List<PesquisaIgrejaResumidaDTO>> pesquisa(
 				@RequestParam(value = "descricao", required = false) String descricao) {
 
 		List<Igreja> pesquisa = service.pesquisa(descricao);
@@ -59,14 +68,14 @@ public class IgrejaController implements GenericController {
 
 	@PostMapping("api/v001/igreja")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@Operation(summary = "Salva uma nova igreja")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "201", description = "Igreja criado com sucesso"),
 		@ApiResponse(responseCode = "422", description = "Erro de validação nos dados informados"),
 		@ApiResponse(responseCode = "409", description = "Conflito ao tentar criar igreja, verifique os dados informados"),
 		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
-	public ResponseEntity<Object> salva(@Valid @RequestBody IgrejaDTO dto) {
+	@Operation(description = "Cria uma nova igreja")
+	public ResponseEntity<URI> salva(@Valid @RequestBody IgrejaDTO dto) {
 		Igreja igreja = mapper.toEntity(dto);
 		service.salva(igreja);
 		URI uri = getLocation(igreja.getId());
@@ -75,7 +84,13 @@ public class IgrejaController implements GenericController {
 	
 	@PutMapping("api/v001/igreja/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@Operation(summary = "Atualiza uma igreja existente")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "204", description = "Igreja atualizado com sucesso"),
+		@ApiResponse(responseCode = "422", description = "Erro de validação nos dados informados"),
+		@ApiResponse(responseCode = "409", description = "Conflito ao tentar atualizar igreja, verifique os dados informados"),
+		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+	})
+	@Operation(description = "Atualiza uma igreja pelo ID")
 	public ResponseEntity<Object> atualiza(@Valid @RequestBody IgrejaDTO dto, @PathVariable Long id) {
 		Igreja igreja = mapper.toEntity(dto);
 		igreja.setId(id);

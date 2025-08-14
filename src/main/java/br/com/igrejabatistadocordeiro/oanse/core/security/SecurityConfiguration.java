@@ -34,9 +34,8 @@ public class SecurityConfiguration {
 					configurer.loginPage("/login");
 				})
     			.authorizeHttpRequests(authorize -> {
-    				authorize.requestMatchers("/imagens/**", "/css/**", "/js/**").permitAll();
-					authorize.requestMatchers("/login/**").permitAll();
-					authorize.requestMatchers("/api/v001/usuario/**").permitAll();
+    				authorize.requestMatchers("/img/**", "/css/**", "/js/**").permitAll();
+					authorize.requestMatchers("/login/**").permitAll();					
 					
 					authorize.anyRequest().authenticated();
 				})

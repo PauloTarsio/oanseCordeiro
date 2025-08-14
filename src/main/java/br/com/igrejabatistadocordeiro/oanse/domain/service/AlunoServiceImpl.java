@@ -2,8 +2,7 @@ package br.com.igrejabatistadocordeiro.oanse.domain.service;
 
 import java.util.List;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.RegistroDuplicadoException;
@@ -36,23 +35,19 @@ public class AlunoServiceImpl implements AlunoService {
 		return repository.findById(id).orElseThrow(() -> new IllegalArgumentException(MSG_ALUNO_NAO_ENCONTRADO));
 	}
 
+	@SuppressWarnings("removal")
 	@Override
-	public List<Aluno> pesquisa(String descricao, String rg, String cpf, String cnpj, boolean ativo) {
-		Aluno aluno = new Aluno();
-		aluno.setAtivo(ativo);
-		DadosPessoais dadosPessoais = new DadosPessoais();
-		dadosPessoais.setDescricao(descricao);
-		dadosPessoais.setRg(rg);
-		dadosPessoais.setCpf(cpf);
-		dadosPessoais.setCnpj(cnpj);
-		aluno.setDadosPessoais(dadosPessoais);
-		ExampleMatcher matcher = ExampleMatcher
-				.matching()
-				.withIgnoreNullValues()
-				.withIgnoreCase()
-				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-		Example<Aluno> example = Example.of(aluno, matcher);
-		return repository.findAll(example);
+	public List<Aluno> pesquisa(String descricao) {
+		Specification<Aluno> spec = Specification.where(null);
+		if (StringUtils.isNotBlank(descricao)) {
+			spec = spec.and((root, query, cb) -> 
+				cb.like(
+					cb.lower(root.get("dadosPessoais").get("descricao")),
+					"%" + descricao.toLowerCase() + "%"
+				)
+			);
+		}
+		return  repository.findAll(spec);
 	}
 
 	@Override

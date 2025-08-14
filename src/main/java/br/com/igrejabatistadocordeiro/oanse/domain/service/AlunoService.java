@@ -8,7 +8,7 @@ public interface AlunoService {
 
 	Aluno carrega(Long id);
 	
-	List<Aluno> pesquisa(String nome, String rg, String cpf, String cnpj, boolean ativo);
+	List<Aluno> pesquisa(String nome);
 	
 	void salva(Aluno aluno);
 	

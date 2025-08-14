@@ -7,6 +7,7 @@ $(document).ready(function() {
 		colModel: [
 			{ label: 'ID', name: 'id', width: 30, key: true, align: 'center' },
 			{ label: 'DESCRICAO', name: 'descricao', align: 'center' },
+			{ label: 'IGREJA', name: 'igreja', align: 'center' },
 			{ label: 'ATIVO', name: 'ativo', width: 30, formatter: booleanFormatter, align: 'center' },
 		],
 		rowNum: 50,
@@ -60,7 +61,8 @@ $(document).ready(function() {
 
 	// Botão Incluir
 	$("#btnIncluir").on("click", function() {
-		window.location.href = '/igreja/formulario'; // redireciona para a nova página
+		console.log("Incluir novo registro");
+		window.location.href = '/aluno/formulario'; // redireciona para a nova página
 	});
 
 	$("#btnVoltar").on("click", function() {
@@ -85,8 +87,8 @@ $.pesquisar = function() {
 	const filtro = $("#filtroDescricao").val().toLowerCase();
 
 	let url = (filtro.trim() === "") ?
-		"/api/v001/igreja" :
-		"/api/v001/igreja?descricao=" + encodeURIComponent(filtro);
+		"/api/v001/aluno" :
+		"/api/v001/aluno?descricao=" + encodeURIComponent(filtro);
 
 	$.ajax({
 		url: url,
@@ -96,7 +98,7 @@ $.pesquisar = function() {
 			$.cleanFilter();
 		},
 		error: function(xhr) {
-			let mensagemErro = "Erro ao buscar igrejas.";
+			let mensagemErro = "Erro ao buscar alunos.";
 			if (xhr.responseJSON?.message) {
 				mensagemErro = xhr.responseJSON.message;
 			} else if (xhr.responseText) {
@@ -108,15 +110,15 @@ $.pesquisar = function() {
 }
 
 $.editar = function(id) {
-	let url = "/api/v001/igreja/" + id;
+	let url = "/api/v001/aluno/" + id;
 
 	$.ajax({
 		url: url,
 		type: "GET",
 		success: function(data) {
 			if (data) {
-				sessionStorage.setItem("igrejaEdicao", JSON.stringify(data));
-				window.location.href = '/igreja/formulario';
+				sessionStorage.setItem("alunoEdicao", JSON.stringify(data));
+				window.location.href = '/aluno/formulario';
 			} else {
 				exibirErro("Registro não encontrado.");
 			}

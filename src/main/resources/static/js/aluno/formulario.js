@@ -4,17 +4,17 @@ var novo = true;
 
 $(document).ready(function() {
 
-	const igrejaJson = sessionStorage.getItem("igrejaEdicao");
-	if (igrejaJson) {
-		const igreja = JSON.parse(igrejaJson);		
-		$.preencherFormulario(igreja);
+	const alunoJson = sessionStorage.getItem("alunoEdicao");
+	if (alunoJson) {
+		const json = JSON.parse(alunoJson);
+		$.preencherFormulario(json);
 
 		// Limpa para não reutilizar depois
-		sessionStorage.removeItem("igrejaEdicao");
+		sessionStorage.removeItem("alunoEdicao");
 	}
 
 	modalElement = $("#mensagemModal");
-	
+
 	$.ajustarLegenda();
 
 	ajustarCamposPorTipo($("#tipo").val());
@@ -27,8 +27,8 @@ $(document).ready(function() {
 		if (!$.validarFormulario()) {
 			return;
 		}
-		const igrejaJson = montarJson();
-		enviarCadastro(igrejaJson);
+		const json = montarJson();
+		enviarCadastro(json);
 	});
 
 	$("#btnVoltar").on("click", function() {
@@ -46,17 +46,21 @@ $(document).ready(function() {
 			$(`#${camposComErro[0]}`).focus();
 		$("#mensagemErro").html("");
 	});
-	
+
 	$("#uf").on("change", function() {
 		$(this).val($(this).val().toUpperCase());
-    });
-	
+	});
+
+	$("#igrejaId").on("change", function() {
+		$.carregaIgreja($(this).val());
+	});
+
 });
 
 function ajustarCamposPorTipo(tipo) {
-	if (!novo) 
+	if (!novo)
 		return;
-	
+
 	if (tipo === "FISICA") {
 		$("#cpf").prop("disabled", false);
 		$("#rg").prop("disabled", false);
@@ -70,11 +74,12 @@ function ajustarCamposPorTipo(tipo) {
 	}
 }
 
-// Monta o JSON da igreja
+// Monta o JSON do Aluno
 function montarJson() {
-	
+
 	const id = $("#id").val() || null;
 	const tipo = $("#tipo").val();
+	const igrejaId = $("#igrejaId").val() || null;
 
 	const dadosPessoais = {
 		descricao: $("#descricao").val(),
@@ -104,16 +109,17 @@ function montarJson() {
 	return {
 		id: id,
 		ativo: $("#ativo").is(":checked"),
-		dadosPessoais: dadosPessoais
+		dadosPessoais: dadosPessoais,
+		igrejaId: igrejaId,
 	};
 }
 
 // Envia os dados com AJAX
 function enviarCadastro(json) {
-	
-	let url = novo ? "/api/v001/igreja" : "/api/v001/igreja/" + json.id;
+
+	let url = novo ? "/api/v001/aluno" : "/api/v001/aluno/" + json.id;
 	let type = novo ? "POST" : "PUT";
-	
+
 	$.ajax({
 		url: url,
 		type: type,
@@ -122,18 +128,40 @@ function enviarCadastro(json) {
 		success: function() {
 			$.exibirSucesso("Processo concluído com sucesso!");
 			if (novo) {
-				$("#formIgreja")[0].reset();
+				$("#formAluno")[0].reset();
 				window.history.back();
 			}
 		},
 		error: function(xhr) {
-			let mensagemErro = "Erro ao cadastrar igreja.";
+			let mensagemErro = "Erro ao salvar aluno.";
 			if (xhr.responseJSON && xhr.responseJSON.message) {
 				mensagemErro = xhr.responseJSON.message;
 			} else if (xhr.responseText) {
 				mensagemErro = xhr.responseText;
 			}
 			$.exibirErro(mensagemErro);
+		}
+	});
+}
+
+$.carregaIgreja = function(id) {
+	if (!id) {
+		$("#igrejaDescricao").val("");
+		return;
+	}
+	$.ajax({
+		url: "/api/v001/igreja/" + id,
+		type: "GET",
+		success: function(data) {
+			if (data && data.dadosPessoais && data.dadosPessoais.descricao) {
+				$("#igrejaDescricao").val(data.dadosPessoais.descricao);
+				$("#igrejaDescricao").removeClass("is-invalid");
+			} else {
+				$("#igrejaDescricao").val("").addClass("is-invalid");
+			}
+		},
+		error: function(xhr) {
+			$("#igrejaDescricao").val("").addClass("is-invalid");
 		}
 	});
 }
@@ -195,7 +223,9 @@ $.validarFormulario = function() {
 		"#rua",
 		"#bairro",
 		"#cidade",
-		"#uf"
+		"#uf",
+		"#igrejaId",
+		"#igrejaDescricao"
 	];
 
 	camposObrigatorios.forEach(function(campo) {
@@ -212,13 +242,14 @@ $.validarFormulario = function() {
 	const tipo = $('#tipo').val();
 	const cpf = $('#cpf').val();
 	const cnpj = $('#cnpj').val();
-	const rg = $('#rg').val();
-	const email = $('#email').val();
+	const dataNascimento = $('#dataNascimento').val();
+	/*const rg = $('#rg').val();*/
 	const telefone1 = $('#telefone1').val();
 	const telefone2 = $('#telefone2').val();
 	const telefone3 = $('#telefone3').val();
+	const email = $('#email').val();
 	const uf = $('#uf').val();
-	const dataNascimento = $('#dataNascimento').val();
+	const igrejaDescricao = $('#igrejaDescricao').val();
 
 	if (!OanseLib.validarTexto(descricao)) {
 		valido = false;
@@ -227,13 +258,20 @@ $.validarFormulario = function() {
 		$('#descricao').removeClass("is-invalid");
 	}
 
+	if (!OanseLib.validarTexto(igrejaDescricao)) {
+		valido = false;
+		$('#igrejaDescricao').addClass("is-invalid");
+	} else {
+		$('#igrejaDescricao').removeClass("is-invalid");
+	}
+
 	if (tipo === 'FISICA') {
-		if (!OanseLib.validarRG(rg)) {
+		/*if (!OanseLib.validarRG(rg)) {
 			valido = false;
 			$('#rg').addClass("is-invalid");
 		} else {
 			$('#rg').removeClass("is-invalid");
-		}
+		}*/
 		if (!OanseLib.validarCPF(cpf)) {
 			valido = false;
 			$('#cpf').addClass("is-invalid");
@@ -296,25 +334,27 @@ $.validarFormulario = function() {
 
 $.ajustarLegenda = function() {
 	if (novo) {
-		$('#legendaFormulario').text('Cadastro de Igreja - NOVO');
-    } else {
-		$('#legendaFormulario').text('Cadastro de Igreja - EDICAO');
-    }
+		$('#legendaFormulario').text('Cadastro de Aluno - NOVO');
+	} else {
+		$('#legendaFormulario').text('Cadastro de Aluno - EDICAO');
+	}
 }
 
-$.preencherFormulario = function(igreja) {
-	if (!igreja || !igreja.dadosPessoais) return;
-	
+$.preencherFormulario = function(aluno) {
+	if (!aluno || !aluno.dadosPessoais) return;
+
 	novo = false;
 
-	const dados = igreja.dadosPessoais;
+	const dados = aluno.dadosPessoais;
 	const endereco = dados.endereco || {};
-	
-	$("#id").val(igreja.id || '');
+
+	$("#id").val(aluno.id || '');
+	$("#igrejaId").val(aluno.igrejaId || '');
+	$("#igrejaDescricao").val(aluno.igrejaDescricao || '');
 	$("#descricao").val(dados.descricao || '');
-	$("#tipo").val(dados.tipo || '');	
-	$("#rg").val(dados.rg || '');	
-	$("#cpf").val(dados.cpf || '');	
+	$("#tipo").val(dados.tipo || '');
+	$("#rg").val(dados.rg || '');
+	$("#cpf").val(dados.cpf || '');
 	$("#cnpj").val(dados.cnpj || '');
 	$("#dataNascimento").val(dados.dataNascimento || '');
 	$("#contato").val(dados.contato || '');
@@ -329,7 +369,7 @@ $.preencherFormulario = function(igreja) {
 	$("#cidade").val(endereco.cidade || '');
 	$("#uf").val(endereco.uf || '');
 
-	$("#ativo").prop("checked", !!igreja.ativo);
-	
+	$("#ativo").prop("checked", !!aluno.ativo);
+
 	$("#tipo, #rg, #cpf, #cnpj").prop("disabled", true);
 }
