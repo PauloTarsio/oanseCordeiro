@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,8 +36,7 @@ public class IgrejaController implements GenericController {
 		this.mapper = igrejaMapper;
 	}
 	
-	@GetMapping("api/v001/igreja/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
+	@GetMapping("api/v001/igreja/{id}")	
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "Igreja carregada com sucesso"),
 		@ApiResponse(responseCode = "404", description = "Igreja não encontrada"),
@@ -52,7 +50,6 @@ public class IgrejaController implements GenericController {
 	}
 	
 	@GetMapping("api/v001/igreja")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "Pesquisa realizada com sucesso"),
 		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
@@ -67,7 +64,6 @@ public class IgrejaController implements GenericController {
 	}
 
 	@PostMapping("api/v001/igreja")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "201", description = "Igreja criado com sucesso"),
 		@ApiResponse(responseCode = "422", description = "Erro de validação nos dados informados"),
@@ -83,7 +79,6 @@ public class IgrejaController implements GenericController {
 	}
 	
 	@PutMapping("api/v001/igreja/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "204", description = "Igreja atualizado com sucesso"),
 		@ApiResponse(responseCode = "422", description = "Erro de validação nos dados informados"),

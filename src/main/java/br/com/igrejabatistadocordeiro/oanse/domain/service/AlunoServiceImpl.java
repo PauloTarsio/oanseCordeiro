@@ -35,10 +35,9 @@ public class AlunoServiceImpl implements AlunoService {
 		return repository.findById(id).orElseThrow(() -> new IllegalArgumentException(MSG_ALUNO_NAO_ENCONTRADO));
 	}
 
-	@SuppressWarnings("removal")
 	@Override
 	public List<Aluno> pesquisa(String descricao) {
-		Specification<Aluno> spec = Specification.where(null);
+		Specification<Aluno> spec = Specification.anyOf();
 		if (StringUtils.isNotBlank(descricao)) {
 			spec = spec.and((root, query, cb) -> 
 				cb.like(

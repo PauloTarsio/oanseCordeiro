@@ -126,7 +126,7 @@ function enviarCadastro(json) {
 		contentType: "application/json",
 		data: JSON.stringify(json),
 		success: function() {
-			$.exibirSucesso("Processo concluído com sucesso!");
+			OanseLib.exibirSucesso("Processo concluído com sucesso!");
 			if (novo) {
 				$("#formAluno")[0].reset();
 				window.history.back();
@@ -139,7 +139,7 @@ function enviarCadastro(json) {
 			} else if (xhr.responseText) {
 				mensagemErro = xhr.responseText;
 			}
-			$.exibirErro(mensagemErro);
+			OanseLib.exibirErro(mensagemErro);
 		}
 	});
 }
@@ -165,52 +165,6 @@ $.carregaIgreja = function(id) {
 		}
 	});
 }
-
-$.exibirErro = function(mensagem) {
-	const $modal = $("#mensagemModal");
-	const $modalTitle = $modal.find(".modal-title");
-	const $modalBody = $modal.find(".modal-body");
-
-	camposComErro = [];
-
-	let fraseFinal = "";
-
-	try {
-		const obj = typeof mensagem === "string" ? JSON.parse(mensagem) : mensagem;
-
-		if (obj && obj.erros && Array.isArray(obj.erros)) {
-			camposComErro = obj.erros.map(e => e.campo);
-			fraseFinal = `${obj.mensagem}:<br>`;
-			fraseFinal += "<ul>" + obj.erros.map(e => `<li>${e.erro} em <strong>${e.campo}</strong></li>`).join("") + "</ul>";
-		} else if (obj && obj.mensagem) {
-			fraseFinal = obj.mensagem;
-		} else {
-			fraseFinal = JSON.stringify(obj);
-		}
-	} catch (e) {
-		fraseFinal = mensagem; // mensagem simples
-	}
-
-	$modalTitle.text("Erro");
-	$modalBody.html(`<div class="alert alert-danger">${fraseFinal}</div>`);
-
-	const modal = new bootstrap.Modal($modal[0]);
-	modal.show();
-};
-
-$.exibirSucesso = function(mensagem) {
-	const $modal = $("#mensagemModal");
-	const $modalTitle = $modal.find(".modal-title");
-	const $modalBody = $modal.find(".modal-body");
-
-	camposComErro = []; // limpa erros anteriores
-
-	$modalTitle.text("Sucesso");
-	$modalBody.html(`<div class="alert alert-success">${mensagem}</div>`);
-
-	const modal = new bootstrap.Modal($modal[0]);
-	modal.show();
-};
 
 $.validarFormulario = function() {
 	let valido = true;

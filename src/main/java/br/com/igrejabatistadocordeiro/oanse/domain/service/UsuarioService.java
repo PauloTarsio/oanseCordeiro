@@ -1,11 +1,15 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.service;
 
+import java.util.List;
+
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Usuario;
 
 public interface UsuarioService {
 
-	void salvar(Usuario usuario);
+	public Usuario carrega(String login);
+	
+	public List<Usuario> pesquisa(String login);
 
-	Usuario buscarPorLogin(String login);
+	public void salvar(Usuario usuario);
 
 }

@@ -19,7 +19,7 @@ public class CustomUserDetailService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String login) {
 		
-		Usuario usuario = usuarioService.buscarPorLogin(login);
+		Usuario usuario = usuarioService.carrega(login);
 		
 		if (usuario == null) {
 			throw new UsernameNotFoundException("Usuário não encontrado: " + login);

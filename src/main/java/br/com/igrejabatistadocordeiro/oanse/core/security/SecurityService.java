@@ -28,6 +28,6 @@ public class SecurityService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		String login = userDetails.getUsername();
-		return usuarioService.buscarPorLogin(login);
+		return usuarioService.carrega(login);
 	}
 }

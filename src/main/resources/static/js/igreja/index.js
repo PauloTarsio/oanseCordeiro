@@ -29,8 +29,14 @@ $(document).ready(function() {
 		id: "btnEditarRodape",
 		onClickButton: function() {
 			const idSelecionado = $("#jqGrid").jqGrid("getGridParam", "selrow");
-			if (idSelecionado)
-				$.editar(idSelecionado);
+			if (idSelecionado) {
+				if (isAdmin) {
+					$.editar(idSelecionado);
+				} else {
+					OanseLib.exibirErro("Você não tem permissão para acessar esta funcionalidade.");
+					return;					
+				}
+			}
 		},
 		position: "last"
 	});
@@ -60,7 +66,11 @@ $(document).ready(function() {
 
 	// Botão Incluir
 	$("#btnIncluir").on("click", function() {
-		window.location.href = '/igreja/formulario'; // redireciona para a nova página
+		if (!isAdmin) {
+			OanseLib.exibirErro("Você não tem permissão para acessar esta funcionalidade.");
+			return;
+		}
+		$.novo();
 	});
 
 	$("#btnVoltar").on("click", function() {
@@ -68,6 +78,21 @@ $(document).ready(function() {
 	});
 
 });
+
+$.novo = function() {
+	$.ajax({
+		url: "/usuario/formulario",
+		type: "GET",
+		success: function() {
+			window.location.href = '/igreja/formulario'; // redireciona para a nova página
+		},
+		error: function(xhr) {
+			if (xhr.status === 403) {
+				OanseLib.exibirErro("Você não tem permissão para acessar esta funcionalidade.");
+			}
+		}
+	});
+}
 
 // Limpa o campo de filtro
 $.cleanFilter = function() {
@@ -102,14 +127,13 @@ $.pesquisar = function() {
 			} else if (xhr.responseText) {
 				mensagemErro = xhr.responseText;
 			}
-			exibirErro(mensagemErro);
+			OanseLib.exibirErro(mensagemErro);
 		}
 	});
 }
 
 $.editar = function(id) {
 	let url = "/api/v001/igreja/" + id;
-
 	$.ajax({
 		url: url,
 		type: "GET",
@@ -118,7 +142,7 @@ $.editar = function(id) {
 				sessionStorage.setItem("igrejaEdicao", JSON.stringify(data));
 				window.location.href = '/igreja/formulario';
 			} else {
-				exibirErro("Registro não encontrado.");
+				OanseLib.exibirErro("Registro não encontrado.");
 			}
 		},
 		error: function(xhr) {
@@ -128,7 +152,7 @@ $.editar = function(id) {
 			} else if (xhr.responseText) {
 				mensagemErro = xhr.responseText;
 			}
-			exibirErro(mensagemErro);
+			OanseLib.exibirErro(mensagemErro);
 		}
 	});
 }

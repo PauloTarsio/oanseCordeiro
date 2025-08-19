@@ -1,6 +1,7 @@
 <div th:replace="fragments/head :: head"></div>
 
 <body>
+	<div th:replace="fragments/modal-mensagem :: modal"></div>
 	<header>
 		<div th:replace="fragments/header :: header"></div>
 	</header>
@@ -10,6 +11,24 @@
 				<div class="card-body">
 					<fieldset class="p-3 border rounded">
 						<legend id="legendaFormulario" class="w-auto px-2">Cadastro de Usuários</legend>
+
+						<!-- Botões de ação -->
+						<div class="d-flex justify-content-end mb-3">
+							<button type="button" id="btnPesquisar" class="btn btn-secondary me-2">Pesquisar</button>
+							<button type="button" id="btnIncluir" class="btn btn-primary">Incluir</button>
+						</div>
+
+						<div class="mb-3">
+							<label for="descricao" class="form-label">Nome/Descrição</label>
+							<input type="text" id="filtroDescricao" name="filtroDescricao" class="form-control"
+								placeholder="Digite aqui e clique em pesquisar...">
+						</div>
+
+						<!-- Tabela jqGrid -->
+						<div id="tabelaRegistros" class="w-100">
+							<div id="jqGridPager"></div>
+							<table id="jqGrid"></table>
+						</div>
 						<div class="footer text-center mt-3">
 							<button type="button" id="btnVoltar" class="btn btn-secondary">Voltar</button>
 						</div>
@@ -18,7 +37,11 @@
 			</div>
 		</div>
 	</div>
+	<script th:inline="javascript">var isAdmin = /*[[${isAdmin}]]*/ false;</script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/free-jqgrid@4.15.5/css/ui.jqgrid.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/free-jqgrid@4.15.5/js/jquery.jqgrid.min.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 	<script src="/js/index/index.js"></script>
 	<script src="/js/usuario/index.js"></script>
 </body>

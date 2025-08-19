@@ -99,6 +99,54 @@ const OanseLib = (() => {
 		return texto && texto.trim().length >= tamanhoMin;
 	}
 
+	// Exibe mensagem de sucesso em modal
+	function exibirSucesso(mensagem) {
+		const $modal = $("#mensagemModal");
+		const $modalTitle = $modal.find(".modal-title");
+		const $modalBody = $modal.find(".modal-body");
+
+		camposComErro = []; // limpa erros anteriores
+
+		$modalTitle.text("Sucesso");
+		$modalBody.html(`<div class="alert alert-success">${mensagem}</div>`);
+
+		const modal = new bootstrap.Modal($modal[0]);
+		modal.show();
+	}
+
+	// Exibe mensagem de erro em modal
+	function exibirErro(mensagem) {
+		const $modal = $("#mensagemModal");
+		const $modalTitle = $modal.find(".modal-title");
+		const $modalBody = $modal.find(".modal-body");
+
+		camposComErro = [];
+
+		let fraseFinal = "";
+
+		try {
+			const obj = typeof mensagem === "string" ? JSON.parse(mensagem) : mensagem;
+
+			if (obj && obj.erros && Array.isArray(obj.erros)) {
+				camposComErro = obj.erros.map(e => e.campo);
+				fraseFinal = `${obj.mensagem}:<br>`;
+				fraseFinal += "<ul>" + obj.erros.map(e => `<li>${e.erro} em <strong>${e.campo}</strong></li>`).join("") + "</ul>";
+			} else if (obj && obj.mensagem) {
+				fraseFinal = obj.mensagem;
+			} else {
+				fraseFinal = JSON.stringify(obj);
+			}
+		} catch (e) {
+			fraseFinal = mensagem; // mensagem simples
+		}
+
+		$modalTitle.text("Erro");
+		$modalBody.html(`<div class=\"alert alert-danger\">${fraseFinal}</div>`);
+
+		const modal = new bootstrap.Modal($modal[0]);
+		modal.show();
+	}
+
 	return {
 		validarCPF,
 		validarCNPJ,
@@ -107,6 +155,8 @@ const OanseLib = (() => {
 		validarTelefone,
 		validarUF,
 		validarDataNascimento,
-		validarTexto
+		validarTexto,
+		exibirSucesso,
+		exibirErro
 	};
 })();

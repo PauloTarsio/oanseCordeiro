@@ -1,23 +1,33 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.PesquisaUsuarioResumidoDTO;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.UsuarioDTO;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.mappers.UsuarioMapper;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Usuario;
 import br.com.igrejabatistadocordeiro.oanse.domain.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@Tag(name="Usuario")
+@Tag(name = "Usuario")
 public class UsuarioController {
 
 	@Autowired
@@ -25,13 +35,38 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioMapper mapper;
 
+	@GetMapping("/api/v001/usuario")
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = "200", description = "Pesquisa realizada com sucesso"),
+			@ApiResponse(responseCode = "500", description = "Erro interno do servidor") })
+	public ResponseEntity<List<PesquisaUsuarioResumidoDTO>> pesquisa(
+			@RequestParam(value = "descricao", required = false) String descricao) {
+		List<Usuario> pesquisa = usuarioService.pesquisa(descricao);
+		List<PesquisaUsuarioResumidoDTO> dtos = pesquisa.stream().map(mapper::toPesquisaUsuarioResumidoDTO).toList();
+		return ResponseEntity.ok(dtos);
+	}
+
 	@PostMapping("/api/v001/usuario")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ResponseStatus(HttpStatus.CREATED)
-	@ApiResponse(responseCode = "201", description = "Usuário criado com sucesso")
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
+			@ApiResponse(responseCode = "500", description = "Erro interno do servidor") })
 	@Operation(description = "Cria um novo usuário")
-	public void salvar(@RequestBody UsuarioDTO dto) {
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	public void salva(@RequestBody UsuarioDTO dto) {
 		Usuario usuario = mapper.toEntity(dto);
+		usuarioService.salvar(usuario);
+	}
+	
+	@PutMapping("/api/v001/usuario/{id}")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "Usuário atualizado com sucesso"),
+			@ApiResponse(responseCode = "500", description = "Erro interno do servidor") })
+	@Operation(description = "Atualiza dados de um usuário")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	public void atualiza(@RequestBody UsuarioDTO dto, @PathVariable UUID id) {
+		Usuario usuario = mapper.toEntity(dto);
+		usuario.setId(id);
 		usuarioService.salvar(usuario);
 	}
 }
