@@ -3,6 +3,8 @@
  * Valida campos brasileiros como CPF, CNPJ, RG, e-mail, telefone e UF.
  */
 
+var perfis = ['ROLE_ADMIN', 'ROLE_SECRETARIO', 'ROLE_LIDER'];
+
 const OanseLib = (() => {
 
 	// Lista de UFs válidas
@@ -112,6 +114,10 @@ const OanseLib = (() => {
 
 		const modal = new bootstrap.Modal($modal[0]);
 		modal.show();
+
+		setTimeout(() => {
+			modal.hide();
+		}, 2000);
 	}
 
 	// Exibe mensagem de erro em modal
@@ -145,6 +151,10 @@ const OanseLib = (() => {
 
 		const modal = new bootstrap.Modal($modal[0]);
 		modal.show();
+
+		setTimeout(() => {
+			modal.hide();
+		}, 2000);
 	}
 
 	return {

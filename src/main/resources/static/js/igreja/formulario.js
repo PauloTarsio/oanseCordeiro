@@ -6,7 +6,7 @@ $(document).ready(function() {
 
 	const igrejaJson = sessionStorage.getItem("igrejaEdicao");
 	if (igrejaJson) {
-		const igreja = JSON.parse(igrejaJson);		
+		const igreja = JSON.parse(igrejaJson);
 		$.preencherFormulario(igreja);
 
 		// Limpa para não reutilizar depois
@@ -14,7 +14,7 @@ $(document).ready(function() {
 	}
 
 	modalElement = $("#mensagemModal");
-	
+
 	$.ajustarLegenda();
 
 	ajustarCamposPorTipo($("#tipo").val());
@@ -25,6 +25,7 @@ $(document).ready(function() {
 	$("#btnSalvar").on("click", function(event) {
 		event.preventDefault();
 		if (!$.validarFormulario()) {
+			OanseLib.exibirErro("Por favor, corrija os erros no formulário antes de enviar.");
 			return;
 		}
 		const igrejaJson = montarJson();
@@ -46,17 +47,17 @@ $(document).ready(function() {
 			$(`#${camposComErro[0]}`).focus();
 		$("#mensagemErro").html("");
 	});
-	
+
 	$("#uf").on("change", function() {
 		$(this).val($(this).val().toUpperCase());
-    });
-	
+	});
+
 });
 
 function ajustarCamposPorTipo(tipo) {
-	if (!novo) 
+	if (!novo)
 		return;
-	
+
 	if (tipo === "FISICA") {
 		$("#cpf").prop("disabled", false);
 		$("#rg").prop("disabled", false);
@@ -72,7 +73,7 @@ function ajustarCamposPorTipo(tipo) {
 
 // Monta o JSON da igreja
 function montarJson() {
-	
+
 	const id = $("#id").val() || null;
 	const tipo = $("#tipo").val();
 
@@ -110,10 +111,10 @@ function montarJson() {
 
 // Envia os dados com AJAX
 function enviarCadastro(json) {
-	
+
 	let url = novo ? "/api/v001/igreja" : "/api/v001/igreja/" + json.id;
 	let type = novo ? "POST" : "PUT";
-	
+
 	$.ajax({
 		url: url,
 		type: type,
@@ -251,24 +252,24 @@ $.validarFormulario = function() {
 $.ajustarLegenda = function() {
 	if (novo) {
 		$('#legendaFormulario').text('Cadastro de Igreja - NOVO');
-    } else {
+	} else {
 		$('#legendaFormulario').text('Cadastro de Igreja - EDICAO');
-    }
+	}
 }
 
 $.preencherFormulario = function(igreja) {
 	if (!igreja || !igreja.dadosPessoais) return;
-	
+
 	novo = false;
 
 	const dados = igreja.dadosPessoais;
 	const endereco = dados.endereco || {};
-	
+
 	$("#id").val(igreja.id || '');
 	$("#descricao").val(dados.descricao || '');
-	$("#tipo").val(dados.tipo || '');	
-	$("#rg").val(dados.rg || '');	
-	$("#cpf").val(dados.cpf || '');	
+	$("#tipo").val(dados.tipo || '');
+	$("#rg").val(dados.rg || '');
+	$("#cpf").val(dados.cpf || '');
 	$("#cnpj").val(dados.cnpj || '');
 	$("#dataNascimento").val(dados.dataNascimento || '');
 	$("#contato").val(dados.contato || '');
@@ -284,6 +285,6 @@ $.preencherFormulario = function(igreja) {
 	$("#uf").val(endereco.uf || '');
 
 	$("#ativo").prop("checked", !!igreja.ativo);
-	
+
 	$("#tipo, #rg, #cpf, #cnpj").prop("disabled", true);
 }

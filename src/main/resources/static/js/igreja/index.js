@@ -29,14 +29,8 @@ $(document).ready(function() {
 		id: "btnEditarRodape",
 		onClickButton: function() {
 			const idSelecionado = $("#jqGrid").jqGrid("getGridParam", "selrow");
-			if (idSelecionado) {
-				if (isAdmin) {
-					$.editar(idSelecionado);
-				} else {
-					OanseLib.exibirErro("Você não tem permissão para acessar esta funcionalidade.");
-					return;					
-				}
-			}
+			if (idSelecionado)
+				$.editar(idSelecionado);
 		},
 		position: "last"
 	});
@@ -66,10 +60,6 @@ $(document).ready(function() {
 
 	// Botão Incluir
 	$("#btnIncluir").on("click", function() {
-		if (!isAdmin) {
-			OanseLib.exibirErro("Você não tem permissão para acessar esta funcionalidade.");
-			return;
-		}
 		$.novo();
 	});
 
@@ -81,15 +71,19 @@ $(document).ready(function() {
 
 $.novo = function() {
 	$.ajax({
-		url: "/usuario/formulario",
+		url: "/igreja/formulario",
 		type: "GET",
 		success: function() {
-			window.location.href = '/igreja/formulario'; // redireciona para a nova página
+			window.location.href = '/igreja/formulario';
 		},
 		error: function(xhr) {
-			if (xhr.status === 403) {
-				OanseLib.exibirErro("Você não tem permissão para acessar esta funcionalidade.");
+			let mensagemErro = "Erro ao carregar formulário.";
+			if (xhr.responseJSON?.message) {
+				mensagemErro = xhr.responseJSON.message;
+			} else if (xhr.responseText) {
+				mensagemErro = xhr.responseText;
 			}
+			OanseLib.exibirErro(mensagemErro);
 		}
 	});
 }
@@ -133,17 +127,32 @@ $.pesquisar = function() {
 }
 
 $.editar = function(id) {
-	let url = "/api/v001/igreja/" + id;
 	$.ajax({
-		url: url,
+		url: "/igreja/formulario",
 		type: "GET",
-		success: function(data) {
-			if (data) {
-				sessionStorage.setItem("igrejaEdicao", JSON.stringify(data));
-				window.location.href = '/igreja/formulario';
-			} else {
-				OanseLib.exibirErro("Registro não encontrado.");
-			}
+		success: function(data) {			
+			let url = "/api/v001/igreja/" + id;
+			$.ajax({
+				url: url,
+				type: "GET",
+				success: function(data) {
+					if (data) {
+						sessionStorage.setItem("igrejaEdicao", JSON.stringify(data));
+						window.location.href = '/igreja/formulario';
+					} else {
+						OanseLib.exibirErro("Registro não encontrado.");
+					}
+				},
+				error: function(xhr) {
+					let mensagemErro = "Erro ao buscar registro.";
+					if (xhr.responseJSON?.message) {
+						mensagemErro = xhr.responseJSON.message;
+					} else if (xhr.responseText) {
+						mensagemErro = xhr.responseText;
+					}
+					OanseLib.exibirErro(mensagemErro);
+				}
+			});
 		},
 		error: function(xhr) {
 			let mensagemErro = "Erro ao buscar registro.";

@@ -2,6 +2,7 @@ package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,15 +35,31 @@ public class UsuarioController {
 	private UsuarioService usuarioService;
 	@Autowired
 	private UsuarioMapper mapper;
+	
+	@GetMapping("/api/v001/usuario/{id}")
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = "200", description = "Carregamento de usuario realizada com sucesso"),
+			@ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+			@ApiResponse(responseCode = "500", description = "Erro interno do servidor") })
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	public ResponseEntity<UsuarioDTO> carrega(@PathVariable UUID id) {
+		Usuario usuario = usuarioService.carrega(id);
+		if (usuario == null)
+			return ResponseEntity.notFound().build();
+		UsuarioDTO dto = mapper.toDto(usuario);
+		return ResponseEntity.ok(dto);
+	}
 
 	@GetMapping("/api/v001/usuario")
 	@ApiResponses(value = { 
-			@ApiResponse(responseCode = "200", description = "Pesquisa realizada com sucesso"),
+			@ApiResponse(responseCode = "200", description = "Carregamento de usuario realizada com sucesso"),
 			@ApiResponse(responseCode = "500", description = "Erro interno do servidor") })
-	public ResponseEntity<List<PesquisaUsuarioResumidoDTO>> pesquisa(
+	public ResponseEntity<List<PesquisaUsuarioResumidoDTO>> pesquisa (
 			@RequestParam(value = "descricao", required = false) String descricao) {
 		List<Usuario> pesquisa = usuarioService.pesquisa(descricao);
-		List<PesquisaUsuarioResumidoDTO> dtos = pesquisa.stream().map(mapper::toPesquisaUsuarioResumidoDTO).toList();
+		if (pesquisa.isEmpty())
+			return ResponseEntity.notFound().build();
+		List<PesquisaUsuarioResumidoDTO> dtos = pesquisa.stream().map(mapper::toPesquisaUsuarioResumidoDTO).collect(Collectors.toList());
 		return ResponseEntity.ok(dtos);
 	}
 

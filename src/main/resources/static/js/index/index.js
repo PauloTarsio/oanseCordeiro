@@ -10,13 +10,8 @@ $(document).ready(function() {
 	});
 
 	$('#btnCadastrarUsuario').click(function(e) {
-		if (isAdmin) {
-			e.preventDefault(); // evita comportamento padrão se for um botão dentro de um <form>
-			window.location.href = '/usuario/index'; // redireciona para a nova página			
-		} else {
-			OanseLib.exibirErro("Você não tem permissão para acessar esta funcionalidade.");
-			return;
-		}
+		e.preventDefault(); // evita comportamento padrão se for um botão dentro de um <form>
+		window.location.href = '/usuario/index'; // redireciona para a nova página			
 	});
 
 	$('#btnSair').click(function(e) {

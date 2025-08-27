@@ -1,11 +1,7 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
-import java.util.List;
 import java.util.UUID;
 
-import org.hibernate.annotations.Type;
-
-import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,9 +24,8 @@ public class Usuario {
 	@Column(name = "u_senha", nullable = false)
 	private String senha;
 	
-	@Type(ListArrayType.class)
-	@Column(name = "u_roles", columnDefinition = "text[]")
-	private List<String> roles;
+	@Column(name = "u_perfil", nullable = false)
+	private String perfil;
 
 	public UUID getId() {
 		return id;
@@ -56,11 +51,12 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public List<String> getRoles() {
-		return roles;
+	public String getPerfil() {
+		return perfil;
 	}
 
-	public void setRoles(List<String> roles) {
-		this.roles = roles;
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
+
 }

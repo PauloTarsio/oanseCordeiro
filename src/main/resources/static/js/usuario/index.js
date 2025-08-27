@@ -5,7 +5,8 @@ $(document).ready(function() {
 		data: [],
 		datatype: "local",
 		colModel: [
-			{ label: 'DESCRICAO', name: 'descricao', align: 'left' }
+			{ label: 'UUID', name: 'id', align: 'center' },
+			{ label: 'LOGIN', name: 'login', align: 'center' }
 		],
 		rowNum: 10,
 		viewrecords: true,
@@ -28,12 +29,7 @@ $(document).ready(function() {
 		onClickButton: function() {
 			const idSelecionado = $("#jqGrid").jqGrid("getGridParam", "selrow");
 			if (idSelecionado) {
-				if (isAdmin) {
-					$.editar(idSelecionado);
-				} else {
-					OanseLib.exibirErro("Você não tem permissão para acessar esta funcionalidade.");
-					return;
-				}
+				$.editar(idSelecionado);
 			}
 		},
 		position: "last"
@@ -51,17 +47,13 @@ $(document).ready(function() {
 		const novaLargura = $("#tabelaRegistros").width();
 		$("#jqGrid").jqGrid('setGridWidth', novaLargura);
 	});
-	
+
 	// Botão Pesquisar
 	$("#btnPesquisar").on("click", function() {
 		$.pesquisar();
 	});
 
 	$("#btnIncluir").on("click", function() {
-		if (!isAdmin) {
-			OanseLib.exibirErro("Você não tem permissão para acessar esta funcionalidade.");
-			return;
-		}
 		$.novo();
 	});
 
@@ -75,25 +67,29 @@ $.novo = function() {
 	$.ajax({
 		url: "/usuario/formulario",
 		type: "GET",
-		success: function() {
+		success: function() {			
 			window.location.href = "/usuario/formulario";
 		},
 		error: function(xhr) {
-			if (xhr.status === 403) {
-				OanseLib.exibirErro("Você não tem permissão para acessar esta funcionalidade.");
+			let mensagemErro = "Erro ao carregar formulário.";
+			if (xhr.responseJSON?.message) {
+				mensagemErro = xhr.responseJSON.message;
+			} else if (xhr.responseText) {
+				mensagemErro = xhr.responseText;
 			}
+			OanseLib.exibirErro(mensagemErro);
 		}
 	});
 }
 
 $.pesquisar = function() {
 	const filtro = $("#filtroDescricao").val().toLowerCase();
-	
+
 	console.log("Filtro de pesquisa:", filtro);
-/*
+
 	let url = (filtro.trim() === "") ?
-		"/api/v001/igreja" :
-		"/api/v001/igreja?descricao=" + encodeURIComponent(filtro);
+		"/api/v001/usuario" :
+		"/api/v001/usuario?descricao=" + encodeURIComponent(filtro);
 
 	$.ajax({
 		url: url,
@@ -109,29 +105,34 @@ $.pesquisar = function() {
 			} else if (xhr.responseText) {
 				mensagemErro = xhr.responseText;
 			}
-			exibirErro(mensagemErro);
+			OanseLib.exibirErro(mensagemErro);
 		}
-	});*/
+	});
+}
+
+// Carrega os dados na grid
+$.carregarGrid = function(data) {
+	$("#jqGrid").jqGrid("clearGridData");
+	$("#jqGrid").jqGrid("setGridParam", { data: data });
+	$("#jqGrid").trigger("reloadGrid");
+}
+
+// Limpa o campo de filtro
+$.cleanFilter = function() {
+	$("#filtroDescricao").val("");
 }
 
 $.editar = function(id) {
-	if (!isAdmin) {
-		OanseLib.exibirErro("Você não tem permissão para acessar esta funcionalidade.");
-		return;
-	}
-	let url = "/api/v001/igreja/" + id;
-	
-	console.log("Editando registro com ID:", id);
-
-	/*$.ajax({
+	let url = "/api/v001/usuario/" + id;
+	$.ajax({
 		url: url,
 		type: "GET",
 		success: function(data) {
 			if (data) {
-				sessionStorage.setItem("igrejaEdicao", JSON.stringify(data));
-				window.location.href = '/igreja/formulario';
+				sessionStorage.setItem("usuarioEdicao", JSON.stringify(data));
+				window.location.href = '/usuario/formulario';
 			} else {
-				exibirErro("Registro não encontrado.");
+				OanseLib.exibirErro("Registro não encontrado.");
 			}
 		},
 		error: function(xhr) {
@@ -141,7 +142,7 @@ $.editar = function(id) {
 			} else if (xhr.responseText) {
 				mensagemErro = xhr.responseText;
 			}
-			exibirErro(mensagemErro);
+			OanseLib.exibirErro(mensagemErro);
 		}
-	});*/
+	});
 }

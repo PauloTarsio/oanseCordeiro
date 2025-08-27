@@ -1,4 +1,4 @@
-package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.common;
+package br.com.igrejabatistadocordeiro.oanse.domain.exceptions;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.erro.ErroCampo;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.erro.ErroResposta;
-import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.RegistroDuplicadoException;
 
 @RestControllerAdvice //capturar exceções de todo o sistema inclusive as validações de Bean Validation
 public class GlobalExceptionHandler {
@@ -94,8 +93,7 @@ public class GlobalExceptionHandler {
 	            "Erro de validação",
 	            erros
 	    );
-	}
-	
+	}	
 	
 	@ResponseStatus(HttpStatus.CONFLICT) //código 409
 	@ExceptionHandler(RegistroDuplicadoException.class)
@@ -119,6 +117,6 @@ public class GlobalExceptionHandler {
 				HttpStatus.INTERNAL_SERVER_ERROR.value(),
 				"Ocorreu um erro inesperado. Entre em contato com o administrador do sistema.",
 				List.of());
-	}	
+	}
 	
 }

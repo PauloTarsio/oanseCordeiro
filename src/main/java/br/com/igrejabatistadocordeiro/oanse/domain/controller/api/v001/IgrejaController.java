@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,7 @@ public class IgrejaController implements GenericController {
 		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
 	@Operation(description = "Carrega uma igreja pelo ID")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
 	public ResponseEntity<IgrejaDTO> carrega(@PathVariable Long id) {
 		Igreja igreja = service.carrega(id);
 		IgrejaDTO igrejaDTO = mapper.toDto(igreja);
@@ -57,7 +59,6 @@ public class IgrejaController implements GenericController {
 	@Operation(description = "Pesquisa igrejas pelo nome ou parte do nome")
 	public ResponseEntity<List<PesquisaIgrejaResumidaDTO>> pesquisa(
 				@RequestParam(value = "descricao", required = false) String descricao) {
-
 		List<Igreja> pesquisa = service.pesquisa(descricao);
 		List<PesquisaIgrejaResumidaDTO> dtos = pesquisa.stream().map(mapper::toResumoDto).collect(Collectors.toList());		
 		return ResponseEntity.ok(dtos);
@@ -71,6 +72,7 @@ public class IgrejaController implements GenericController {
 		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
 	@Operation(description = "Cria uma nova igreja")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<URI> salva(@Valid @RequestBody IgrejaDTO dto) {
 		Igreja igreja = mapper.toEntity(dto);
 		service.salva(igreja);
@@ -86,6 +88,7 @@ public class IgrejaController implements GenericController {
 		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
 	@Operation(description = "Atualiza uma igreja pelo ID")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<Object> atualiza(@Valid @RequestBody IgrejaDTO dto, @PathVariable Long id) {
 		Igreja igreja = mapper.toEntity(dto);
 		igreja.setId(id);

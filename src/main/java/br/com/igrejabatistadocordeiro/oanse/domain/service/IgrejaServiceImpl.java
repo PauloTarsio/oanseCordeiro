@@ -49,6 +49,11 @@ public class IgrejaServiceImpl implements IgrejaService {
 	public void salva(Igreja igreja) {
 		if (igreja.getId() != null)
 			throw new IllegalArgumentException(O_ID_NÃO_DEVE_SER_INFORMADO_AO_SALVAR);
+		if (igreja.getDadosPessoais() == null || StringUtils.isBlank(igreja.getDadosPessoais().getDescricao()))
+			throw new IllegalArgumentException("Dados pessoais da igreja são obrigatórios.");
+		if (igreja.getDadosPessoais().getEndereco() == null)
+			throw new IllegalArgumentException("Endereço da igreja é obrigatório.");
+
 		Igreja igrejaEncontrada = buscarPorRgOuCpfOuCnpj(igreja.getDadosPessoais());
 		if (igrejaEncontrada != null) {
 			String descricao = igrejaEncontrada.getDadosPessoais().getDescricao();
@@ -67,8 +72,13 @@ public class IgrejaServiceImpl implements IgrejaService {
 	public void atualiza(Igreja igreja) {
 		if (igreja.getId() == null)
 			throw new IllegalArgumentException(O_ID_DEVE_SER_INFORMADO_AO_ATUALIZAR);
+		if (igreja.getDadosPessoais() == null || StringUtils.isBlank(igreja.getDadosPessoais().getDescricao()))
+			throw new IllegalArgumentException("Dados pessoais da igreja são obrigatórios.");
+		if (igreja.getDadosPessoais().getEndereco() == null)
+			throw new IllegalArgumentException("Endereço da igreja é obrigatório.");
+
 		Igreja igrejaEncontrada = buscarPorRgOuCpfOuCnpj(igreja.getDadosPessoais());
-		if (igrejaEncontrada != null && igrejaEncontrada.getId() != igreja.getId()) {
+		if (igrejaEncontrada != null && !igrejaEncontrada.getId().equals(igreja.getId())) {
 			String descricao = igrejaEncontrada.getDadosPessoais().getDescricao();
 			String rg = igrejaEncontrada.getDadosPessoais().getRg();
 			String cpf = igrejaEncontrada.getDadosPessoais().getCpf();
@@ -78,10 +88,15 @@ public class IgrejaServiceImpl implements IgrejaService {
 					+ (StringUtils.isNotBlank(cpf) ? ", CPF: " + cpf : "")
 					+ (StringUtils.isNotBlank(cnpj) ? ", CNPJ: " + cnpj : ""));
 		}
-		if (igrejaEncontrada == null)
-			igrejaEncontrada = carrega(igreja.getId());
-		igreja.getDadosPessoais().setId(igrejaEncontrada.getDadosPessoais().getId());
-		igreja.getDadosPessoais().getEndereco().setId(igrejaEncontrada.getDadosPessoais().getEndereco().getId());
+
+		Igreja igrejaBase = carrega(igreja.getId());
+		if (temMudancaNoTipoPessoa(igreja, igrejaBase))
+			throw new IllegalArgumentException("Não é permitido alterar o tipo de pessoa (Física/Jurídica) da igreja.");
+
+		// Atualiza os IDs dos dados pessoais e endereço para garantir integridade
+		igreja.getDadosPessoais().setId(igrejaBase.getDadosPessoais().getId());
+		igreja.getDadosPessoais().getEndereco().setId(igrejaBase.getDadosPessoais().getEndereco().getId());
+
 		repository.save(igreja);
 	}
 
@@ -94,6 +109,18 @@ public class IgrejaServiceImpl implements IgrejaService {
 		if (igrejaEncontrada == null && StringUtils.isNotBlank(dadosPessoais.getCnpj()))
 			igrejaEncontrada = repository.findByDadosPessoaisCnpj(dadosPessoais.getCnpj()).orElse(null);
 		return igrejaEncontrada;
+	}
+	
+	private boolean temMudancaNoTipoPessoa(Igreja igreja, Igreja igrejaBase) {
+		boolean igrejaTemCPFouRG = StringUtils.isNotBlank(igreja.getDadosPessoais().getRg())
+					|| StringUtils.isNotBlank(igreja.getDadosPessoais().getCpf());
+		boolean igrejaTemCNPJ = StringUtils.isNotBlank(igreja.getDadosPessoais().getCnpj());
+		boolean igrejaBaseTemCPFouRG = StringUtils.isNotBlank(igrejaBase.getDadosPessoais().getRg())
+					|| StringUtils.isNotBlank(igrejaBase.getDadosPessoais().getCpf());
+		boolean igrejaBaseTemCNPJ = StringUtils.isNotBlank(igrejaBase.getDadosPessoais().getCnpj());
+
+		// Mudança ocorre se um é física e o outro jurídica
+		return (igrejaTemCPFouRG && igrejaBaseTemCNPJ) || (igrejaTemCNPJ && igrejaBaseTemCPFouRG || !igreja.getDadosPessoais().getTipo().equals(igrejaBase.getDadosPessoais().getTipo()));
 	}
 
 }

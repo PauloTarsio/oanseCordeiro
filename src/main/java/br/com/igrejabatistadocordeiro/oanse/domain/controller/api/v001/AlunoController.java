@@ -37,7 +37,7 @@ public class AlunoController implements GenericController {
 	}
 
 	@GetMapping("api/v001/aluno/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "Aluno carregado com sucesso"),
 		@ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
@@ -51,22 +51,20 @@ public class AlunoController implements GenericController {
 	}
 	
 	@GetMapping("api/v001/aluno")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "Pesquisa realizada com sucesso"),
 		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
 	@Operation(description = "Pesquisa alunos pelo nome ou parte do nome")
 	public ResponseEntity<Object> pesquisa(
-				@RequestParam(value = "descricao", required = false) String descricao) {
-		
+				@RequestParam(value = "descricao", required = false) String descricao) {		
 		List<Aluno> pesquisa = service.pesquisa(descricao);
 		List<PesquisaAlunoResumidoDTO> dtos = mapper.toResumoDtoList(pesquisa);
 		return ResponseEntity.ok(dtos);
 	}
 	
 	@PostMapping("api/v001/aluno")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "201", description = "Aluno criado com sucesso"),
 		@ApiResponse(responseCode = "422", description = "Erro de validação nos dados informados"),
@@ -82,7 +80,7 @@ public class AlunoController implements GenericController {
 	}
 	
 	@PutMapping("api/v001/aluno/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LIDER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "204", description = "Aluno atualizado com sucesso"),
 		@ApiResponse(responseCode = "422", description = "Erro de validação nos dados informados"),
