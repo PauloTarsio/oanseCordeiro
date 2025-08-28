@@ -16,14 +16,18 @@ public class WebConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/login").setViewName("login");
 		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 	}
-	
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-          .addResourceHandler("/img/**", "/css/**", "/js/**")
-          .addResourceLocations("classpath:/static/img/",
-								 "classpath:/static/css/",
-								 "classpath:/static/js/");
-    }
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/img/**", "/css/**", "/js/**", "/ico/**")
+				.addResourceLocations(
+						"classpath:/static/img/",
+						"classpath:/static/css/",
+						"classpath:/static/js/",
+						"classpath:/static/ico/"
+						);
+		registry.addResourceHandler("/favicon.ico")
+				.addResourceLocations("classpath:/static/ico/favicon.ico");
+	}
 
 }

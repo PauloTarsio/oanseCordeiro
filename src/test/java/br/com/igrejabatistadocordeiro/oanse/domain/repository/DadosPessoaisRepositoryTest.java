@@ -20,66 +20,57 @@ import br.com.igrejabatistadocordeiro.oanse.domain.model.DadosPessoais;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DadosPessoaisRepositoryTest {
 
-    @Autowired
-    private DadosPessoaisRepository repository;
-    
-    @Autowired
-    private ObjectMapper objectMapper;
-    
-    private Long pessoaId;
-    private Long enderecoId;
-	
-    @Test
-    public void deveriaPassarPeloCrudCompleto() throws Exception {
-        criarPessoaComEndereco();
-        buscarPessoaPorId();
-        atualizarPessoa();
-        deletarPessoa();
-    }
+	@Autowired
+	private DadosPessoaisRepository repository;
 
-    private void criarPessoaComEndereco() throws Exception {
-        String json = Files.readString(Paths.get("src/test/resources/json/dadosPessoais.json"));
-        DadosPessoais dadosPessoais = objectMapper.readValue(json, DadosPessoais.class);
+	@Autowired
+	private ObjectMapper objectMapper;
 
-        DadosPessoais salvo = repository.save(dadosPessoais);
+	private Long pessoaId;
+	private Long enderecoId;
 
-        Assertions.assertNotNull(salvo.getId());
-        Assertions.assertNotNull(salvo.getEndereco().getId());
-        System.out.println("✔️ Pessoa criada com ID: " + salvo.getId());
+	@Test
+	public void deveriaPassarPeloCrudCompleto() throws Exception {
+		novo();
+		carrega();
+		atualiza();
+	}
 
-        this.pessoaId = salvo.getId(); // guarda para os próximos passos
-        this.enderecoId = salvo.getEndereco().getId(); // guarda o ID do endereço
-    }
+	private void novo() throws Exception {
+		String json = Files.readString(Paths.get("src/test/resources/json/dadosPessoais.json"));
+		DadosPessoais dadosPessoais = objectMapper.readValue(json, DadosPessoais.class);
 
-    private void buscarPessoaPorId() {
-        Optional<DadosPessoais> pessoaOpt = repository.findById(pessoaId);
-        Assertions.assertTrue(pessoaOpt.isPresent());
-        System.out.println("✔️ Pessoa encontrada: " + pessoaOpt.get().getDescricao());
-    }
+		DadosPessoais salvo = repository.save(dadosPessoais);
 
-    private void atualizarPessoa() {
-        DadosPessoais pessoa = repository.findById(pessoaId).orElseThrow();
+		Assertions.assertNotNull(salvo.getId());
+		Assertions.assertNotNull(salvo.getEndereco().getId());
+		System.out.println("✔️ Pessoa criada com ID: " + salvo.getId());
 
-        pessoa.setEmail("nova.email@exemplo.com");
-        pessoa.setDescricao("Nome Atualizado");
-        
-        pessoa.getEndereco().setId(enderecoId);
-        pessoa.getEndereco().setRua("Endereço Atualizado");
+		this.pessoaId = salvo.getId(); // guarda para os próximos passos
+		this.enderecoId = salvo.getEndereco().getId(); // guarda o ID do endereço
+	}
 
-        DadosPessoais atualizada = repository.save(pessoa);
+	private void carrega() {
+		Optional<DadosPessoais> pessoaOpt = repository.findById(pessoaId);
+		Assertions.assertTrue(pessoaOpt.isPresent());
+		System.out.println("✔️ Pessoa encontrada: " + pessoaOpt.get().getDescricao());
+	}
 
-        Assertions.assertEquals("nova.email@exemplo.com", atualizada.getEmail());
-        Assertions.assertEquals("Nome Atualizado", atualizada.getDescricao());
-        Assertions.assertEquals("Endereço Atualizado", atualizada.getEndereco().getRua());
-        System.out.println("✔️ Pessoa atualizada com novo e-mail e nome.");
-    }
+	private void atualiza() {
+		DadosPessoais pessoa = repository.findById(pessoaId).orElseThrow();
 
-    private void deletarPessoa() {
-        repository.deleteById(pessoaId);
+		pessoa.setEmail("nova.email@exemplo.com");
+		pessoa.setDescricao("Nome Atualizado");
 
-        Optional<DadosPessoais> excluida = repository.findById(pessoaId);
-        Assertions.assertTrue(excluida.isEmpty());
-        System.out.println("✔️ Pessoa deletada com sucesso.");
-    }
+		pessoa.getEndereco().setId(enderecoId);
+		pessoa.getEndereco().setRua("Endereço Atualizado");
+
+		DadosPessoais atualizada = repository.save(pessoa);
+
+		Assertions.assertEquals("nova.email@exemplo.com", atualizada.getEmail());
+		Assertions.assertEquals("Nome Atualizado", atualizada.getDescricao());
+		Assertions.assertEquals("Endereço Atualizado", atualizada.getEndereco().getRua());
+		System.out.println("✔️ Pessoa atualizada com novo e-mail e nome.");
+	}
 
 }

@@ -7,6 +7,7 @@ $(document).ready(function() {
 		colModel: [
 			{ label: 'ID', name: 'id', width: 30, key: true, align: 'center' },
 			{ label: 'DESCRICAO', name: 'descricao', align: 'center' },
+			{ label: 'CLUBE', name: 'clube', align: 'center' },
 			{ label: 'IGREJA', name: 'igreja', align: 'center' },
 			{ label: 'ATIVO', name: 'ativo', width: 30, formatter: booleanFormatter, align: 'center' },
 		],
@@ -102,11 +103,23 @@ $.carregarGrid = function(data) {
 }
 
 $.pesquisar = function() {
-	const filtro = $("#filtroDescricao").val().toLowerCase();
+	const filtroDescricao = $("#filtroDescricao").val().toLowerCase();
+	const filtroClubeId = $("#filtroClube").val();
 
-	let url = (filtro.trim() === "") ?
-		"/api/v001/aluno" :
-		"/api/v001/aluno?descricao=" + encodeURIComponent(filtro);
+	let params = [];
+	if (filtroDescricao.trim() !== "") {
+		params.push("descricao=" + encodeURIComponent(filtroDescricao));
+	}
+	if (filtroClubeId && filtroClubeId !== "Todos os clubes") {
+		params.push("clubeId=" + encodeURIComponent(filtroClubeId));
+	} else if (filtroClubeId === "Todos os clubes") {
+		params.push("clubeId=");
+	}
+
+	let url = "/api/v001/aluno";
+	if (params.length > 0) {
+		url += "?" + params.join("&");
+	}
 
 	$.ajax({
 		url: url,

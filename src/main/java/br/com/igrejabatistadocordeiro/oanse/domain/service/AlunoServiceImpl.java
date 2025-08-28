@@ -15,14 +15,14 @@ import br.com.igrejabatistadocordeiro.oanse.domain.util.StringUtils;
 
 @Service
 public class AlunoServiceImpl implements AlunoService {
-	
+
 	private static final String O_ID_NÃO_DEVE_SER_INFORMADO_AO_SALVAR = "O ID do aluno não deve ser informado ao salvar.";
 	private static final String O_ID_DEVE_SER_INFORMADO_AO_ATUALIZAR = "O ID do aluno deve ser informado ao atualizar.";
 	private static final String MSG_ALUNO_NAO_ENCONTRADO = "Aluno não encontrado.";
 	private static final String MSG_IGREJA_NAO_ENCONTRADA = "Igreja não encontrada.";
 	private static final String CONFLITO_DADOS_PESSOAIS = "Número de documento já cadastrado.";
-	
-	private AlunoRepository	repository;
+
+	private AlunoRepository repository;
 	private IgrejaRepository igrejaRepository;
 
 	public AlunoServiceImpl(AlunoRepository repository, IgrejaRepository igrejaRepository) {
@@ -36,17 +36,13 @@ public class AlunoServiceImpl implements AlunoService {
 	}
 
 	@Override
-	public List<Aluno> pesquisa(String descricao) {
+	public List<Aluno> pesquisa(String descricao, Long idClube) {
 		Specification<Aluno> spec = Specification.anyOf();
-		if (StringUtils.isNotBlank(descricao)) {
-			spec = spec.and((root, query, cb) -> 
-				cb.like(
-					cb.lower(root.get("dadosPessoais").get("descricao")),
-					"%" + descricao.toLowerCase() + "%"
-				)
-			);
-		}
-		return  repository.findAll(spec);
+		if (StringUtils.isNotBlank(descricao))
+			spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("dadosPessoais").get("descricao")),"%" + descricao.toLowerCase() + "%"));
+		if (idClube != null)
+			spec = spec.and((root, query, cb) -> cb.equal(root.get("clube").get("id"), idClube));
+		return repository.findAll(spec);
 	}
 
 	@Override
@@ -88,7 +84,7 @@ public class AlunoServiceImpl implements AlunoService {
 			alunoEncontrado = repository.findByDadosPessoaisCnpj(dadosPessoais.getCnpj()).orElse(null);
 		return alunoEncontrado;
 	}
-	
+
 	private Igreja pesquisaIgreja(Long id) {
 		return igrejaRepository.findById(id).orElse(null);
 	}

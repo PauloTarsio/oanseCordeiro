@@ -23,6 +23,15 @@
 							<input type="text" id="filtroDescricao" name="filtroDescricao" class="form-control"
 								placeholder="Digite aqui e clique em pesquisar...">
 						</div>
+						<div class="mb-3">
+							<label for="filtroClube" class="form-label">Clube</label>
+							<select id="filtroClube" name="filtroClube" class="form-select">
+								<option value="">Todos os clubes</option>
+								<th:block th:each="clube : ${clubes}">
+									<option th:value="${clube.id}" th:text="${clube.nome}"></option>
+								</th:block>
+							</select>
+						</div>
 
 						<!-- Tabela jqGrid -->
 						<div id="tabelaRegistros" class="w-100">

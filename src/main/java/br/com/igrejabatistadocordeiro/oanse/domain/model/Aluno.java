@@ -2,6 +2,8 @@ package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,6 +31,11 @@ public class Aluno {
     @JoinColumn(name = "a_igreja_id")
     private Igreja igreja;
     
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "a_clube_id")
+    @JsonBackReference
+    private Clube clube;
+    
     @Column(name = "a_ativo", nullable = false)
     private boolean ativo = true;
 
@@ -55,6 +62,14 @@ public class Aluno {
 	public void setIgreja(Igreja igreja) {
 		this.igreja = igreja;
 	}
+
+    public Clube getClube() {
+        return clube;
+    }
+
+    public void setClube(Clube clube) {
+        this.clube = clube;
+    }
 
 	@Override
 	public int hashCode() {

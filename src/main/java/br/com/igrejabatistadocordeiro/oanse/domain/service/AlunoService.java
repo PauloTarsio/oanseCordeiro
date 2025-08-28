@@ -8,7 +8,7 @@ public interface AlunoService {
 
 	Aluno carrega(Long id);
 	
-	List<Aluno> pesquisa(String nome);
+	List<Aluno> pesquisa(String nome, Long clubeId);	
 	
 	void salva(Aluno aluno);
 	

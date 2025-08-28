@@ -12,7 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -40,8 +40,8 @@ public class DadosPessoais {
     @Column(name = "dp_cnpj")
     private String cnpj;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "dp_endereco_id")
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "dp_endereco_id", unique = true)
     private Endereco endereco;
 
     @Column(name = "dp_data_nascimento", nullable = false)
@@ -95,12 +95,12 @@ public class DadosPessoais {
 	}
 
 	public Endereco getEndereco() {
-		return endereco;
-	}
+        return endereco;
+    }
 
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
 
 	public LocalDate getDataNascimento() {
 		return dataNascimento;

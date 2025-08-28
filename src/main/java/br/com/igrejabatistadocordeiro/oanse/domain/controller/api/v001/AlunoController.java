@@ -57,8 +57,9 @@ public class AlunoController implements GenericController {
 	})
 	@Operation(description = "Pesquisa alunos pelo nome ou parte do nome")
 	public ResponseEntity<Object> pesquisa(
-				@RequestParam(value = "descricao", required = false) String descricao) {		
-		List<Aluno> pesquisa = service.pesquisa(descricao);
+				@RequestParam(value = "descricao", required = false) String descricao,
+				@RequestParam(value = "clubeId", required = false) Long clubeId) {
+		List<Aluno> pesquisa = service.pesquisa(descricao, clubeId);
 		List<PesquisaAlunoResumidoDTO> dtos = mapper.toResumoDtoList(pesquisa);
 		return ResponseEntity.ok(dtos);
 	}

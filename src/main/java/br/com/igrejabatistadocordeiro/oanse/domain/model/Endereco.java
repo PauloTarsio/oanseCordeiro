@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,6 +33,9 @@ public class Endereco {
     
     @Column(name = "e_uf", length = 2)
     private String uf;
+    
+    @OneToOne(mappedBy = "endereco")
+    private DadosPessoais dadosPessoais;
 
 	public Long getId() {
 		return id;
@@ -80,6 +84,14 @@ public class Endereco {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
+
+	public DadosPessoais getDadosPessoais() {
+        return dadosPessoais;
+    }
+
+    public void setDadosPessoais(DadosPessoais dadosPessoais) {
+        this.dadosPessoais = dadosPessoais;
+    }
 
 	@Override
 	public int hashCode() {

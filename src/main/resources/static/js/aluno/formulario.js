@@ -55,6 +55,10 @@ $(document).ready(function() {
 		$.carregaIgreja($(this).val());
 	});
 
+	$("#clubeId").on("change", function() {
+		$.carregaClube($(this).val());
+	});
+
 });
 
 function ajustarCamposPorTipo(tipo) {
@@ -80,6 +84,7 @@ function montarJson() {
 	const id = $("#id").val() || null;
 	const tipo = $("#tipo").val();
 	const igrejaId = $("#igrejaId").val() || null;
+	const clubeId = $("#clubeId").val() || null;
 
 	const dadosPessoais = {
 		descricao: $("#descricao").val(),
@@ -111,6 +116,7 @@ function montarJson() {
 		ativo: $("#ativo").is(":checked"),
 		dadosPessoais: dadosPessoais,
 		igrejaId: igrejaId,
+		clubeId: clubeId
 	};
 }
 
@@ -144,6 +150,29 @@ function enviarCadastro(json) {
 	});
 }
 
+$.carregaClube = function(id) {
+	if (!id) {
+		$("#clubeDescricao").val("");
+		return;
+	}
+	$.ajax({
+		url: "/api/v001/clube/" + id,
+		type: "GET",
+		success: function(data) {
+			if (data) {
+				$("#clubeDescricao").val(data.nome);
+				$("#clubeDescricao").removeClass("is-invalid");
+			} else {
+				$("#clubeDescricao").val("").addClass("is-invalid");
+			}
+		},
+		error: function() {
+			$("#clubeDescricao").val("").addClass("is-invalid");
+		}
+	});
+
+}
+
 $.carregaIgreja = function(id) {
 	if (!id) {
 		$("#igrejaDescricao").val("");
@@ -160,7 +189,7 @@ $.carregaIgreja = function(id) {
 				$("#igrejaDescricao").val("").addClass("is-invalid");
 			}
 		},
-		error: function(xhr) {
+		error: function() {
 			$("#igrejaDescricao").val("").addClass("is-invalid");
 		}
 	});
@@ -179,7 +208,9 @@ $.validarFormulario = function() {
 		"#cidade",
 		"#uf",
 		"#igrejaId",
-		"#igrejaDescricao"
+		"#igrejaDescricao",
+		"#clubeId",
+		"#clubeDescricao"
 	];
 
 	camposObrigatorios.forEach(function(campo) {
@@ -204,6 +235,7 @@ $.validarFormulario = function() {
 	const email = $('#email').val();
 	const uf = $('#uf').val();
 	const igrejaDescricao = $('#igrejaDescricao').val();
+	const clubeDescricao = $('#clubeDescricao').val();
 
 	if (!OanseLib.validarTexto(descricao)) {
 		valido = false;
@@ -283,6 +315,13 @@ $.validarFormulario = function() {
 		$('#dataNascimento').removeClass("is-invalid");
 	}
 
+	if (!OanseLib.validarTexto(clubeDescricao)) {
+		valido = false;
+		$('#clubeDescricao').addClass("is-invalid");
+	} else {
+		$('#clubeDescricao').removeClass("is-invalid");
+	}
+
 	return valido;
 }
 
@@ -326,4 +365,7 @@ $.preencherFormulario = function(aluno) {
 	$("#ativo").prop("checked", !!aluno.ativo);
 
 	$("#tipo, #rg, #cpf, #cnpj").prop("disabled", true);
+
+	$("#clubeId").val(aluno.clubeId || '');
+	$("#clubeDescricao").val(aluno.clubeDescricao || '');	
 }

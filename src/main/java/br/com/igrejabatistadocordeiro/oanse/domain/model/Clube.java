@@ -1,5 +1,10 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -7,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,6 +30,10 @@ public class Clube {
 
     @Column(name = "c_faixa_etaria")
     private String faixaEtaria;
+
+    @OneToMany(mappedBy = "clube")
+    @JsonIgnore
+    private List<Aluno> alunos = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -48,5 +58,13 @@ public class Clube {
 	public void setFaixaEtaria(String faixaEtaria) {
 		this.faixaEtaria = faixaEtaria;
 	}
+
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
+    }
 
 }
