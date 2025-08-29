@@ -9,6 +9,8 @@ $(document).ready(function() {
 		// Limpa para não reutilizar depois
 		sessionStorage.removeItem("usuarioEdicao");
 	}
+	
+	$.ajustarLegenda();
 
 	$("#btnSalvar").on("click", function(event) {
 		event.preventDefault();
@@ -27,6 +29,14 @@ $(document).ready(function() {
 		$.limpaFormulario();
 
 });
+
+$.ajustarLegenda = function() {
+	if (novo) {
+		$('#legendaFormulario').text('Cadastro de Usuário - NOVO');
+	} else {
+		$('#legendaFormulario').text('Cadastro de Usuário - EDICAO');
+	}
+}
 
 $.limpaFormulario = function() {
 	$("#formUsuario")[0].reset();

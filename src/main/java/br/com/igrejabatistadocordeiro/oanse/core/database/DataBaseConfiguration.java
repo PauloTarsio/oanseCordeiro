@@ -2,25 +2,22 @@ package br.com.igrejabatistadocordeiro.oanse.core.database;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-@Configuration
+//@Configuration
 public class DataBaseConfiguration {
 
-	@Value("${spring.datasource.url}")
+//	@Value("${spring.datasource.url}")
 	private String url;
 	
-	@Value("${spring.datasource.username}")
+//	@Value("${spring.datasource.username}")
 	private String username;
 	
-	@Value("${spring.datasource.password}")
+//	@Value("${spring.datasource.password}")
 	private  String password;
 	
-	@Value("${spring.datasource.driver-class-name}")
+//	@Value("${spring.datasource.driver-class-name}")
 	private String driver;
 	
 //	@Bean
