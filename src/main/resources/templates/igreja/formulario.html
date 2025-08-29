@@ -12,133 +12,49 @@
 					<fieldset class="p-3 border rounded">
 						<form id="formIgreja">
 							<legend id="legendaFormulario" class="w-auto px-2"></legend>
-							<div class="card mt-4 form-control">
-								<div class="card-header bg-success text-white">
-									<h5>Dados Pessoais</h5>
+							<!-- Nav tabs -->
+							<ul class="nav nav-tabs" id="formTabs" role="tablist">
+								<li class="btn-group" role="presentation">
+									<button class="btn btn-light active" id="pessoal-tab" data-bs-toggle="tab"
+										data-bs-target="#pessoal" type="button" role="tab">
+										Dados Pessoais
+									</button>
+								</li>
+								<li class="nav-item" role="presentation">
+									<button class="btn btn-light" id="endereco-tab" data-bs-toggle="tab"
+										data-bs-target="#endereco" type="button" role="tab">
+										Endereço
+									</button>
+								</li>
+							</ul>
+
+							<!-- Conteúdo das abas -->
+							<div class="tab-content border border-top-0 p-3" id="formTabsContent">
+								<!-- Aba Dados Pessoais -->
+								<div class="tab-pane fade show active" id="pessoal" role="tabpanel">
+									<form>
+										<div th:replace="igreja/abas/dados_pessoais :: dadosPessoais"></div>
+									</form>
 								</div>
-								<div class="card-body">
-									<div class="mb-3">
-										<input type="hidden" id="id" name="id">
-										<label for="descricao" class="form-label">Nome/Descrição</label>
-										<input type="text" class="form-control" id="descricao"
-											name="dadosPessoais.descricao" required>
-									</div>
-	
-									<div class="mb-3">
-										<label for="tipo" class="form-label">Tipo</label>
-										<select class="form-select" id="tipo" name="dadosPessoais.tipo" required>
-											<option value="">Selecione</option>
-											<option value="FISICA">Pessoa Física</option>
-											<option value="JURIDICA">Pessoa Jurídica</option>
-										</select>
-									</div>
-	
-									<div class="row">
-										<div class="col-md-4 mb-3">
-											<label for="rg" class="form-label">RG</label>
-											<input type="text" class="form-control" id="rg" name="dadosPessoais.rg">
-										</div>
-										<div class="col-md-4 mb-3">
-											<label for="cpf" class="form-label">CPF</label>
-											<input type="text" class="form-control" id="cpf" name="dadosPessoais.cpf">
-										</div>
-										<div class="col-md-4 mb-3">
-											<label for="cnpj" class="form-label">CNPJ</label>
-											<input type="text" class="form-control" id="cnpj" name="dadosPessoais.cnpj">
-										</div>
-									</div>
-	
-									<div class="row">
-										<div class="mb-3">
-											<label for="dataNascimento" class="form-label">Data de Nascimento</label>
-											<input type="date" class="form-control" id="dataNascimento"
-												name="dadosPessoais.dataNascimento" required>
-										</div>
-									</div>
-	
-									<div class="row">
-										<div class="col-md-12 mb-3">
-											<label for="contato" class="form-label">Contato</label>
-											<input type="text" class="form-control" id="contato"
-												name="dadosPessoais.contato">
-										</div>
-									</div>
-	
-									<div class="row">
-										<div class="col-md-4 mb-3">
-											<label for="telefone1" class="form-label">Telefone 1</label>
-											<input type="text" class="form-control" id="telefone1"
-												name="dadosPessoais.telefone1" required>
-										</div>
-										<div class="col-md-4 mb-3">
-											<label for="telefone2" class="form-label">Telefone 2</label>
-											<input type="text" class="form-control" id="telefone2"
-												name="dadosPessoais.telefone2">
-										</div>
-										<div class="col-md-4 mb-3">
-											<label for="telefone3" class="form-label">Telefone 3</label>
-											<input type="text" class="form-control" id="telefone3"
-												name="dadosPessoais.telefone3">
-										</div>
-									</div>
-	
-									<div class="mb-3">
-										<label for="email" class="form-label">E-mail</label>
-										<input type="email" class="form-control" id="email" name="dadosPessoais.email">
-									</div>
-								</div>
-	
-								<!-- Card: Endereço -->
-								<div class="card mt-4">
-									<div class="card-header bg-success text-white">
-										<h5>Endereço</h5>
-									</div>
-									<div class="card-body">
-										<div class="mb-3">
-											<label for="rua" class="form-label">Rua</label>
-											<input type="text" class="form-control" id="rua"
-												name="dadosPessoais.endereco.rua" required>
-										</div>
-	
-										<div class="row">
-											<div class="col-md-4 mb-3">
-												<label for="numero" class="form-label">Número</label>
-												<input type="text" class="form-control" id="numero"
-													name="dadosPessoais.endereco.numero">
-											</div>
-											<div class="col-md-8 mb-3">
-												<label for="bairro" class="form-label">Bairro</label>
-												<input type="text" class="form-control" id="bairro"
-													name="dadosPessoais.endereco.bairro" required>
-											</div>
-										</div>
-	
-										<div class="row">
-											<div class="col-md-10 mb-3">
-												<label for="cidade" class="form-label">Cidade</label>
-												<input type="text" class="form-control" id="cidade"
-													name="dadosPessoais.endereco.cidade" required>
-											</div>
-											<div class="col-md-2 mb-3">
-												<label for="uf" class="form-label">UF</label>
-												<input type="text" class="form-control" id="uf"
-													name="dadosPessoais.endereco.uf" maxlength="2" required>
-											</div>
-										</div>
-									</div>
-								</div>
-	
-								<div class="form-check mt-4">
-									<input class="form-check-input" type="checkbox" value="true" id="ativo" name="ativo"
-										checked>
-									<label class="form-check-label" for="ativo">
-										Igreja Ativa
-									</label>
-								</div>
-								<div class="footer d-flex justify-content-end mb-3">
-									<button id="btnVoltar" type="button" class="btn btn-secondary me-2">Voltar</button>
-									<button id="btnSalvar" class="btn btn-primary">Salvar</button>
-								</div>
+
+								<!-- Aba Endereço -->
+								<div class="tab-pane fade" id="endereco" role="tabpanel">
+									<form>
+										<div th:replace="igreja/abas/endereco :: endereco"></div>
+									</form>
+								</div>								
+							</div>							
+
+							<div class="form-check mt-4">
+								<input class="form-check-input" type="checkbox" value="true" id="ativo" name="ativo"
+									checked>
+								<label class="form-check-label" for="ativo">
+									Igreja Ativa
+								</label>
+							</div>
+							<div class="footer d-flex justify-content-end mb-3">
+								<button id="btnVoltar" type="button" class="btn btn-secondary me-2">Voltar</button>
+								<button id="btnSalvar" class="btn btn-primary">Salvar</button>
 							</div>
 						</form>
 					</fieldset>

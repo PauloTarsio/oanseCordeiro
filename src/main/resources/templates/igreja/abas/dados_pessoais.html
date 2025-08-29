@@ -1,0 +1,72 @@
+<div th:fragment="dadosPessoais" class="card mt-4">
+	<div class="card-header bg-success text-white">
+		<h5>Dados Pessoais</h5>
+	</div>
+
+	<div class="card-body">
+		<div class="mb-3">
+			<input type="hidden" id="id" name="id">
+			<label for="descricao" class="form-label">Nome/Descrição</label>
+			<input type="text" class="form-control" id="descricao" name="dadosPessoais.descricao" required>
+		</div>
+
+		<div class="mb-3">
+			<label for="tipo" class="form-label">Tipo</label>
+			<select class="form-select" id="tipo" name="dadosPessoais.tipo" required>
+				<option value="">Selecione</option>
+				<option value="FISICA">Pessoa Física</option>
+				<option value="JURIDICA">Pessoa Jurídica</option>
+			</select>
+		</div>
+
+		<div class="row">
+			<div class="col-md-4 mb-3">
+				<label for="rg" class="form-label">RG</label>
+				<input type="text" class="form-control" id="rg" name="dadosPessoais.rg">
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="cpf" class="form-label">CPF</label>
+				<input type="text" class="form-control" id="cpf" name="dadosPessoais.cpf">
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="cnpj" class="form-label">CNPJ</label>
+				<input type="text" class="form-control" id="cnpj" name="dadosPessoais.cnpj">
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="mb-3">
+				<label for="dataNascimento" class="form-label">Data de Nascimento</label>
+				<input type="date" class="form-control" id="dataNascimento" name="dadosPessoais.dataNascimento"
+					required>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12 mb-3">
+				<label for="contato" class="form-label">Contato</label>
+				<input type="text" class="form-control" id="contato" name="dadosPessoais.contato">
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-4 mb-3">
+				<label for="telefone1" class="form-label">Telefone 1</label>
+				<input type="text" class="form-control" id="telefone1" name="dadosPessoais.telefone1" required>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="telefone2" class="form-label">Telefone 2</label>
+				<input type="text" class="form-control" id="telefone2" name="dadosPessoais.telefone2">
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="telefone3" class="form-label">Telefone 3</label>
+				<input type="text" class="form-control" id="telefone3" name="dadosPessoais.telefone3">
+			</div>
+		</div>
+
+		<div class="mb-3">
+			<label for="email" class="form-label">E-mail</label>
+			<input type="email" class="form-control" id="email" name="dadosPessoais.email">
+		</div>
+	</div>
+</div>
