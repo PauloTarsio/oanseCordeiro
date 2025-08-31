@@ -85,8 +85,6 @@ $.novo = function() {
 $.pesquisar = function() {
 	const filtro = $("#filtroDescricao").val().toLowerCase();
 
-	console.log("Filtro de pesquisa:", filtro);
-
 	let url = (filtro.trim() === "") ?
 		"/api/v001/usuario" :
 		"/api/v001/usuario?descricao=" + encodeURIComponent(filtro);

@@ -26,6 +26,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @Tag(name = "Usuario")
@@ -41,7 +42,7 @@ public class UsuarioController {
 			@ApiResponse(responseCode = "200", description = "Carregamento de usuario realizada com sucesso"),
 			@ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
 			@ApiResponse(responseCode = "500", description = "Erro interno do servidor") })
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
 	public ResponseEntity<UsuarioDTO> carrega(@PathVariable UUID id) {
 		Usuario usuario = usuarioService.carrega(id);
 		if (usuario == null)
@@ -69,8 +70,8 @@ public class UsuarioController {
 			@ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
 			@ApiResponse(responseCode = "500", description = "Erro interno do servidor") })
 	@Operation(description = "Cria um novo usuário")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public void salva(@RequestBody UsuarioDTO dto) {
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SECRETARIO')")
+	public void salva(@RequestBody @Valid UsuarioDTO dto) {
 		Usuario usuario = mapper.toEntity(dto);
 		usuarioService.salvar(usuario);
 	}
@@ -80,8 +81,8 @@ public class UsuarioController {
 			@ApiResponse(responseCode = "204", description = "Usuário atualizado com sucesso"),
 			@ApiResponse(responseCode = "500", description = "Erro interno do servidor") })
 	@Operation(description = "Atualiza dados de um usuário")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public void atualiza(@RequestBody UsuarioDTO dto, @PathVariable UUID id) {
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SECRETARIO')")
+	public void atualiza(@RequestBody @Valid UsuarioDTO dto, @PathVariable UUID id) {
 		Usuario usuario = mapper.toEntity(dto);
 		usuario.setId(id);
 		usuarioService.salvar(usuario);

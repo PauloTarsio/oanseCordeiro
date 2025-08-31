@@ -3,11 +3,14 @@ package br.com.igrejabatistadocordeiro.oanse.domain.service;
 import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.RegistroDuplicadoException;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.DadosPessoais;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Igreja;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.Usuario;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.IgrejaRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.util.StringUtils;
 
@@ -32,15 +35,12 @@ public class IgrejaServiceImpl implements IgrejaService {
 	@SuppressWarnings("removal")
 	@Override
 	public List<Igreja> pesquisa(String descricao) {
+		Usuario usuarioLogado = getUsuarioLogado();
 		Specification<Igreja> spec = Specification.where(null);
-		if (StringUtils.isNotBlank(descricao)) {
-			spec = spec.and((root, query, cb) -> 
-				cb.like(
-					cb.lower(root.get("dadosPessoais").get("descricao")),
-					"%" + descricao.toLowerCase() + "%"
-				)
-			);
-		}
+		if (StringUtils.isNotBlank(descricao))
+			spec = spec.and((root, query, cb) ->cb.like(cb.lower(root.get("dadosPessoais").get("descricao")),"%" + descricao.toLowerCase() + "%"));
+		if (usuarioLogado.getIgreja() != null)
+			spec = spec.and((root, query, cb) -> cb.equal(root.get("id"), usuarioLogado.getIgreja().getId()));
 		return  repository.findAll(spec);
 	}
 
@@ -121,6 +121,11 @@ public class IgrejaServiceImpl implements IgrejaService {
 
 		// Mudança ocorre se um é física e o outro jurídica
 		return (igrejaTemCPFouRG && igrejaBaseTemCNPJ) || (igrejaTemCNPJ && igrejaBaseTemCPFouRG || !igreja.getDadosPessoais().getTipo().equals(igrejaBase.getDadosPessoais().getTipo()));
+	}
+	
+	private Usuario getUsuarioLogado() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return (Usuario) authentication.getDetails();
 	}
 
 }

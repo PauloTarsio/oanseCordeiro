@@ -25,8 +25,8 @@ public class CustomAuthentication implements Authentication {
 	}
 
 	@Override
-	public Collection<GrantedAuthority> getAuthorities() {		
-		return List.of(new SimpleGrantedAuthority(usuario.getPerfil()));
+	public Collection<GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getPerfil().name()));
 	}
 
 	@Override

@@ -7,7 +7,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 
 @Entity
 @Table(name = "usuario")
@@ -24,8 +28,13 @@ public class Usuario {
 	@Column(name = "u_senha", nullable = false)
 	private String senha;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "u_perfil", nullable = false)
-	private String perfil;
+	private PerfilDoUsuario perfil;
+
+	@ManyToOne
+	@JoinColumn(name = "u_igreja_id")
+	private Igreja igreja;
 
 	public UUID getId() {
 		return id;
@@ -51,12 +60,20 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public String getPerfil() {
+	public PerfilDoUsuario getPerfil() {
 		return perfil;
 	}
 
-	public void setPerfil(String perfil) {
+	public void setPerfil(PerfilDoUsuario perfil) {
 		this.perfil = perfil;
+	}
+
+	public Igreja getIgreja() {
+		return igreja;
+	}
+
+	public void setIgreja(Igreja igreja) {
+		this.igreja = igreja;
 	}
 
 }
