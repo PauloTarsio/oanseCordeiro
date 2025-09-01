@@ -11,6 +11,8 @@ $(document).ready(function() {
 	}
 	
 	$.ajustarLegenda();
+	
+	$.preencherComboPerfil();
 
 	$("#btnSalvar").on("click", function(event) {
 		event.preventDefault();
@@ -95,6 +97,21 @@ $.ajustarLegenda = function() {
 	}
 }
 
+$.preencherComboPerfil = function() {	
+	var $select = $("#perfil");
+	$select.empty();
+	if (perfil === "ADMIN") {
+		$select.append('<option value="ADMIN">Administrador</option>');
+		$select.append('<option value="SECRETARIO">Secretario</option>');
+		$select.append('<option value="LIDER">Lider</option>');
+	} else if (perfil === "SECRETARIO") {
+		$select.append('<option value="SECRETARIO">Secretario</option>');
+		$select.append('<option value="LIDER">Lider</option>');
+	} else {
+		$select.append('<option value="">Selecione</option>');
+	}
+}
+
 $.limpaFormulario = function() {
 	$("#formUsuario")[0].reset();
 };
@@ -106,19 +123,23 @@ $.preencherFormulario = function(json) {
 	$("#perfil").val(json.perfil.replace("ROLE_", ""));
 	$("#id").val(json.id);
 	$("#igrejaId").val(json.igrejaId);
+	$("#igrejaId").prop('disabled', true);
 	$("#igrejaDescricao").val(json.igrejaDescricao);
 }
 
 $.validarFormulario = function() {
-	let valido = true;
-	
+	let valido = true;	
 	const camposObrigatorios = [
 		"#login",
 		"#senha",
-		"#perfil",
-		"#igrejaId",
-		"#igrejaDescricao",
+		"#perfil"		
 	];
+	if(perfil !== 'ADMIN' && novo) {
+		camposObrigatorios.push(
+			"#igrejaId",
+			"#igrejaDescricao"
+		)
+	}
 	camposObrigatorios.forEach(function(campo) {
 		const valor = $(campo).val().trim();
 		if (!valor) {
@@ -128,7 +149,10 @@ $.validarFormulario = function() {
 			$(campo).removeClass("is-invalid");
 		}
 	});
-
+	if(perfis.indexOf($("#perfil").val()) === -1) {
+        $("#perfil").addClass("is-invalid");
+        valido = false;
+    }
 	return valido;
 }
 

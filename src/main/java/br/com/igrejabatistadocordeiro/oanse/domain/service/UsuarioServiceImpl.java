@@ -9,7 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.model.PerfilDoUsuario;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Usuario;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.UsuarioRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.util.StringUtils;
@@ -27,9 +26,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public Usuario carrega(UUID uuid) {
-		Usuario usuarioLogado = getUsuarioLogado();
 		Usuario usuarioBase = repository.findById(uuid).orElse(null);
-		if (PerfilDoUsuario.ADMIN.equals(usuarioBase.getPerfil()) && !PerfilDoUsuario.ADMIN.equals(usuarioLogado.getPerfil()))
+		if (usuarioBase.isAdministrador() && !getUsuarioLogado().isAdministrador())
 			throw new IllegalArgumentException("Usuário logado no sistema não tem permissão para carregar usuário com perfil ADMIN.");
 		return repository.findById(uuid).orElse(null);
 	}
@@ -48,41 +46,47 @@ public class UsuarioServiceImpl implements UsuarioService {
 		Specification<Usuario> spec = Specification.anyOf();
 		if (StringUtils.isNotBlank(login))
 			spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("login")), "%" + login.toLowerCase() + "%"));
-		if (!PerfilDoUsuario.ADMIN.equals(usuarioLogado.getPerfil()))
+		if (!usuarioLogado.isAdministrador())
 			spec = spec.and((root, query, cb) -> cb.equal(root.get("igreja"), usuarioLogado.getIgreja()));
 		return repository.findAll(spec);
 	}
 
 	@Override
 	public void salvar(Usuario usuario) {
-		temPermissaoNaIgreja(usuario);
 		temLoginUnico(usuario);
-		temPermissaoParaGerenciarADMIN(usuario);
-		var senha = usuario.getSenha();
-		usuario.setSenha(encoder.encode(senha));
+		usuarioLogadoEhSecretario(usuario);		
+		resolveIgreja(usuario);
+		resolveSenha(usuario);
 		repository.save(usuario);
 	}
 
-	private void temPermissaoParaGerenciarADMIN(Usuario usuario) {
-		if (PerfilDoUsuario.ADMIN.equals(usuario.getPerfil())) {
-			Usuario usuarioLogado = getUsuarioLogado();
-			if (!PerfilDoUsuario.ADMIN.equals(usuarioLogado.getPerfil()))
-				throw new IllegalArgumentException("Usuário logado no sistema não tem permissão para incluir ou editar usuário com perfil ADMIN.");
-		}		
+	private void resolveSenha(Usuario usuario) {
+		var senha = usuario.getSenha();
+		usuario.setSenha(encoder.encode(senha));		
 	}
 
-	private void temLoginUnico(Usuario usuario) {		
+	private void resolveIgreja(Usuario usuario) {
+		Usuario usuarioLogado = getUsuarioLogado();
+		if (usuarioLogado.isAdministrador() && usuario.isAdministrador())
+			usuario.setIgreja(null);
+		if (usuarioLogado.isSecretario())
+			usuario.setIgreja(usuarioLogado.getIgreja());
+	}
+
+	private void usuarioLogadoEhSecretario(Usuario usuario) {
+		boolean secretario = getUsuarioLogado().isSecretario();
+		if (secretario && usuario.isAdministrador())
+			throw new IllegalArgumentException("Usuário logado no sistema não tem permissão para incluir ou editar usuário com perfil ADMIN.");
+		if (secretario && usuario.getIgreja().getId().compareTo(getUsuarioLogado().getIgreja().getId()) != 0)
+			throw new IllegalArgumentException("Não é permitido incluir ou editar usuário de outra igreja.");
+	}
+
+	private void temLoginUnico(Usuario usuario) {
 		Usuario existente = repository.findByLogin(usuario.getLogin()).orElse(null);
 		if (existente != null && !existente.getId().equals(usuario.getId()))
 			throw new IllegalArgumentException("Já existe um usuário com este login.");
 	}
 
-	private void temPermissaoNaIgreja(Usuario usuario) {
-		Usuario usuarioLogado = getUsuarioLogado();
-		if (PerfilDoUsuario.SECRETARIO.equals(usuarioLogado.getPerfil()) && usuario.getIgreja().getId().compareTo(usuarioLogado.getIgreja().getId()) != 0)
-			throw new IllegalArgumentException("Não é permitido incluir ou editar usuário de outra igreja.");
-	}
-	
 	private Usuario getUsuarioLogado() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		return (Usuario) authentication.getDetails();

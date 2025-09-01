@@ -3,7 +3,7 @@
  * Valida campos brasileiros como CPF, CNPJ, RG, e-mail, telefone e UF.
  */
 
-var perfis = ['ROLE_ADMIN', 'ROLE_SECRETARIO', 'ROLE_LIDER'];
+var perfis = ['ADMIN', 'SECRETARIO', 'LIDER'];
 
 const OanseLib = (() => {
 

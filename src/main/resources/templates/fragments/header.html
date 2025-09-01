@@ -6,6 +6,7 @@
 					style="max-width: 200px; height: auto;">
 				<span style="font-family: 'Fredoka One', cursive; font-size: 1.3rem;"></span>
 			</a>
+			<!-- Adiciona o nome do login visível em todas as telas -->
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
 				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -23,6 +24,9 @@
 					</li>
 					<li class="nav-item">
 						<a id="btnSair" class="nav-link" href="#">Sair</a>
+					</li>
+					<li class="text-secondary d-flex align-items-center">
+						<span id="usuarioLogin" class="ms-3" th:if="${login}" th:text="'Bem vindo ' + ${login} + '!'">Bem vindo!</span>
 					</li>
 				</ul>
 			</div>

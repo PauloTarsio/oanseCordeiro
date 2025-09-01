@@ -6,7 +6,8 @@ $(document).ready(function() {
 		datatype: "local",
 		colModel: [
 			{ label: 'UUID', name: 'id', align: 'center' },
-			{ label: 'LOGIN', name: 'login', align: 'center' }
+			{ label: 'LOGIN', name: 'login', align: 'center' },
+			{ label: 'PERFIL', name: 'perfil', align: 'center' }
 		],
 		rowNum: 10,
 		viewrecords: true,

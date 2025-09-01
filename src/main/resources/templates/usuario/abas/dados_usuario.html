@@ -19,16 +19,7 @@
 					<div class="mb-3">
 						<label for="perfil" class="form-label">Perfil</label>
 						<select class="form-select" id="perfil" name="usuario.perfil" required>
-							<option value="">Selecione</option>
-							<th:block th:if="${perfil} == 'ROLE_SECRETARIO'">
-								<option value="SECRETARIO">Secretario</option>
-								<option value="LIDER">Lider</option>
-							</th:block>
-							<th:block th:unless="${perfil} == 'ROLE_SECRETARIO'">
-								<option value="ADMIN">Administrador</option>
-								<option value="SECRETARIO">Secretario</option>
-								<option value="LIDER">Lider</option>
-							</th:block>
+						    <option value="">Selecione</option>
 						</select>
 					</div>
 				</div>

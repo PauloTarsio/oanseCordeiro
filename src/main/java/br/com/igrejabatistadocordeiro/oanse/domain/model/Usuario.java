@@ -4,14 +4,14 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
 
 @Entity
 @Table(name = "usuario")
@@ -75,5 +75,13 @@ public class Usuario {
 	public void setIgreja(Igreja igreja) {
 		this.igreja = igreja;
 	}
-
+	
+	public boolean isAdministrador() {
+		return PerfilDoUsuario.ADMIN.equals(this.perfil);
+	}
+	
+	public boolean isSecretario() {
+		return PerfilDoUsuario.SECRETARIO.equals(this.perfil);
+	}
+	
 }
