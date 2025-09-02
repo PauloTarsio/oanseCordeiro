@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.RegistroDuplicadoException;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.DadosPessoais;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Igreja;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.PerfilDoUsuario;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Usuario;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.IgrejaRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.util.StringUtils;
@@ -30,6 +29,8 @@ public class IgrejaServiceImpl implements IgrejaService {
 
 	@Override
 	public Igreja carrega(Long id) {
+		if (getUsuarioLogado().isSecretario() && id.compareTo(getUsuarioLogado().getIgreja().getId()) != 0)
+			throw new IllegalArgumentException("Não tem permissão para carregar igreja diferente.");
 		return repository.findById(id).orElseThrow(() -> new IllegalArgumentException(MSG_IGREJA_NAO_ENCONTRADA));
 	}
 
@@ -40,7 +41,7 @@ public class IgrejaServiceImpl implements IgrejaService {
 		Specification<Igreja> spec = Specification.where(null);
 		if (StringUtils.isNotBlank(descricao))
 			spec = spec.and((root, query, cb) ->cb.like(cb.lower(root.get("dadosPessoais").get("descricao")),"%" + descricao.toLowerCase() + "%"));
-		if (!PerfilDoUsuario.ADMIN.equals(usuarioLogado.getPerfil()))
+		if (getUsuarioLogado().isSecretario())
 			spec = spec.and((root, query, cb) -> cb.equal(root.get("id"), usuarioLogado.getIgreja().getId()));
 		return  repository.findAll(spec);
 	}

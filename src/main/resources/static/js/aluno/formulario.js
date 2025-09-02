@@ -4,18 +4,17 @@ var novo = true;
 
 $(document).ready(function() {
 
+	$.ajustarLegenda();
+	
 	const alunoJson = sessionStorage.getItem("alunoEdicao");
 	if (alunoJson) {
 		const json = JSON.parse(alunoJson);
 		$.preencherFormulario(json);
 
-		// Limpa para não reutilizar depois
 		sessionStorage.removeItem("alunoEdicao");
 	}
 
 	modalElement = $("#mensagemModal");
-
-	$.ajustarLegenda();
 
 	ajustarCamposPorTipo($("#tipo").val());
 	$("#tipo").on("change", function() {
@@ -52,13 +51,24 @@ $(document).ready(function() {
 	});
 
 	$("#igrejaId").on("change", function() {
-		$.carregaIgreja($(this).val());
+		$.carregaIgreja(this.value);
 	});
 
+	$.carregaIgreja(igrejaIdUsuarioLogado);
+	$.carregaClubes();
+	
 	$("#clubeId").on("change", function() {
 		$.carregaClube($(this).val());
 	});
 
+	var alunoId = $('#id').val();
+    if (alunoId) {
+        carregarAluno(alunoId);
+        novo = false;
+    } else {
+        carregarClubes();
+        novo = true;
+    }
 });
 
 function ajustarCamposPorTipo(tipo) {
@@ -150,6 +160,55 @@ function enviarCadastro(json) {
 	});
 }
 
+// Carrega clubes via API e preenche o select
+function carregarClubes(clubeIdSelecionado) {
+    $.get('/api/v001/clubes', function(clubes) {
+        var $select = $('#clube');
+        $select.empty();
+        $select.append('<option value="">Nenhum</option>');
+        $.each(clubes, function(_, clube) {
+            var selected = clubeIdSelecionado && clube.id == clubeIdSelecionado ? 'selected' : '';
+            $select.append('<option value="' + clube.id + '" ' + selected + '>' + clube.nome + '</option>');
+        });
+    });
+}
+
+// Carrega aluno via API para edição
+function carregarAluno(id) {
+    $.get('/api/v001/aluno/' + id, function(aluno) {
+        $.preencherFormulario(aluno);
+        carregarClubes(aluno.clubeId);
+    });
+}
+
+// Preenche o formulário com os dados do aluno
+$.preencherFormulario = function(aluno) {
+	$.ajustarLegenda();
+    $('#id').val(aluno.id);
+    $('#descricao').val(aluno.dadosPessoais.descricao);
+    $('#tipo').val(aluno.dadosPessoais.tipo);
+    $('#dataNascimento').val(aluno.dadosPessoais.dataNascimento);
+    $('#contato').val(aluno.dadosPessoais.contato);
+    $('#telefone1').val(aluno.dadosPessoais.telefone1);
+    $('#telefone2').val(aluno.dadosPessoais.telefone2);
+    $('#telefone3').val(aluno.dadosPessoais.telefone3);
+    $('#email').val(aluno.dadosPessoais.email);
+    $('#rua').val(aluno.dadosPessoais.endereco.rua);
+    $('#numero').val(aluno.dadosPessoais.endereco.numero);
+    $('#bairro').val(aluno.dadosPessoais.endereco.bairro);
+    $('#cidade').val(aluno.dadosPessoais.endereco.cidade);
+    $('#uf').val(aluno.dadosPessoais.endereco.uf);
+    $('#ativo').prop('checked', aluno.ativo);
+    $.carregaIgreja(aluno.igrejaId);
+    $.carregaClube(aluno.clubeId);
+    if (aluno.dadosPessoais.tipo === 'FISICA') {
+        $('#cpf').val(aluno.dadosPessoais.cpf);
+        $('#rg').val(aluno.dadosPessoais.rg);
+    } else if (aluno.dadosPessoais.tipo === 'JURIDICA') {
+        $('#cnpj').val(aluno.dadosPessoais.cnpj);
+    }
+};
+
 $.carregaClube = function(id) {
 	if (!id) {
 		$("#clubeDescricao").val("");
@@ -160,22 +219,32 @@ $.carregaClube = function(id) {
 		type: "GET",
 		success: function(data) {
 			if (data) {
+				$("#clubeId").val(data.id);
 				$("#clubeDescricao").val(data.nome);
+				$("#clubeId").removeClass("is-invalid");
 				$("#clubeDescricao").removeClass("is-invalid");
 			} else {
+				$("#clubeId").val("").addClass("is-invalid");
 				$("#clubeDescricao").val("").addClass("is-invalid");
 			}
 		},
 		error: function() {
+			$("#clubeId").val("").addClass("is-invalid");
 			$("#clubeDescricao").val("").addClass("is-invalid");
 		}
 	});
+}
 
+$.carregaClubes = function() {	
+    $("#clubeOptions").empty(); // limpa antes de preencher
+    $.each(clubes, function(i, clube) {
+        i++;
+        $("#clubeOptions").append('<div><label>' + i + ' - ' + clube + '</label></div>');
+    });
 }
 
 $.carregaIgreja = function(id) {
 	if (!id) {
-		$("#igrejaDescricao").val("");
 		return;
 	}
 	$.ajax({
@@ -183,14 +252,28 @@ $.carregaIgreja = function(id) {
 		type: "GET",
 		success: function(data) {
 			if (data && data.dadosPessoais && data.dadosPessoais.descricao) {
+				$("#igrejaId").val(data.id);
+				$("#igrejaId").removeClass("is-invalid");
+				$("#igrejaId").prop("disabled", perfil == 'SECRETARIO');
 				$("#igrejaDescricao").val(data.dadosPessoais.descricao);
 				$("#igrejaDescricao").removeClass("is-invalid");
 			} else {
+				$("#igrejaId").val("").addClass("is-invalid");
 				$("#igrejaDescricao").val("").addClass("is-invalid");
 			}
 		},
-		error: function() {
+		error: function(xhr) {			
+			$("#igrejaId").val("").addClass("is-invalid");
+			$("#igrejaId").prop("disabled", false);
 			$("#igrejaDescricao").val("").addClass("is-invalid");
+			
+			let mensagemErro = "Erro ao carregar igreja.";
+			if (xhr.responseJSON && xhr.responseJSON.message) {
+				mensagemErro = xhr.responseJSON.message;
+			} else if (xhr.responseText) {
+				mensagemErro = xhr.responseText;
+			}
+			OanseLib.exibirErro(mensagemErro);
 		}
 	});
 }
@@ -331,41 +414,4 @@ $.ajustarLegenda = function() {
 	} else {
 		$('#legendaFormulario').text('Cadastro de Aluno - EDICAO');
 	}
-}
-
-$.preencherFormulario = function(aluno) {
-	if (!aluno || !aluno.dadosPessoais) return;
-
-	novo = false;
-
-	const dados = aluno.dadosPessoais;
-	const endereco = dados.endereco || {};
-
-	$("#id").val(aluno.id || '');
-	$("#igrejaId").val(aluno.igrejaId || '');
-	$("#igrejaDescricao").val(aluno.igrejaDescricao || '');
-	$("#descricao").val(dados.descricao || '');
-	$("#tipo").val(dados.tipo || '');
-	$("#rg").val(dados.rg || '');
-	$("#cpf").val(dados.cpf || '');
-	$("#cnpj").val(dados.cnpj || '');
-	$("#dataNascimento").val(dados.dataNascimento || '');
-	$("#contato").val(dados.contato || '');
-	$("#telefone1").val(dados.telefone1 || '');
-	$("#telefone2").val(dados.telefone2 || '');
-	$("#telefone3").val(dados.telefone3 || '');
-	$("#email").val(dados.email || '');
-
-	$("#rua").val(endereco.rua || '');
-	$("#numero").val(endereco.numero || '');
-	$("#bairro").val(endereco.bairro || '');
-	$("#cidade").val(endereco.cidade || '');
-	$("#uf").val(endereco.uf || '');
-
-	$("#ativo").prop("checked", !!aluno.ativo);
-
-	$("#tipo, #rg, #cpf, #cnpj").prop("disabled", true);
-
-	$("#clubeId").val(aluno.clubeId || '');
-	$("#clubeDescricao").val(aluno.clubeDescricao || '');	
 }

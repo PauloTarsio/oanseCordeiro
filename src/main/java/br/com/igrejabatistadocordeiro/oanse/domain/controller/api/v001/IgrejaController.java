@@ -88,7 +88,7 @@ public class IgrejaController implements GenericController {
 		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
 	@Operation(description = "Atualiza uma igreja pelo ID")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
 	public ResponseEntity<Object> atualiza(@Valid @RequestBody IgrejaDTO dto, @PathVariable Long id) {
 		Igreja igreja = mapper.toEntity(dto);
 		igreja.setId(id);

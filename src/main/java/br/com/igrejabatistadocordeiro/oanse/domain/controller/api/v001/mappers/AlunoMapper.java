@@ -36,8 +36,8 @@ public abstract class AlunoMapper {
 
     public abstract List<PesquisaAlunoResumidoDTO> toResumoDtoList(List<Aluno> entityList);
 
-    @Mapping(target = "igreja", ignore = true)
     @Mapping(target = "dadosPessoais", source = "dadosPessoais")
+    @Mapping(target = "igreja", ignore = true)
     @Mapping(target = "clube", ignore = true)    
     public abstract Aluno toEntity(AlunoDTO dto);
 

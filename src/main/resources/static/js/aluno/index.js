@@ -69,7 +69,15 @@ $(document).ready(function() {
 		window.history.back();
 	});
 
+	$.carregaClubes();
 });
+
+$.carregaClubes = function() {	
+	$.each(clubes, function(i, clube) {
+		i++;
+		$("#filtroClube").append('<option value="' + i + '">' + clube + '</option>');
+	});
+}
 
 $.novo = function() {
 	$.ajax({

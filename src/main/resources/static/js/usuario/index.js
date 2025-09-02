@@ -7,7 +7,8 @@ $(document).ready(function() {
 		colModel: [
 			{ label: 'UUID', name: 'id', align: 'center' },
 			{ label: 'LOGIN', name: 'login', align: 'center' },
-			{ label: 'PERFIL', name: 'perfil', align: 'center' }
+			{ label: 'PERFIL', name: 'perfil', align: 'center' },
+			{ label: 'IGREJA', name: 'igrejaDescricao', align: 'center' }
 		],
 		rowNum: 10,
 		viewrecords: true,

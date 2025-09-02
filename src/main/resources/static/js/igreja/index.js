@@ -60,7 +60,10 @@ $(document).ready(function() {
 
 	// Botão Incluir
 	$("#btnIncluir").on("click", function() {
-		$.novo();
+		if (perfil === 'ADMIN')
+			$.novo();
+		else
+            OanseLib.exibirErro("Acesso negado.");
 	});
 
 	$("#btnVoltar").on("click", function() {

@@ -4,6 +4,7 @@
  */
 
 var perfis = ['ADMIN', 'SECRETARIO', 'LIDER'];
+var clubes = ['URSINHO','FAISCA','FLAMA','TOCHA','JV'];
 
 const OanseLib = (() => {
 

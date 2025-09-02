@@ -3,12 +3,15 @@ package br.com.igrejabatistadocordeiro.oanse.domain.service;
 import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.RegistroDuplicadoException;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Aluno;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.DadosPessoais;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Igreja;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.Usuario;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.AlunoRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.IgrejaRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.util.StringUtils;
@@ -37,11 +40,14 @@ public class AlunoServiceImpl implements AlunoService {
 
 	@Override
 	public List<Aluno> pesquisa(String descricao, Long idClube) {
+		Usuario usuarioLogado = getUsuarioLogado();
 		Specification<Aluno> spec = Specification.anyOf();
 		if (StringUtils.isNotBlank(descricao))
 			spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("dadosPessoais").get("descricao")),"%" + descricao.toLowerCase() + "%"));
 		if (idClube != null)
 			spec = spec.and((root, query, cb) -> cb.equal(root.get("clube").get("id"), idClube));
+		if (!usuarioLogado.isAdministrador())
+			spec = spec.and((root, query, cb) -> cb.equal(root.get("igreja"), usuarioLogado.getIgreja()));
 		return repository.findAll(spec);
 	}
 
@@ -87,5 +93,10 @@ public class AlunoServiceImpl implements AlunoService {
 
 	private Igreja pesquisaIgreja(Long id) {
 		return igrejaRepository.findById(id).orElse(null);
+	}
+
+	private Usuario getUsuarioLogado() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return (Usuario) authentication.getDetails();
 	}
 }
