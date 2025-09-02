@@ -38,6 +38,9 @@ public class Aluno {
     
     @Column(name = "a_ativo", nullable = false)
     private boolean ativo = true;
+    
+    @Column(name = "foto_base64", columnDefinition = "TEXT")
+    private String fotoBase64;
 
 	public Long getId() {
 		return id;
@@ -100,4 +103,12 @@ public class Aluno {
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
+
+    public String getFotoBase64() {
+        return fotoBase64;
+    }
+
+    public void setFotoBase64(String fotoBase64) {
+        this.fotoBase64 = fotoBase64;
+    }
 }

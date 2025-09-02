@@ -92,7 +92,7 @@ public class AlunoController implements GenericController {
 	public ResponseEntity<Object> atualiza(@Valid @RequestBody AlunoDTO dto, @PathVariable Long id) {
 		Aluno aluno = mapper.toEntity(dto);
 		aluno.setId(id);
-		service.atualiza(aluno);		
+		service.atualiza(aluno);
 		return ResponseEntity.noContent().build();
 	}
 }

@@ -73,8 +73,7 @@ public class AlunoServiceImpl implements AlunoService {
 		Aluno alunoEncontrado = pesquisaDocumentos(aluno.getDadosPessoais());
 		if (alunoEncontrado != null && alunoEncontrado.getId() != aluno.getId())
 			throw new RegistroDuplicadoException(CONFLITO_DADOS_PESSOAIS);
-		if (aluno.getIgreja() == null)
-			alunoEncontrado = carrega(aluno.getId());
+		alunoEncontrado = carrega(aluno.getId());
 		aluno.getDadosPessoais().setId(alunoEncontrado.getDadosPessoais().getId());
 		aluno.getDadosPessoais().getEndereco().setId(alunoEncontrado.getDadosPessoais().getEndereco().getId());
 		repository.save(aluno);

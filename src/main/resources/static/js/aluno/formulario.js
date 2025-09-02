@@ -4,15 +4,14 @@ var novo = true;
 
 $(document).ready(function() {
 
-	$.ajustarLegenda();
-	
 	const alunoJson = sessionStorage.getItem("alunoEdicao");
 	if (alunoJson) {
 		const json = JSON.parse(alunoJson);
 		$.preencherFormulario(json);
-
 		sessionStorage.removeItem("alunoEdicao");
 	}
+
+	$.ajustarLegenda();
 
 	modalElement = $("#mensagemModal");
 
@@ -61,14 +60,6 @@ $(document).ready(function() {
 		$.carregaClube($(this).val());
 	});
 
-	var alunoId = $('#id').val();
-    if (alunoId) {
-        carregarAluno(alunoId);
-        novo = false;
-    } else {
-        carregarClubes();
-        novo = true;
-    }
 });
 
 function ajustarCamposPorTipo(tipo) {
@@ -121,13 +112,16 @@ function montarJson() {
 		dadosPessoais.cnpj = $("#cnpj").val();
 	}
 
-	return {
+	var json = {
 		id: id,
 		ativo: $("#ativo").is(":checked"),
 		dadosPessoais: dadosPessoais,
 		igrejaId: igrejaId,
-		clubeId: clubeId
+		clubeId: clubeId,
+		fotoBase64: window.fotoBase64 || ""
 	};
+
+	return json;
 }
 
 // Envia os dados com AJAX
@@ -160,30 +154,9 @@ function enviarCadastro(json) {
 	});
 }
 
-// Carrega clubes via API e preenche o select
-function carregarClubes(clubeIdSelecionado) {
-    $.get('/api/v001/clubes', function(clubes) {
-        var $select = $('#clube');
-        $select.empty();
-        $select.append('<option value="">Nenhum</option>');
-        $.each(clubes, function(_, clube) {
-            var selected = clubeIdSelecionado && clube.id == clubeIdSelecionado ? 'selected' : '';
-            $select.append('<option value="' + clube.id + '" ' + selected + '>' + clube.nome + '</option>');
-        });
-    });
-}
-
-// Carrega aluno via API para edição
-function carregarAluno(id) {
-    $.get('/api/v001/aluno/' + id, function(aluno) {
-        $.preencherFormulario(aluno);
-        carregarClubes(aluno.clubeId);
-    });
-}
-
 // Preenche o formulário com os dados do aluno
 $.preencherFormulario = function(aluno) {
-	$.ajustarLegenda();
+	novo = false;
     $('#id').val(aluno.id);
     $('#descricao').val(aluno.dadosPessoais.descricao);
     $('#tipo').val(aluno.dadosPessoais.tipo);
@@ -207,7 +180,20 @@ $.preencherFormulario = function(aluno) {
     } else if (aluno.dadosPessoais.tipo === 'JURIDICA') {
         $('#cnpj').val(aluno.dadosPessoais.cnpj);
     }
+	preencherFotoAluno(aluno.fotoBase64);
 };
+
+function preencherFotoAluno(fotoBase64) {
+    if (fotoBase64 && fotoBase64.length > 0) {
+        $("#imgPreview").attr("src", "data:image/png;base64," + fotoBase64).show();
+        $("#removerFoto").show();
+        window.fotoBase64 = fotoBase64;
+    } else {
+        $("#imgPreview").attr("src", "").hide();
+        $("#removerFoto").hide();
+        window.fotoBase64 = "";
+    }
+}
 
 $.carregaClube = function(id) {
 	if (!id) {
@@ -415,3 +401,23 @@ $.ajustarLegenda = function() {
 		$('#legendaFormulario').text('Cadastro de Aluno - EDICAO');
 	}
 }
+
+window.fotoBase64 = "";
+$("#fotoAluno").on("change", function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            window.fotoBase64 = evt.target.result.split(",")[1];
+            $("#imgPreview").attr("src", evt.target.result).show();
+            $("#removerFoto").show();
+        };
+        reader.readAsDataURL(file);
+    }
+});
+$("#removerFoto").on("click", function() {
+    window.fotoBase64 = "";
+    $("#imgPreview").attr("src", "").hide();
+    $("#fotoAluno").val("");
+    $("#removerFoto").hide();
+});

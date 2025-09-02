@@ -15,7 +15,7 @@ $(document).ready(function() {
 		viewrecords: true,
 		hidegrid: false,
 		autowidth: true, // faz o grid ajustar à largura do contêiner pai
-		shrinkToFit: true, // garante que as colunas se ajustem dentro da largura
+		shrinkToFit: true, // garante que as colunas se ajustem dentro da largura		
 		pager: "#jqGridPager",
 		caption: "Registros"
 	});
@@ -33,16 +33,36 @@ $(document).ready(function() {
 			const idSelecionado = $("#jqGrid").jqGrid("getGridParam", "selrow");
 			if (idSelecionado)
 				$.editar(idSelecionado);
+			else
+			    OanseLib.exibirErro("Selecione um registro para continuar.");
+		},
+		position: "last"
+	});
+	
+	// Adiciona botão do manual com ícone de livro
+	$("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager', {
+		caption: "Manual",
+		buttonicon: "ui-icon-bookmark", // ícone de livro (padrão jQuery UI)
+		title: "Manual",
+		id: "btnManualRodape",
+		onClickButton: function() {
+			const idSelecionado = $("#jqGrid").jqGrid("getGridParam", "selrow");
+			if (idSelecionado)
+				console.log(idSelecionado);
+			else
+                OanseLib.exibirErro("Selecione um registro para continuar.");
 		},
 		position: "last"
 	});
 
-	// Inicialmente desabilita o botão
+		// Inicialmente desabilita o botão
 	$("#btnEditarRodape").addClass("ui-state-disabled");
+	$("#btnManualRodape").addClass("ui-state-disabled");
 
 	// Habilita o botão quando uma linha é selecionada
 	$("#jqGrid").on("jqGridSelectRow", function() {
 		$("#btnEditarRodape").removeClass("ui-state-disabled");
+		$("#btnManualRodape").removeClass("ui-state-disabled");
 	});
 
 	$(window).on('resize', function() {
