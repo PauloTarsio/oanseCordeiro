@@ -15,6 +15,9 @@ $(document).ready(function() {
 		hidegrid: false,
 		autowidth: true, // faz o grid ajustar à largura do contêiner pai
 		shrinkToFit: true, // garante que as colunas se ajustem dentro da largura
+		beforeSelectRow: function(rowid, e) {
+			var selRow = $(this).jqGrid("getGridParam", "selrow");
+			if (selRow === rowid) { return false; } return true; },
 		pager: "#jqGridPager",
 		caption: "Registros"
 	});
