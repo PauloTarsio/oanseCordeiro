@@ -1,0 +1,13 @@
+package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(name = "AlunoManual")
+public record AlunoManualDTO(
+    Long id,
+    Long alunoId,
+    String alunoDescricao,
+    Long livroId,
+    String livroDescricao,
+    Boolean concluido
+) {}
