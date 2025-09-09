@@ -32,7 +32,7 @@ public class Livro {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "l_tipo_livro", nullable = false)
-    private TipoLivro tipoLivro;
+    private TipoManualDoOanse tipoLivro;
 
     @OneToMany(mappedBy = "livro", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Trilha> trilhas = new ArrayList<>();
@@ -61,11 +61,11 @@ public class Livro {
 		this.clube = clube;
 	}
 
-	public TipoLivro getTipoLivro() {
+	public TipoManualDoOanse getTipoLivro() {
 		return tipoLivro;
 	}
 
-	public void setTipoLivro(TipoLivro tipoLivro) {
+	public void setTipoLivro(TipoManualDoOanse tipoLivro) {
 		this.tipoLivro = tipoLivro;
 	}
 

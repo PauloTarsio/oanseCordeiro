@@ -29,7 +29,7 @@ public class DadosPessoais {
     
     @Column(name = "dp_tipo", nullable = false)
     @Enumerated(EnumType.STRING)
-    private TipoPessoa tipo;
+    private TipoDocumentoPessoa tipo;
     
     @Column(name = "dp_rg")
     private String rg;
@@ -173,11 +173,11 @@ public class DadosPessoais {
 		this.cnpj = cnpj;
 	}
 
-	public TipoPessoa getTipo() {
+	public TipoDocumentoPessoa getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(TipoPessoa tipo) {
+	public void setTipo(TipoDocumentoPessoa tipo) {
 		this.tipo = tipo;
 	}
 

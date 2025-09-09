@@ -9,10 +9,13 @@ $(document).ready(function() {
 		// Limpa para não reutilizar depois
 		sessionStorage.removeItem("usuarioEdicao");
 	}
-	
+
 	$.ajustarLegenda();
-	
-	$.preencherComboPerfil();
+
+	if (novo) {
+		$.preencherComboPerfil();
+		$.preencherIgrejaDoUsuario();		
+	}
 
 	$("#btnSalvar").on("click", function(event) {
 		event.preventDefault();
@@ -30,7 +33,7 @@ $(document).ready(function() {
 
 	if (novo)
 		$.limpaFormulario();
-	
+
 	$("#igrejaId").on("change", function() {
 		$.carregaIgreja($(this).val());
 	});
@@ -67,6 +70,13 @@ function enviarCadastro(json) {
 	});
 }
 
+$.preencherIgrejaDoUsuario = function() {
+	if (perfil === 'SECRETARIO') {
+        $.carregaIgreja(igrejaIdUsuarioLogado);
+        $("#igrejaId").prop("disabled", true);
+    }
+}
+
 $.carregaIgreja = function(id) {
 	if (!id) {
 		$("#igrejaDescricao").val("");
@@ -77,14 +87,28 @@ $.carregaIgreja = function(id) {
 		type: "GET",
 		success: function(data) {
 			if (data && data.dadosPessoais && data.dadosPessoais.descricao) {
+				$("#igrejaId").val(data.id);
+				$("#igrejaId").removeClass("is-invalid");
+				$("#igrejaId").prop("disabled", perfil == 'SECRETARIO');
 				$("#igrejaDescricao").val(data.dadosPessoais.descricao);
 				$("#igrejaDescricao").removeClass("is-invalid");
 			} else {
+				$("#igrejaId").val("").addClass("is-invalid");
 				$("#igrejaDescricao").val("").addClass("is-invalid");
 			}
 		},
-		error: function() {
+		error: function(xhr) {
+			$("#igrejaId").val("").addClass("is-invalid");
+			$("#igrejaId").prop("disabled", false);
 			$("#igrejaDescricao").val("").addClass("is-invalid");
+
+			let mensagemErro = "Erro ao carregar igreja.";
+			if (xhr.responseJSON && xhr.responseJSON.message) {
+				mensagemErro = xhr.responseJSON.message;
+			} else if (xhr.responseText) {
+				mensagemErro = xhr.responseText;
+			}
+			OanseLib.exibirErro(mensagemErro);
 		}
 	});
 }
@@ -97,7 +121,7 @@ $.ajustarLegenda = function() {
 	}
 }
 
-$.preencherComboPerfil = function() {	
+$.preencherComboPerfil = function() {
 	var $select = $("#perfil");
 	$select.empty();
 	if (perfil === "ADMIN") {
@@ -120,7 +144,9 @@ $.preencherFormulario = function(json) {
 	if (!json) return;
 	novo = false;
 	$("#login").val(json.login);
-	$("#perfil").val(json.perfil.replace("ROLE_", ""));
+	var $select = $("#perfil");
+	$select.empty();
+	$select.append('<option value="' + json.perfil + '">Secretario</option>');
 	$("#id").val(json.id);
 	$("#igrejaId").val(json.igrejaId);
 	$("#igrejaId").prop('disabled', true);
@@ -128,13 +154,13 @@ $.preencherFormulario = function(json) {
 }
 
 $.validarFormulario = function() {
-	let valido = true;	
+	let valido = true;
 	const camposObrigatorios = [
 		"#login",
 		"#senha",
-		"#perfil"		
+		"#perfil"
 	];
-	if(perfil !== 'ADMIN' && novo) {
+	if (perfil !== 'ADMIN' && novo) {
 		camposObrigatorios.push(
 			"#igrejaId",
 			"#igrejaDescricao"
@@ -149,14 +175,14 @@ $.validarFormulario = function() {
 			$(campo).removeClass("is-invalid");
 		}
 	});
-	if(perfis.indexOf($("#perfil").val()) === -1) {
-        $("#perfil").addClass("is-invalid");
-        valido = false;
-    }
+	if (perfis.indexOf($("#perfil").val()) === -1) {
+		$("#perfil").addClass("is-invalid");
+		valido = false;
+	}
 	return valido;
 }
 
-$.montaJson = function() {	
+$.montaJson = function() {
 	return {
 		id: $("#id").val() || null,
 		login: $("#login").val().trim() || null,

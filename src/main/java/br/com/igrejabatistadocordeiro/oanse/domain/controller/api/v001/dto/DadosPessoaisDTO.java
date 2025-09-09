@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.validators.EnumValido;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.validators.TelefoneValido;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.validators.TipoPessoaValido;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.TipoPessoa;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.TipoDocumentoPessoa;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -30,8 +30,8 @@ public record DadosPessoaisDTO(
 			String descricao,
 			
 			@NotNull(message = "campo obrigatório")
-		    @EnumValido(enumClass = TipoPessoa.class, message = "Tipo inválido")
-			TipoPessoa tipo,
+		    @EnumValido(enumClass = TipoDocumentoPessoa.class, message = "Tipo inválido")
+			TipoDocumentoPessoa tipo,
 			
 			@Size(max = 20, message = "Quantidade de caracteres, max 20")
 			String rg,

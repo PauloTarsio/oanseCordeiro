@@ -1,6 +1,6 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
-public enum TipoPessoa {	
+public enum TipoDocumentoPessoa {	
 	FISICA,
 	JURIDICA;
 }

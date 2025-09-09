@@ -2,11 +2,11 @@ package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.vali
 
 import java.util.Arrays;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.model.TipoPessoa;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.TipoDocumentoPessoa;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class EnumValidator implements ConstraintValidator<EnumValido, TipoPessoa> {
+public class EnumValidator implements ConstraintValidator<EnumValido, TipoDocumentoPessoa> {
 
     private Class<? extends Enum<?>> enumClass;
 
@@ -16,7 +16,7 @@ public class EnumValidator implements ConstraintValidator<EnumValido, TipoPessoa
     }
 
     @Override
-    public boolean isValid(TipoPessoa value, ConstraintValidatorContext context) {
+    public boolean isValid(TipoDocumentoPessoa value, ConstraintValidatorContext context) {
         return value != null && Arrays.stream(enumClass.getEnumConstants()).anyMatch(e -> e.equals(value));
     }
 }
