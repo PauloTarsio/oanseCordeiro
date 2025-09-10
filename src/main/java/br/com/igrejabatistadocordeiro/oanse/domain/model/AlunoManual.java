@@ -1,6 +1,13 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "aluno_manual")
@@ -21,12 +28,16 @@ public class AlunoManual {
 
     @Column(name = "am_data_conclusao")
     private java.time.LocalDate dataConclusao;
+    
+    @Column(name = "am_data_inicio")
+    private java.time.LocalDate dataInicio;
 
     // Constructors
     public AlunoManual() {}
     public AlunoManual(Aluno aluno, Livro livro) {
         this.aluno = aluno;
         this.livro = livro;
+        this.dataInicio = java.time.LocalDate.now();
     }
 
     // Getters and setters
@@ -39,5 +50,14 @@ public class AlunoManual {
     public void setDataConclusao(java.time.LocalDate dataConclusao) { this.dataConclusao = dataConclusao; }
 	public Boolean isConcluido() {		
 		return dataConclusao != null;
+	}
+	public java.time.LocalDate getDataInicio() {
+		return dataInicio;
+	}
+	public void setDataInicio(java.time.LocalDate dataInicio) {
+		this.dataInicio = dataInicio;
+	}
+	public Boolean isIniciado() {
+		return dataInicio != null;
 	}
 }

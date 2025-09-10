@@ -17,4 +17,12 @@ public interface AlunoManualRepository extends JpaRepository<AlunoManual, Long> 
 	List<AlunoManual> findByLivro(Livro livro);
 
 	List<AlunoManual> findByAlunoAndLivro(Aluno aluno, Livro livro);
+	
+	List<AlunoManual> findByAlunoIgrejaId(Long igrejaId);
+	
+	List<AlunoManual> findByAlunoIgrejaIdAndLivroId(Long igrejaId, Long livroId);
+
+	List<AlunoManual> findByAlunoIdAndAlunoIgrejaId(Long alunoId, Long igrejaId);
+
+	List<AlunoManual> findByAlunoIdAndLivroIdAndAlunoIgrejaId(Long alunoId, Long livroId, Long igrejaId);
 }

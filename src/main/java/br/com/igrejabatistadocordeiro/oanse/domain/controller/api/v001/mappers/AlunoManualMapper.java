@@ -15,7 +15,8 @@ public class AlunoManualMapper {
             entity.getAluno().getDadosPessoais().getDescricao(),
             entity.getLivro().getId(),
             entity.getLivro().getDescricao(),
-            entity.isConcluido()
+            entity.isConcluido(),
+            entity.isIniciado()
         );
     }
 

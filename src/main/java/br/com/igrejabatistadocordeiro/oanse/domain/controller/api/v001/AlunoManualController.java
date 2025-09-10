@@ -14,33 +14,53 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.service.AlunoManualService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping
-public class AlunoManualController {   
-   
-    @Autowired
-    private AlunoManualService alunoManualService;
+@Tag(name = "AlunoManual", description = "Gerencia as associações entre Alunos e Manuais (Livros)")
+public class AlunoManualController {
 
-    @GetMapping("/api/aluno-manual")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
-    public ResponseEntity<?> pesquisa(@RequestParam(required = false) Long alunoId, @RequestParam(required = false) Long livroId) {
-        var resultado = alunoManualService.pesquisa(alunoId, livroId);
-        return ResponseEntity.ok(resultado);
-    }
-    
-    @PostMapping("/api/aluno-manual")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
-    public ResponseEntity<?> associa(@RequestParam Long alunoId, @RequestParam Long livroId) {
-    	alunoManualService.salva(alunoId, livroId);    	
+	@Autowired
+	private AlunoManualService alunoManualService;
+
+	@GetMapping("/api/aluno-manual")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
+	@ApiResponses(value = {
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Pesquisa realizada com sucesso"),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Parâmetros inválidos"),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Erro interno do servidor") })
+	@Operation(description = "Pesquisa associação entre Aluno e Manual, filtrando por alunoId e/ou livroId")
+	public ResponseEntity<?> pesquisa(@RequestParam(required = false) Long alunoId,
+			@RequestParam(required = false) Long livroId) {
+		var resultado = alunoManualService.pesquisa(alunoId, livroId);
+		return ResponseEntity.ok(resultado);
+	}
+
+	@PostMapping("/api/aluno-manual")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
+	@ApiResponses(value = {
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Associação criada com sucesso"),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Parâmetros inválidos"),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Erro interno do servidor") })
+	@Operation(description = "Associa um Aluno a um Manual")
+	public ResponseEntity<?> associa(@RequestParam Long alunoId, @RequestParam Long livroId) {
+		alunoManualService.salva(alunoId, livroId);
 		return ResponseEntity.created(URI.create("/api/aluno-manual")).build();
-    }
+	}
 
-    @PutMapping("/api/aluno-manual/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
-    public ResponseEntity<?> conclui(@PathVariable Long id) {
-        alunoManualService.conclui(id);
-        return ResponseEntity.ok().build();
-    }
+	@PutMapping("/api/aluno-manual/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
+	@ApiResponses(value = {
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Associação concluída com sucesso"),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Parâmetros inválidos"),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Erro interno do servidor") })
+	@Operation(description = "Marca a associação entre Aluno e Manual como concluída")
+	public ResponseEntity<?> conclui(@PathVariable Long id) {
+		alunoManualService.conclui(id);
+		return ResponseEntity.ok().build();
+	}
 
 }

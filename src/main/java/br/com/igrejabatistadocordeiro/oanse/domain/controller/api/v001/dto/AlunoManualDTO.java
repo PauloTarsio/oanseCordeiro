@@ -9,5 +9,6 @@ public record AlunoManualDTO(
     String alunoDescricao,
     Long livroId,
     String livroDescricao,
-    Boolean concluido
+    Boolean concluido,
+    Boolean iniciado
 ) {}

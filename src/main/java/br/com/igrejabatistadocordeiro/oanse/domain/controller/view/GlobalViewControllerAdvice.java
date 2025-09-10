@@ -1,5 +1,6 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.controller.view;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,27 +12,26 @@ public class GlobalViewControllerAdvice {
 
     @ModelAttribute("login")
     public String getLoginUsuarioLogadoModel() {
-        Object details = SecurityContextHolder.getContext().getAuthentication().getDetails();
-        if (details instanceof Usuario usuario) {
-            return usuario.getLogin();
-        }
-        return "";
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	if (authentication != null && authentication.isAuthenticated() && authentication.getDetails() != null)
+			return ((Usuario) authentication.getDetails()).getLogin();
+    	return "";
     }
 
     @ModelAttribute("perfil")
     public String getPerfilUsuarioLogadoModel() {
-        Object details = SecurityContextHolder.getContext().getAuthentication().getDetails();
-        if (details instanceof Usuario usuario) {
-            return usuario.getPerfil().name();
-        }
-        return "";
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	if (authentication != null && authentication.isAuthenticated() && authentication.getDetails() != null)
+			return ((Usuario) authentication.getDetails()).getPerfil().name();
+    	return "";
     }
     
     @ModelAttribute("igrejaIdUsuarioLogado")
     public String getIgrejaUsuarioLogadoModel() {
-    	Object details = SecurityContextHolder.getContext().getAuthentication().getDetails();
-    	if (details instanceof Usuario usuario) {
-    		return ((Usuario) details).isSecretario() ? String.valueOf(usuario.getIgreja().getId()) : "";
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	if (authentication != null && authentication.isAuthenticated() && authentication.getDetails() != null) {
+    		Usuario usuario = (Usuario) authentication.getDetails();
+    		return (usuario.isSecretario() ? String.valueOf(usuario.getIgreja().getId()) : "");    		
     	}
     	return "";
     }
