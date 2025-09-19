@@ -7,7 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.AlunoManualDTO;
+import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.AlunoManualTrilhasDTO;
+import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.PesquisaAlunoManualDTO;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.mappers.AlunoManualMapper;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Aluno;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.AlunoManual;
@@ -35,9 +36,17 @@ public class AlunoManualServiceImpl implements AlunoManualService {
 			throw new IllegalArgumentException("Associação entre Aluno e Livro já existe!");
 		alunoManualRepository.save(new AlunoManual(aluno, livro));
     }
+    
+
+	@Override
+	public AlunoManualTrilhasDTO carrega(Long id) {
+		AlunoManual alunoManual = alunoManualRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("Associação não encontrada com ID: " + id));		
+		return AlunoManualMapper.toAlunoManualDTO(alunoManual);
+	}
 
     @Override
-    public List<AlunoManualDTO> pesquisa(Long alunoId, Long livroId) {
+    public List<PesquisaAlunoManualDTO> pesquisa(Long alunoId, Long livroId) {
         boolean admin = getUsuarioLogado().isAdministrador();
         boolean secretario = getUsuarioLogado().isSecretario();
 

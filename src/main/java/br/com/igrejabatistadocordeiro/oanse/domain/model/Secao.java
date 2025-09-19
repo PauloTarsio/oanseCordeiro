@@ -1,5 +1,7 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,6 +26,7 @@ public class Secao {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "s_trilha_id", nullable = false)
+    @JsonIgnore
     private Trilha trilha;
 
 	public Long getId() {
