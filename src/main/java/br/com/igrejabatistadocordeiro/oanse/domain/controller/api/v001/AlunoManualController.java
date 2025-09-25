@@ -1,7 +1,6 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.AlunoManualTrilhasDTO;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.ConcluiSecaoRequest;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.PesquisaAlunoManualDTO;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.AlunoSecao;
-import br.com.igrejabatistadocordeiro.oanse.domain.repository.AlunoSecaoRepository;
+import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.PesquisaAlunoSecaoDTO;
 import br.com.igrejabatistadocordeiro.oanse.domain.service.AlunoManualService;
+import br.com.igrejabatistadocordeiro.oanse.domain.service.AlunoSecaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,7 +34,7 @@ public class AlunoManualController {
 	private AlunoManualService alunoManualService;
 
     @Autowired
-    private AlunoSecaoRepository alunoSecaoRepository;
+    private AlunoSecaoService alunoSecaoService;
 	
 	@GetMapping("/api/aluno-manual/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
@@ -85,17 +84,26 @@ public class AlunoManualController {
 		alunoManualService.conclui(id);
 		return ResponseEntity.ok().build();
 	}
+	
+	@GetMapping("/api/aluno-manual/secao")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
+	@ApiResponses(value = {
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Pesquisa realizada com sucesso"),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Parâmetros inválidos"),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Erro interno do servidor") })
+	@Operation(description = "Pesquisa seções do Aluno referente ao Manual")
+	public ResponseEntity<?> carregaSecaoAluno(
+			@RequestParam(required = false) Long alunoManualId,
+			@RequestParam(required = false) Long secaoId) {
+		List<PesquisaAlunoSecaoDTO> resultado = alunoSecaoService.carrega(alunoManualId, secaoId);
+		return ResponseEntity.ok(resultado);
+	}
 
     @PutMapping("/api/aluno-manual/secao/conclui")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
     @Operation(description = "Marca uma seção como concluída para um aluno")
     public ResponseEntity<?> concluiSecao(@RequestBody ConcluiSecaoRequest request) {
-        AlunoSecao alunoSecao = new AlunoSecao();
-        alunoSecao.setAlunoManualId(request.alunoManualId());
-        alunoSecao.setTrilhaId(request.trilhaId());
-        alunoSecao.setSecaoId(request.secaoId());
-        alunoSecao.setDataConclusao(LocalDateTime.now());
-        alunoSecaoRepository.save(alunoSecao);
+    	alunoSecaoService.concluiSecao(request.alunoManualId(), request.secaoId());
         return ResponseEntity.ok().build();
     }
 	

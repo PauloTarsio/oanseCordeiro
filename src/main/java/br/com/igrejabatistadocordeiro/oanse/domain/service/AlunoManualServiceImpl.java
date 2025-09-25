@@ -22,7 +22,9 @@ import br.com.igrejabatistadocordeiro.oanse.domain.repository.LivroRepository;
 public class AlunoManualServiceImpl implements AlunoManualService {
     
 	@Autowired
-    private AlunoManualRepository alunoManualRepository;	
+    private AlunoManualRepository alunoManualRepository;
+	@Autowired
+	private AlunoSecaoService alunoSecaoService;
 	@Autowired
     private AlunoRepository alunoRepository;
 	@Autowired
@@ -34,7 +36,12 @@ public class AlunoManualServiceImpl implements AlunoManualService {
 		Livro livro = getLivro(livroId);
 		if (alunoManualRepository.existsByAlunoAndLivro(aluno, livro))
 			throw new IllegalArgumentException("Associação entre Aluno e Livro já existe!");
-		alunoManualRepository.save(new AlunoManual(aluno, livro));
+		try {
+			AlunoManual alunoManual = alunoManualRepository.save(new AlunoManual(aluno, livro));
+			alunoSecaoService.populaSecoes(alunoManual);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Ocorreu um erro durante a associação entre Aluno e Livro!");
+		}
     }
     
 
