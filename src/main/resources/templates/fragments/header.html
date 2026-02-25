@@ -13,20 +13,23 @@
 			</button>
 			<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
 				<ul class="navbar-nav gap-2">
-					<li class="nav-item">
-						<a id="btnCadastrarIgreja" class="nav-link" href="#">Igrejas</a>
-					</li>
-					<li class="nav-item">
-						<a id="btnCadastrarAluno" class="nav-link" href="#">Alunos</a>
-					</li>
-					<li class="nav-item">
-						<a id="btnCadastrarUsuario" class="nav-link" href="#">Usuarios</a>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="cadastroDropdown" role="button" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							Cadastro
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="cadastroDropdown">
+							<li><a id="btnCadastrarIgreja" class="dropdown-item" href="#">Igrejas</a></li>
+							<li><a id="btnCadastrarAluno" class="dropdown-item" href="#">Alunos</a></li>
+							<li><a id="btnCadastrarUsuario" class="dropdown-item" href="#">Usuarios</a></li>
+						</ul>
 					</li>
 					<li class="nav-item">
 						<a id="btnSair" class="nav-link" href="#">Sair</a>
 					</li>
 					<li class="text-danger d-flex align-items-center">
-						<span id="usuarioLogin" class="ms-3" th:if="${login}" th:text="'Olá ' + ${login} + '!'">Bem vindo!</span>
+						<span id="usuarioLogin" class="ms-3" th:if="${login}"
+							th:text="'Olá ' + ${login} + '!'">Bem vindo!</span>
 					</li>
 				</ul>
 			</div>

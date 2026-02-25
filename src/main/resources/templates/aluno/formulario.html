@@ -21,6 +21,12 @@
 									</button>
 								</li>
 								<li class="nav-item" role="presentation">
+                                    <button class="btn btn-light" id="foto-tab" data-bs-toggle="tab"
+                                        data-bs-target="#foto" type="button" role="tab">
+                                        Foto
+                                    </button>
+								</li>
+								<li class="nav-item" role="presentation">
 									<button class="btn btn-light" id="endereco-tab" data-bs-toggle="tab"
 										data-bs-target="#endereco" type="button" role="tab">
 										Endereço
@@ -32,18 +38,24 @@
                                         Igreja
                                     </button>
 								</li>
-								<li class="nav-item" role="presentation">
+								<!-- <li class="nav-item" role="presentation">
                                     <button class="btn btn-light" id="clube-tab" data-bs-toggle="tab"
                                         data-bs-target="#clube" type="button" role="tab">
                                         Clube
                                     </button>
 								</li>
 								<li class="nav-item" role="presentation">
-                                    <button class="btn btn-light" id="foto-tab" data-bs-toggle="tab"
-                                        data-bs-target="#foto" type="button" role="tab">
-                                        Foto
+                                    <button class="btn btn-light" id="manual-tab" data-bs-toggle="tab"
+                                        data-bs-target="#manual" type="button" role="tab">
+                                        Manual
                                     </button>
 								</li>
+								<li class="nav-item" role="presentation">
+                                    <button class="btn btn-light" id="sessao-tab" data-bs-toggle="tab"
+                                        data-bs-target="#sessao" type="button" role="tab">
+                                        Sessão
+                                    </button>
+								</li> -->
 							</ul>
 
 							<!-- Conteúdo das abas -->
@@ -54,6 +66,12 @@
 										<div th:replace="igreja/abas/dados_pessoais :: dadosPessoais"></div>
 									</form>
 								</div>
+								<!-- Aba Foto-->
+								<div class="tab-pane fade" id="foto" role="tabpanel">
+									<form>
+                                        <div th:replace="aluno/abas/foto :: foto"></div>
+                                    </form>                                   
+                                </div>
 								<!-- Aba Endereço -->
 								<div class="tab-pane fade" id="endereco" role="tabpanel">
 									<form>
@@ -67,22 +85,17 @@
                                     </form>
 								</div>									
 								<!-- Aba Clube-->
-								<div class="tab-pane fade" id="clube" role="tabpanel">
+								<!-- <div class="tab-pane fade" id="clube" role="tabpanel">
                                     <form>
                                         <div th:replace="aluno/abas/clube :: clube"></div>
                                     </form>
-								</div>
-								<!-- Aba Foto-->
-								<div class="tab-pane fade" id="foto" role="tabpanel">
-                                    <div class="mb-3">
-                                        <label for="fotoAluno" class="form-label">Foto do Aluno</label>
-                                        <input class="form-control" type="file" id="fotoAluno" accept="image/*" placeholder="Carregar">
-                                    </div>
-                                    <div id="previewFoto" style="margin-bottom:10px;">
-                                        <img id="imgPreview" src="" alt="Preview" style="max-width:200px; display:none;" />
-                                    </div>
-                                    <button type="button" class="btn btn-danger" id="removerFoto" style="display:none;">Remover Foto</button>
-                                </div>
+								</div> -->								
+								<!-- Aba Manual-->
+								<!-- <div class="tab-pane fade" id="manual" role="tabpanel" aria-labelledby="manual-tab">
+									<form>
+										<div th:replace="aluno/abas/manual :: manual"></div>
+									</form>
+								</div> -->
 							</div>
 
 							<div class="form-check mt-4">

@@ -1,0 +1,26 @@
+<div th:fragment="manual" class="card mt-4">
+	<div class="card-header bg-success text-white">
+		<h5>Manual</h5>
+	</div>
+	<div class="card-body">
+		<div id="manualInfo">
+		</div>
+		<div id="manualAssociar" class="mt-3">
+			<form id="formManualAluno">
+				<div class="mb-3">
+					<label for="manualSelect" class="form-label">Associar
+						Manual</label> <select id="manualSelect" name="manualSelect"
+						class="form-select">
+						<option value="">Selecione um manual</option>
+						<th:block th:each="manual : ${manuais}">
+							<option th:value="${manual.id}" th:text="${manual.nome}"></option>
+						</th:block>
+					</select>
+				</div>
+				<button type="button" id="btnAssociarManual" class="btn btn-primary">Associar
+					Manual
+				</button>
+			</form>
+		</div>
+	</div>
+</div>
