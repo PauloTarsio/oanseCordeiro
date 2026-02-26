@@ -8,10 +8,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.exceptions.RegistroDuplicadoException;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Aluno;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.DadosPessoais;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Igreja;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Usuario;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.Aluno;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.AlunoRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.IgrejaRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.util.StringUtils;
@@ -62,7 +62,8 @@ public class AlunoServiceImpl implements AlunoService {
 		Igreja igrejaEncontrada = pesquisaIgreja(aluno.getIgreja().getId());
 		if (igrejaEncontrada == null)
 			throw new IllegalArgumentException(MSG_IGREJA_NAO_ENCONTRADA);
-		aluno.setIgreja(igrejaEncontrada);
+		else
+			aluno.setIgreja(igrejaEncontrada);
 		repository.save(aluno);
 	}
 

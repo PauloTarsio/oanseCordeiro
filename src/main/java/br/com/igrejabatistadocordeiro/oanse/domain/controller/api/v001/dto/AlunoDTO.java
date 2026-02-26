@@ -18,8 +18,8 @@ public record AlunoDTO(
 	    @NotNull
 	    Long igrejaId,
 	    
-	    String igrejaDescricao,	    
-	    Long clubeId,	    
+	    String igrejaDescricao,
+	    Long clubeId,
 	    String clubeDescricao,
 	    String fotoBase64
 	) {}

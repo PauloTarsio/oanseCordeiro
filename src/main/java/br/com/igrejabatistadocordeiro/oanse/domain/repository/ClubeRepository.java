@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Clube;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Clubes;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.clube.Clube;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.clube.Clubes;
 
 public interface ClubeRepository extends JpaRepository<Clube, Long> {
     

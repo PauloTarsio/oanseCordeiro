@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Aluno;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.Aluno;
 
 public interface AlunoRepository extends JpaRepository<Aluno, Long>, JpaSpecificationExecutor<Aluno> {
 

@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Aluno;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.Aluno;
 
 @SpringBootTest
 @ActiveProfiles("test")

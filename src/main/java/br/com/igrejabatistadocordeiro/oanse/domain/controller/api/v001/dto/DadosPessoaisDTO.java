@@ -73,4 +73,8 @@ public record DadosPessoaisDTO(
 			@NotNull(message = "Endereco obrigatório")
 			EnderecoDTO endereco
 			
-		) {}
+		) {
+
+	public boolean isPessoaFisica() {
+		return this.tipo == TipoDocumentoPessoa.FISICA;		
+	}}

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Clubes;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Livro;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.clube.Clubes;
 import br.com.igrejabatistadocordeiro.oanse.domain.service.LivroService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 

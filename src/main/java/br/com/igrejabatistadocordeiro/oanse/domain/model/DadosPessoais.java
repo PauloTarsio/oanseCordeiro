@@ -188,4 +188,8 @@ public class DadosPessoais {
 	public void setContato(String contato) {
 		this.contato = contato;
 	}
+	
+	public boolean isPessoaFisica() {
+		return this.tipo == TipoDocumentoPessoa.FISICA;		
+	}
 }

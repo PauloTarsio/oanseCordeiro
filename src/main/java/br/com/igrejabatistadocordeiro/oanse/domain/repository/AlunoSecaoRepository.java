@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.model.AlunoSecao;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.AlunoSecao;
 
 public interface AlunoSecaoRepository extends JpaRepository<AlunoSecao, Long> {
 

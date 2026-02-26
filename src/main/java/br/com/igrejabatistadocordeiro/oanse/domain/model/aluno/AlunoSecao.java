@@ -1,4 +1,4 @@
-package br.com.igrejabatistadocordeiro.oanse.domain.model;
+package br.com.igrejabatistadocordeiro.oanse.domain.model.aluno;
 
 import java.time.LocalDate;
 

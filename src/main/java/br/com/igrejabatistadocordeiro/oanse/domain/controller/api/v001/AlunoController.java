@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.AlunoDTO;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.PesquisaAlunoResumidoDTO;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.mappers.AlunoMapper;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Aluno;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.Aluno;
 import br.com.igrejabatistadocordeiro.oanse.domain.service.AlunoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -73,7 +73,7 @@ public class AlunoController implements GenericController {
 		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
 	@Operation(description = "Cria um novo aluno")
-	public ResponseEntity<Object> salva(@Valid @RequestBody AlunoDTO dto) {
+	public ResponseEntity<Object> inclui(@Valid @RequestBody AlunoDTO dto) {
 		Aluno aluno = mapper.toEntity(dto);
 		service.salva(aluno);
 		URI uri = getLocation(aluno.getId());
@@ -89,7 +89,7 @@ public class AlunoController implements GenericController {
 		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
 	@Operation(description = "Atualiza um aluno por ID")
-	public ResponseEntity<Object> atualiza(@Valid @RequestBody AlunoDTO dto, @PathVariable Long id) {
+	public ResponseEntity<Object> edita(@Valid @RequestBody AlunoDTO dto, @PathVariable Long id) {
 		Aluno aluno = mapper.toEntity(dto);
 		aluno.setId(id);
 		service.atualiza(aluno);

@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.AlunoManualTrilhasDTO;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.PesquisaAlunoManualDTO;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.AlunoManual;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.AlunoManual;
 
 public class AlunoManualMapper {
     

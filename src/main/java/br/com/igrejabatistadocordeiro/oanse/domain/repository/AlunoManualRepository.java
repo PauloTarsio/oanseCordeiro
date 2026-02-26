@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Aluno;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.AlunoManual;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Livro;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.Aluno;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.AlunoManual;
 
 public interface AlunoManualRepository extends JpaRepository<AlunoManual, Long> {
 

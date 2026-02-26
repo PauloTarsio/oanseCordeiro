@@ -3,7 +3,7 @@ package br.com.igrejabatistadocordeiro.oanse.domain.service;
 import java.util.List;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.PesquisaAlunoSecaoDTO;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.AlunoManual;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.AlunoManual;
 
 public interface AlunoSecaoService {
 

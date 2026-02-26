@@ -22,9 +22,8 @@ $(document).ready(function() {
 
 	$("#btnSalvar").on("click", function(event) {
 		event.preventDefault();
-		if (!$.validarFormulario()) {
-			return;
-		}
+		if (!$.validarFormulario())
+			OanseLib.exibirErro("Preencha todos os campos obrigatórios, verifique outras abas.");
 		const json = montarJson();
 		enviarCadastro(json);
 	});
@@ -483,13 +482,6 @@ $.validarFormulario = function() {
 		$('#dataNascimento').addClass("is-invalid");
 	} else {
 		$('#dataNascimento').removeClass("is-invalid");
-	}
-
-	if (!OanseLib.validarTexto(clubeDescricao)) {
-		valido = false;
-		$('#clubeDescricao').addClass("is-invalid");
-	} else {
-		$('#clubeDescricao').removeClass("is-invalid");
 	}
 
 	return valido;

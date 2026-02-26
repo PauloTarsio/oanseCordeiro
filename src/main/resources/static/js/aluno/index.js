@@ -28,8 +28,7 @@ $(document).ready(function() {
 
 	// Adiciona botão de edição com ícone de caneta
 	$("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager', {
-		caption: "Editar",
-		buttonicon: "ui-icon-pencil", // ícone de caneta (padrão jQuery UI)
+		caption: "Editar",		
 		title: "Editar registro selecionado",
 		id: "btnEditarRodape",
 		onClickButton: function() {
@@ -41,13 +40,13 @@ $(document).ready(function() {
 		},
 		position: "last"
 	});
-		// Inicialmente desabilita o botão
+	
+	// Inicialmente desabilita o botão
 	$("#btnEditarRodape").addClass("ui-state-disabled");
 
 	// Habilita/desabilita os botões conforme seleção de linha
 	$("#jqGrid").on("jqGridSelectRow", function() {
 		$("#btnEditarRodape").removeClass("ui-state-disabled");
-		$("#btnManualRodape").removeClass("ui-state-disabled");
 	});
 	
 	$(window).on('resize', function() {

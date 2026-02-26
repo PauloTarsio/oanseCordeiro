@@ -1,9 +1,12 @@
-package br.com.igrejabatistadocordeiro.oanse.domain.model;
+package br.com.igrejabatistadocordeiro.oanse.domain.model.aluno;
 
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import br.com.igrejabatistadocordeiro.oanse.domain.model.DadosPessoais;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.Igreja;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.clube.Clube;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

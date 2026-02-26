@@ -3,7 +3,7 @@ package br.com.igrejabatistadocordeiro.oanse.domain.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Clube;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.clube.Clube;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.ClubeRepository;
 
 @Service

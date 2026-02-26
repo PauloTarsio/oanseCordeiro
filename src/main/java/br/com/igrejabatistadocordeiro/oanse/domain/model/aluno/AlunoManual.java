@@ -1,5 +1,6 @@
-package br.com.igrejabatistadocordeiro.oanse.domain.model;
+package br.com.igrejabatistadocordeiro.oanse.domain.model.aluno;
 
+import br.com.igrejabatistadocordeiro.oanse.domain.model.Livro;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

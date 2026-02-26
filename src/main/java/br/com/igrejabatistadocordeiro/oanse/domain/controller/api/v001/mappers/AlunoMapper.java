@@ -2,18 +2,14 @@ package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.mappers;
 
 import java.util.List;
 
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.AlunoDTO;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.PesquisaAlunoResumidoDTO;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Aluno;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Clube;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.Igreja;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.Aluno;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.ClubeRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.IgrejaRepository;
 
@@ -49,17 +45,4 @@ public abstract class AlunoMapper {
     @Mapping(source = "fotoBase64", target = "fotoBase64")
     public abstract AlunoDTO toDto(Aluno entity);
 
-    @AfterMapping
-    protected void afterMapping(@MappingTarget Aluno aluno, AlunoDTO dto) {
-        if (dto.igrejaId() != null) {
-            Igreja igreja = igrejaRepository.findById(dto.igrejaId())
-                .orElseThrow(() -> new IllegalArgumentException("Igreja com ID " + dto.igrejaId() + " não encontrada"));
-            aluno.setIgreja(igreja);
-        }
-        if (dto.clubeId() != null) {
-        	Clube clube = clubeRepository.findById(dto.clubeId())
-				.orElseThrow(() -> new IllegalArgumentException("Clube com ID " + dto.clubeId() + " não encontrado"));
-        	aluno.setClube(clube);
-        }
-    }
 }

@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.PesquisaAlunoSecaoDTO;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.AlunoManual;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.AlunoSecao;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Livro;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.AlunoManual;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.AlunoSecao;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.AlunoSecaoRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.LivroRepository;
 

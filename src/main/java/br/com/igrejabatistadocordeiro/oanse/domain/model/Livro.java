@@ -3,6 +3,7 @@ package br.com.igrejabatistadocordeiro.oanse.domain.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.igrejabatistadocordeiro.oanse.domain.model.clube.Clubes;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

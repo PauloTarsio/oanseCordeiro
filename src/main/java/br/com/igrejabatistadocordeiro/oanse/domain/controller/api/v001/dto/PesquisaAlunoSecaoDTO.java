@@ -1,6 +1,6 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto;
 
-import br.com.igrejabatistadocordeiro.oanse.domain.model.AlunoSecao;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.AlunoSecao;
 
 public class PesquisaAlunoSecaoDTO {
 
