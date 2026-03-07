@@ -1,19 +1,22 @@
-<!-- templates/fragments/modal-mensagem.html -->
-<div th:fragment="modal">
-	<div class="modal fade" id="mensagemModal" tabindex="-1" aria-labelledby="mensagemModalLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered">
-	    <div class="modal-content" style="border-radius: 20px;">
-	      <div class="modal-header bg-danger text-white" style="border-top-left-radius: 20px; border-top-right-radius: 20px;">
-	        <h5 class="modal-title" id="mensagemModalLabel">Ops! Algo deu errado 💥</h5>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-	      </div>
-	      <div class="modal-body text-center" id="mensagemErro">
-	        <!-- Mensagem será inserida via JS -->
-	      </div>
-	      <div class="modal-footer justify-content-center">
-	        <button type="button" class="btn btn-warning px-4" data-bs-dismiss="modal">Fechar</button>
-	      </div>
-	    </div>
-	  </div>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:fragment="modal">
+		<div class="modal fade" id="mensagemModal" tabindex="-1"
+			aria-labelledby="mensagemModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content" style="border-radius: 20px;">
+					<div class="modal-header bg-danger text-white" style="border-top-left-radius: 20px; border-top-right-radius: 20px;">
+						<h5 class="modal-title" id="mensagemModalLabel">Ops! Algo deu
+							errado</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+					</div>
+					<div class="modal-body text-center" id="mensagemErro">
+						<!-- Mensagem será inserida via JS -->
+					</div>
+					<div class="modal-footer justify-content-center">
+						<button type="button" class="btn btn-warning px-4" data-bs-dismiss="modal">Fechar</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
+</html>

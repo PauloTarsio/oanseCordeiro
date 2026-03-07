@@ -1,8 +1,3 @@
-/**
- * Biblioteca de validações Oanse para formulários
- * Valida campos brasileiros como CPF, CNPJ, RG, e-mail, telefone e UF.
- */
-
 var perfis = ['ADMIN', 'SECRETARIO', 'LIDER'];
 var clubes = ['URSINHO','FAISCA','FLAMA','TOCHA','JV'];
 
@@ -158,6 +153,30 @@ const OanseLib = (() => {
 		}, 2000);
 	}
 
+	// Exibe o loading como modal
+	function exibirLoading() {
+		let $loading = $("#oanseLoading");
+		if ($loading.length === 0) {
+			$loading = $(
+				'<div id="oanseLoading" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1050;background:rgba(13,110,253,0.15);display:flex;align-items:center;justify-content:center;">' +
+				'<div style="background: #fff; border-radius: 1rem; box-shadow: 0 0 32px rgba(13,110,253,0.25); padding: 2rem 3rem; text-align:center; display:flex; flex-direction:column; align-items:center;">' +
+				'<div class="spinner-border" style="width:4rem;height:4rem;color:#0d6efd;" role="status">' +
+				'<span class="visually-hidden">Carregando...</span>' +
+				'</div>' +
+				'<div style="margin-top:1rem;color:#0d6efd;font-weight:bold;font-size:1.2rem;">Aguarde...</div>' +
+				'</div>' +
+				'</div>'
+			);
+			$('body').append($loading);
+		}
+		$loading.fadeIn(50);
+	}
+
+	// Esconde o loading
+	function esconderLoading() {
+		$("#oanseLoading").fadeOut(200);
+	}
+
 	return {
 		validarCPF,
 		validarCNPJ,
@@ -168,6 +187,8 @@ const OanseLib = (() => {
 		validarDataNascimento,
 		validarTexto,
 		exibirSucesso,
-		exibirErro
+		exibirErro,
+		exibirLoading,
+		esconderLoading
 	};
 })();

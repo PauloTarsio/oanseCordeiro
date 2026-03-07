@@ -5,10 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(name = "PesquisaAlunoManual")
 public record PesquisaAlunoManualDTO(
     Long id,
-    Long alunoId,
-    String alunoDescricao,
-    Long livroId,
-    String livroDescricao,
+    String aluno,
+    String livro,
     Boolean concluido,
-    Boolean iniciado
+    String clube,
+    String igreja
 ) {}

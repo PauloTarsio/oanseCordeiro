@@ -130,6 +130,12 @@
 	      <version>1.5.5.Final</version>
 	      <scope>provided</scope>
 	    </dependency>
+	    
+	    <dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>free-jqgrid</artifactId>
+			<version>4.15.5</version>
+		</dependency>		
 	</dependencies>
 
 	<build>

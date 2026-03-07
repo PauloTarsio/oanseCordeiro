@@ -1,3 +1,5 @@
+var aluno = {}
+
 $(document).ready(function() {
 
 	// Inicializa jqGrid
@@ -6,12 +8,13 @@ $(document).ready(function() {
 		datatype: "local",
 		colModel: [
 			{ label: 'ID', name: 'id', width: 30, key: true, align: 'center' },
-			{ label: 'DESCRICAO', name: 'descricao', align: 'center' },
+			{ label: 'NOME', name: 'descricao', align: 'center' },
 			{ label: 'CLUBE', name: 'clube', align: 'center' },
 			{ label: 'IGREJA', name: 'igreja', align: 'center' },
 			{ label: 'ATIVO', name: 'ativo', width: 30, formatter: booleanFormatter, align: 'center' },
 		],
 		rowNum: 50,
+		height: 300,
 		viewrecords: true,
 		hidegrid: false,
 		autowidth: true, // faz o grid ajustar à largura do contêiner pai
@@ -32,14 +35,21 @@ $(document).ready(function() {
 		title: "Editar registro selecionado",
 		id: "btnEditarRodape",
 		onClickButton: function() {
+			if ($("#btnEditarRodape").hasClass("ui-state-disabled"))
+		       return;
 			const idSelecionado = $("#jqGrid").jqGrid("getGridParam", "selrow");
 			if (idSelecionado)
-				$.editar(idSelecionado);
+				aluno.edita(idSelecionado);
 			else
 			    OanseLib.exibirErro("Selecione um registro para continuar.");
 		},
 		position: "last"
 	});
+	
+	// Aplica estilo Bootstrap
+	$("#btnEditarRodape")
+		.removeClass("ui-button ui-corner-all ui-state-default")
+		.addClass("btn btn-secondary");
 	
 	// Inicialmente desabilita o botão
 	$("#btnEditarRodape").addClass("ui-state-disabled");
@@ -61,12 +71,12 @@ $(document).ready(function() {
 
 	// Botão Pesquisar
 	$("#btnPesquisar").on("click", function() {
-		$.pesquisar();
+		aluno.pesquisa();
 	});
 
 	// Botão Incluir
 	$("#btnIncluir").on("click", function() {
-		$.novo();
+		aluno.novo();
 	});
 
 	$("#btnVoltar").on("click", function() {
@@ -78,67 +88,31 @@ $(document).ready(function() {
 
 $.carregaClubes = function() {	
 	$.each(clubes, function(i, clube) {
-		i++;
-		$("#filtroClube").append('<option value="' + i + '">' + clube + '</option>');
+		$("#filtroClube").append(`<option value="${i+1}">${clube}</option>`);
 	});
 }
 
-$.novo = function() {
-	$.ajax({
-		url: "/aluno/formulario",
-		type: "GET",
-		success: function() {
-			window.location.href = "/aluno/formulario";
-		},
-		error: function(xhr) {
-			let mensagemErro = "Erro ao carregar formulário.";
-			if (xhr.responseJSON?.message) {
-				mensagemErro = xhr.responseJSON.message;
-			} else if (xhr.responseText) {
-				mensagemErro = xhr.responseText;
-			}
-			OanseLib.exibirErro(mensagemErro);
-		}
-	});
-}
-
-// Limpa o campo de filtro
-$.cleanFilter = function() {
-	$("#filtroDescricao").val("");
+aluno.novo = function() {
+	window.location.href = "/aluno/formulario";
 }
 
 // Carrega os dados na grid
 $.carregarGrid = function(data) {
-	$("#jqGrid").jqGrid("clearGridData");
-	$("#jqGrid").jqGrid("setGridParam", { data: data });
-	$("#jqGrid").trigger("reloadGrid");
+	$("#jqGrid")
+		.jqGrid("clearGridData")
+		.jqGrid("setGridParam", { data: data })
+		.trigger("reloadGrid");
 }
 
-$.pesquisar = function() {
+aluno.pesquisa = function() {
 	const filtroDescricao = $("#filtroDescricao").val().toLowerCase();
-	const filtroClubeId = $("#filtroClube").val();
-
-	let params = [];
-	if (filtroDescricao.trim() !== "") {
-		params.push("descricao=" + encodeURIComponent(filtroDescricao));
-	}
-	if (filtroClubeId && filtroClubeId !== "Todos os clubes") {
-		params.push("clubeId=" + encodeURIComponent(filtroClubeId));
-	} else if (filtroClubeId === "Todos os clubes") {
-		params.push("clubeId=");
-	}
-
-	let url = "/api/v001/aluno";
-	if (params.length > 0) {
-		url += "?" + params.join("&");
-	}
+	let url = "/api/v001/aluno?descricao=" + encodeURIComponent(filtroDescricao);
 
 	$.ajax({
 		url: url,
 		type: "GET",
 		success: function(data) {
 			$.carregarGrid(data);
-			$.cleanFilter();
 		},
 		error: function(xhr) {
 			let mensagemErro = "Erro ao buscar alunos.";
@@ -152,7 +126,7 @@ $.pesquisar = function() {
 	});
 }
 
-$.editar = function(id) {
+aluno.edita = function(id) {
 	let url = "/api/v001/aluno/" + id;
 	$.ajax({
 		url: url,

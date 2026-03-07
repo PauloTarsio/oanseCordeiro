@@ -25,4 +25,8 @@ public interface AlunoManualRepository extends JpaRepository<AlunoManual, Long> 
 	List<AlunoManual> findByAlunoIdAndAlunoIgrejaId(Long alunoId, Long igrejaId);
 
 	List<AlunoManual> findByAlunoIdAndLivroIdAndAlunoIgrejaId(Long alunoId, Long livroId, Long igrejaId);
+	
+	List<AlunoManual> findByAlunoDadosPessoaisDescricaoContainingIgnoreCase(String descricao);
+	
+	List<AlunoManual> findByAlunoDadosPessoaisDescricaoContainingIgnoreCaseAndAlunoIgrejaId(String descricao, Long igrejaId);
 }

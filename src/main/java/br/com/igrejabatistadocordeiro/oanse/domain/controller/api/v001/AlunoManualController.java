@@ -41,12 +41,11 @@ public class AlunoManualController {
 
 	@GetMapping("/api/v001/aluno-manual")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
-	public ResponseEntity<?> pesquisa(@RequestParam(required = false) Long alunoId,
-			@RequestParam(required = false) Long livroId) {
-		List<PesquisaAlunoManualDTO> resultado = alunoManualService.pesquisa(alunoId, livroId);
+	public ResponseEntity<?> pesquisa(@RequestParam(required = false) String descricao) {
+		List<PesquisaAlunoManualDTO> resultado = alunoManualService.pesquisa(descricao);
 		return ResponseEntity.ok(resultado);
 	}
-
+	
 	@PostMapping("/api/v001/aluno-manual")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
 	public ResponseEntity<?> associa(@RequestParam Long alunoId, @RequestParam Long livroId) {

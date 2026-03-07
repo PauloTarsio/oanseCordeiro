@@ -53,10 +53,9 @@ function enviarCadastro(json) {
 		data: JSON.stringify(json),
 		success: function() {
 			OanseLib.exibirSucesso("Processo concluído com sucesso!");
-			if (novo) {
+			if (novo)
 				$("#formUsuario")[0].reset();
-				window.history.back();
-			}
+			window.history.back();
 		},
 		error: function(xhr) {
 			let mensagemErro = "Erro ao salvar aluno.";

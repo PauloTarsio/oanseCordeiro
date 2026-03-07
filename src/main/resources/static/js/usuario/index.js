@@ -11,6 +11,7 @@ $(document).ready(function() {
 			{ label: 'IGREJA', name: 'igrejaDescricao', align: 'center' }
 		],
 		rowNum: 10,
+		height: 300,
 		viewrecords: true,
 		hidegrid: false,
 		autowidth: true, // faz o grid ajustar à largura do contêiner pai
@@ -39,6 +40,11 @@ $(document).ready(function() {
 		},
 		position: "last"
 	});
+	
+	// Aplica estilo Bootstrap
+	$("#btnEditarRodape")
+		.removeClass("ui-button ui-corner-all ui-state-default")
+		.addClass("btn btn-secondary");
 
 	// Inicialmente desabilita o botão
 	$("#btnEditarRodape").addClass("ui-state-disabled");

@@ -184,8 +184,7 @@ function montarJson() {
 
 	const id = $("#id").val() || null;
 	const tipo = $("#tipo").val();
-	const igrejaId = $("#igrejaId").val() || null;
-	const clubeId = $("#clubeId").val() || null;
+	const igrejaId = $("#igrejaId").val() || null;	
 
 	const dadosPessoais = {
 		descricao: $("#descricao").val(),
@@ -216,8 +215,7 @@ function montarJson() {
 		id: id,
 		ativo: $("#ativo").is(":checked"),
 		dadosPessoais: dadosPessoais,
-		igrejaId: igrejaId,
-		clubeId: clubeId,
+		igrejaId: igrejaId,		
 		fotoBase64: window.fotoBase64 || ""
 	};
 
@@ -237,10 +235,10 @@ function enviarCadastro(json) {
 		data: JSON.stringify(json),
 		success: function() {
 			OanseLib.exibirSucesso("Processo concluído com sucesso!");
-			if (novo) {
+			if (novo)
 				$("#formAluno")[0].reset();
-				window.history.back();
-			}
+			window.history.back();
+			Aluno.pesquisa();
 		},
 		error: function(xhr) {
 			let mensagemErro = "Erro ao salvar aluno.";

@@ -9,7 +9,7 @@ public interface AlunoManualService {
 	
 	public AlunoManualTrilhasDTO carrega(Long id);
 	
-	List<PesquisaAlunoManualDTO> pesquisa(Long alunoId, Long livroId);
+	List<PesquisaAlunoManualDTO> pesquisa(String nomeAluno);
 
 	public void salva(Long alunoId, Long livroId);
 

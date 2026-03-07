@@ -122,10 +122,10 @@ function enviarCadastro(json) {
 		data: JSON.stringify(json),
 		success: function() {
 			OanseLib.exibirSucesso("Processo concluído com sucesso!");
-			if (novo) {
+			if (novo)
 				$("#formIgreja")[0].reset();
-				window.history.back();
-			}
+			window.history.back();
+			igreja.pesquisa();
 		},
 		error: function(xhr) {
 			let mensagemErro = "Erro ao cadastrar igreja.";

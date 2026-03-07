@@ -11,12 +11,14 @@ import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.Aluno
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.PesquisaAlunoManualDTO;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.mappers.AlunoManualMapper;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Livro;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.PerfilDoUsuario;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Usuario;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.Aluno;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.AlunoManual;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.AlunoManualRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.AlunoRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.LivroRepository;
+import br.com.igrejabatistadocordeiro.oanse.domain.util.StringUtils;
 
 @Service
 public class AlunoManualServiceImpl implements AlunoManualService {
@@ -42,8 +44,7 @@ public class AlunoManualServiceImpl implements AlunoManualService {
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Ocorreu um erro durante a associação entre Aluno e Livro!");
 		}
-    }
-    
+    }    
 
 	@Override
 	public AlunoManualTrilhasDTO carrega(Long id) {
@@ -51,24 +52,6 @@ public class AlunoManualServiceImpl implements AlunoManualService {
 			.orElseThrow(() -> new IllegalArgumentException("Associação não encontrada com ID: " + id));		
 		return AlunoManualMapper.toAlunoManualDTO(alunoManual);
 	}
-
-    @Override
-    public List<PesquisaAlunoManualDTO> pesquisa(Long alunoId, Long livroId) {
-        boolean admin = getUsuarioLogado().isAdministrador();
-        boolean secretario = getUsuarioLogado().isSecretario();
-
-        List<AlunoManual> lista;
-
-        if (admin) {
-            lista = pesquisaAdmin(alunoId, livroId);
-        } else if (secretario) {
-            lista = pesquisaSecretario(alunoId, livroId);
-        } else {
-            throw new IllegalArgumentException("Usuário sem permissão para consultar manuais de alunos.");
-        }
-
-        return AlunoManualMapper.toDTOList(lista);
-    }
 
     @Override
     public void conclui(Long id) {
@@ -80,34 +63,6 @@ public class AlunoManualServiceImpl implements AlunoManualService {
         alunoManualRepository.save(associacao);
     }
     
-    private List<AlunoManual> pesquisaAdmin(Long alunoId, Long livroId) {
-        if (alunoId == null && livroId == null) {
-            return alunoManualRepository.findAll();
-        }
-        if (alunoId != null && livroId == null) {
-            return alunoManualRepository.findByAluno(getAluno(alunoId));
-        }
-        if (alunoId == null) {
-            return alunoManualRepository.findByLivro(getLivro(livroId));
-        }
-        return alunoManualRepository.findByAlunoAndLivro(getAluno(alunoId), getLivro(livroId));
-    }
-
-    private List<AlunoManual> pesquisaSecretario(Long alunoId, Long livroId) {
-        Long igrejaId = getUsuarioLogado().getIgreja().getId();
-
-        if (alunoId == null && livroId == null) {
-            return alunoManualRepository.findByAlunoIgrejaId(igrejaId);
-        }
-        if (alunoId != null && livroId == null) {
-            return alunoManualRepository.findByAlunoIdAndAlunoIgrejaId(alunoId, igrejaId);
-        }
-        if (alunoId == null) {
-            return alunoManualRepository.findByAlunoIgrejaIdAndLivroId(igrejaId, livroId);
-        }
-        return alunoManualRepository.findByAlunoIdAndLivroIdAndAlunoIgrejaId(alunoId, livroId, igrejaId);
-    }
-
     private Aluno getAluno(Long alunoId) {
         return alunoRepository.findById(alunoId)
             .orElseThrow(() -> new IllegalArgumentException("Aluno não encontrado com ID: " + alunoId));
@@ -121,6 +76,25 @@ public class AlunoManualServiceImpl implements AlunoManualService {
 	private Usuario getUsuarioLogado() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		return (Usuario) authentication.getDetails();
+	}
+
+	@Override
+	public List<PesquisaAlunoManualDTO> pesquisa(String nomeAluno) {
+		List<AlunoManual> lista;
+        if (PerfilDoUsuario.ADMIN.equals(getUsuarioLogado().getPerfil())) {
+        	if (StringUtils.isBlank(nomeAluno))
+        		lista = alunoManualRepository.findAll();
+        	else
+        		lista = alunoManualRepository.findByAlunoDadosPessoaisDescricaoContainingIgnoreCase(nomeAluno);
+        } else if (PerfilDoUsuario.SECRETARIO.equals(getUsuarioLogado().getPerfil())) {
+        	if (StringUtils.isBlank(nomeAluno))
+        		lista = alunoManualRepository.findByAlunoIgrejaId(getUsuarioLogado().getIgreja().getId());
+        	else
+        		lista = alunoManualRepository.findByAlunoDadosPessoaisDescricaoContainingIgnoreCaseAndAlunoIgrejaId(nomeAluno, getUsuarioLogado().getIgreja().getId());
+        } else {
+            throw new IllegalArgumentException("Usuário sem permissão para consultar manuais de alunos.");
+        }
+        return AlunoManualMapper.toDTOList(lista);
 	}
     
 }

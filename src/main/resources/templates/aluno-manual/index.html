@@ -1,0 +1,35 @@
+<div th:replace="fragments/head :: head"></div>
+<body>
+	<div th:replace="fragments/modal-mensagem :: modal"></div>	
+	<div class="container mb-5" style="margin-top: 70px;">
+		<div class="col-md-12">
+			<div class="card-body">
+				<!-- Filtro de pesquisa -->
+				<fieldset class="p-3 border rounded">
+					<legend id="legendaFormulario" class="w-auto px-2">Alunos com manual - PESQUISA</legend>
+
+					<!-- Botões de ação -->
+					<div class="d-flex justify-content-end mb-3">
+						<button type="button" id="btnPesquisar" class="btn btn-secondary me-2">Pesquisar</button>
+						<button type="button" id="btnIniciaManual" class="btn btn-primary">Iniciar manual</button>
+					</div>
+
+					<div class="mb-3">
+						<label for="descricao" class="form-label">Nome</label>
+						<input type="text" id="filtroDescricao" name="filtroDescricao" class="form-control"
+							placeholder="Digite aqui e clique em pesquisar...">
+					</div>
+					<!-- Tabela jqGrid -->
+					<div id="tabelaRegistros" class="w-100">
+						<div id="jqGridPager"></div>
+						<table id="jqGrid"></table>
+					</div>
+					<div class="footer text-center mt-3">
+						<button type="button" id="btnVoltar" class="btn btn-secondary">Voltar</button>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+	<script src="/js/aluno-manual/index.js"></script>
+</body>

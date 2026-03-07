@@ -12,12 +12,11 @@ public class AlunoManualMapper {
 	public static PesquisaAlunoManualDTO toPesquisaManualAlunoDTO(AlunoManual entity) {
         return new PesquisaAlunoManualDTO(
             entity.getId(),
-            entity.getAluno().getId(),
             entity.getAluno().getDadosPessoais().getDescricao(),
-            entity.getLivro().getId(),
             entity.getLivro().getDescricao(),
             entity.isConcluido(),
-            entity.isIniciado()
+            entity.getAluno().getClube() != null ? entity.getAluno().getClube().getNome().getNome() : null,
+            entity.getAluno().getIgreja() != null ? entity.getAluno().getIgreja().getDescricao() : null
         );
     }
 	

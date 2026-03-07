@@ -1,0 +1,54 @@
+<div th:replace="fragments/head :: head"></div>
+<body>
+	<div th:replace="fragments/modal-mensagem :: modal"></div>
+	<div class="container mb-5" style="margin-top: 60px;">
+		<div class="col-md-12">
+			<div class="card-body">
+				<fieldset class="p-3 border rounded">
+					<form id="formAlunoManual">
+						<legend id="legendaFormulario" class="w-auto px-2"></legend>						
+						<div class="row">
+							<div class="col-md-3 mb-3">
+								<label for="codigoAluno">Código</label>
+								<div class="input-group">
+									<input type="text" class="form-control" id="codigoAluno" name="codigoAluno" placeholder="Digite o código do aluno">
+									<button type="button" class="btn btn-outline-secondary" onclick="pesquisaAluno()">
+										<i class="bi bi-search"></i>
+									</button>
+								</div>
+							</div>
+							<div class="col-md-9 mb-3">
+								<label for="descricaoAluno">Nome</label>
+								<input type="text" class="form-control" id="descricaoAluno" name="descricaoAluno" placeholder="Nome do aluno" readonly>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3 mb-3 position-relative">
+								<label for="codigoLivro">Código do Manual (Livro)</label>
+								<div class="input-group">
+									<input type="text" class="form-control" id="codigoLivro" name="codigoLivro" placeholder="Digite o código do manual">
+									<button type="button" class="btn btn-outline-secondary" onclick="pesquisaLivro()">
+										<i class="bi bi-search"></i>
+									</button>
+								</div>
+							</div>
+                             <div class="col-md-9 mb-3">
+								<label for="descricaoLivro">Descrição do Manual (Livro)</label>
+								<input type="text" class="form-control" id="descricaoLivro" name="descricaoLivro" placeholder="Descrição do manual" readonly>
+                             </div>
+						</div>
+					</form>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+	<script src="/js/aluno-manual/formulario.js"></script>
+	<script>
+		function pesquisaAluno() {
+			alert('Pesquisar aluno (popup genérico futuro)');
+		}
+		function pesquisaLivro() {
+			alert('Pesquisar livro (popup genérico futuro)');
+		}
+	</script>
+</body>

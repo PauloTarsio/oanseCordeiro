@@ -56,10 +56,8 @@ public class AlunoController implements GenericController {
 		@ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 	})
 	@Operation(description = "Pesquisa alunos pelo nome ou parte do nome")
-	public ResponseEntity<Object> pesquisa(
-				@RequestParam(value = "descricao", required = false) String descricao,
-				@RequestParam(value = "clubeId", required = false) Long clubeId) {
-		List<Aluno> pesquisa = service.pesquisa(descricao, clubeId);
+	public ResponseEntity<Object> pesquisa(@RequestParam(value = "descricao", required = false) String descricao) {
+		List<Aluno> pesquisa = service.pesquisa(descricao);
 		List<PesquisaAlunoResumidoDTO> dtos = mapper.toResumoDtoList(pesquisa);
 		return ResponseEntity.ok(dtos);
 	}

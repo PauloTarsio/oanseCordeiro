@@ -39,13 +39,11 @@ public class AlunoServiceImpl implements AlunoService {
 	}
 
 	@Override
-	public List<Aluno> pesquisa(String descricao, Long idClube) {
+	public List<Aluno> pesquisa(String descricao) {
 		Usuario usuarioLogado = getUsuarioLogado();
 		Specification<Aluno> spec = Specification.anyOf();
 		if (StringUtils.isNotBlank(descricao))
 			spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("dadosPessoais").get("descricao")),"%" + descricao.toLowerCase() + "%"));
-		if (idClube != null)
-			spec = spec.and((root, query, cb) -> cb.equal(root.get("clube").get("id"), idClube));
 		if (!usuarioLogado.isAdministrador())
 			spec = spec.and((root, query, cb) -> cb.equal(root.get("igreja"), usuarioLogado.getIgreja()));
 		return repository.findAll(spec);

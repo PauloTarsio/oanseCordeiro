@@ -2,8 +2,10 @@ package br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.mappers;
 
 import java.util.List;
 
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -44,5 +46,12 @@ public abstract class AlunoMapper {
     @Mapping(source = "clube.nome", target = "clubeDescricao")
     @Mapping(source = "fotoBase64", target = "fotoBase64")
     public abstract AlunoDTO toDto(Aluno entity);
+    
+    @AfterMapping
+    protected void afterToEntity(AlunoDTO dto, @MappingTarget Aluno entity) {
 
+        if (dto.igrejaId() != null)
+            entity.setIgreja(igrejaRepository.findById(dto.igrejaId()).orElseThrow(() -> new RuntimeException("Igreja não encontrada")));
+    
+    }
 }

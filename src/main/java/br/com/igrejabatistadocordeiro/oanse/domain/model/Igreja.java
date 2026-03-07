@@ -73,6 +73,10 @@ public class Igreja {
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
+
+	public String getDescricao() {
+		return dadosPessoais != null ? dadosPessoais.getDescricao() : null;
+	}
 	
 	
 }

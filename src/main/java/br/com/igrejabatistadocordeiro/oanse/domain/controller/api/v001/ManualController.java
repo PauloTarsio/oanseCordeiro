@@ -21,7 +21,7 @@ public class ManualController {
     @Autowired
     private LivroService livroService;
 
-    @GetMapping("/api/manuais")
+    @GetMapping("/api/v001/manuais")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
     public ResponseEntity<List<Livro>> listarPorClube(@RequestParam Clubes clube) {
         List<Livro> manuais = livroService.listarPorClube(clube);

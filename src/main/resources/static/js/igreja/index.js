@@ -1,3 +1,5 @@
+var igreja = {};
+
 $(document).ready(function() {
 
 	// Inicializa jqGrid
@@ -10,6 +12,7 @@ $(document).ready(function() {
 			{ label: 'ATIVO', name: 'ativo', width: 30, formatter: booleanFormatter, align: 'center' },
 		],
 		rowNum: 50,
+		height: 300,
 		viewrecords: true,
 		hidegrid: false,
 		autowidth: true, // faz o grid ajustar à largura do contêiner pai
@@ -33,10 +36,15 @@ $(document).ready(function() {
 		onClickButton: function() {
 			const idSelecionado = $("#jqGrid").jqGrid("getGridParam", "selrow");
 			if (idSelecionado)
-				$.editar(idSelecionado);
+				igreja.edita(idSelecionado);
 		},
 		position: "last"
 	});
+	
+	// Aplica estilo Bootstrap
+	$("#btnEditarRodape")
+		.removeClass("ui-button ui-corner-all ui-state-default")
+		.addClass("btn btn-secondary");
 
 	// Inicialmente desabilita o botão
 	$("#btnEditarRodape").addClass("ui-state-disabled");
@@ -58,13 +66,13 @@ $(document).ready(function() {
 
 	// Botão Pesquisar
 	$("#btnPesquisar").on("click", function() {
-		$.pesquisar();
+		igreja.pesquisa();
 	});
 
 	// Botão Incluir
 	$("#btnIncluir").on("click", function() {
 		if (perfil === 'ADMIN')
-			$.novo();
+			igreja.novo();
 		else
             OanseLib.exibirErro("Acesso negado.");
 	});
@@ -72,10 +80,13 @@ $(document).ready(function() {
 	$("#btnVoltar").on("click", function() {
 		window.history.back();
 	});
+	
+	// Esconde o loading ao carregar a página
+	OanseLib.esconderLoading();
 
 });
 
-$.novo = function() {
+igreja.novo = function() {
 	$.ajax({
 		url: "/igreja/formulario",
 		type: "GET",
@@ -94,11 +105,6 @@ $.novo = function() {
 	});
 }
 
-// Limpa o campo de filtro
-$.cleanFilter = function() {
-	$("#filtroDescricao").val("");
-}
-
 // Carrega os dados na grid
 $.carregarGrid = function(data) {
 	$("#jqGrid").jqGrid("clearGridData");
@@ -106,7 +112,7 @@ $.carregarGrid = function(data) {
 	$("#jqGrid").trigger("reloadGrid");
 }
 
-$.pesquisar = function() {
+igreja.pesquisa = function() {
 	const filtro = $("#filtroDescricao").val().toLowerCase();
 
 	let url = (filtro.trim() === "") ?
@@ -118,7 +124,6 @@ $.pesquisar = function() {
 		type: "GET",
 		success: function(data) {
 			$.carregarGrid(data);
-			$.cleanFilter();
 		},
 		error: function(xhr) {
 			let mensagemErro = "Erro ao buscar igrejas.";
@@ -132,7 +137,7 @@ $.pesquisar = function() {
 	});
 }
 
-$.editar = function(id) {
+igreja.edita = function(id) {
 	$.ajax({
 		url: "/igreja/formulario",
 		type: "GET",

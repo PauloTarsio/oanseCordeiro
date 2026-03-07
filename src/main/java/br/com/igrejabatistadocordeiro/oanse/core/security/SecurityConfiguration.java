@@ -24,7 +24,7 @@ public class SecurityConfiguration {
 		http
 			.httpBasic(httpBasic -> httpBasic.init(http)) // Ideal desativar para produção !!!
 			.authorizeHttpRequests(auth -> auth
-					.requestMatchers("/css/**", "/js/**", "/img/**").permitAll() // libera estáticos
+					.requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico").permitAll() // libera estáticos
 					.requestMatchers("/login").permitAll() // login sem estar autenticado
 					.anyRequest().authenticated())  // resto precisa logar
 			.formLogin(form -> form.loginPage("/login") // página customizada

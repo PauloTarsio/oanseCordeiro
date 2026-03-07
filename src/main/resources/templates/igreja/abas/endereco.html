@@ -1,34 +1,28 @@
-<div th:fragment="endereco" class="card mt-4">
-	<div class="card-header bg-success text-white">
-		<h5>Endereço</h5>
-	</div>
-	<div class="card-body">
-		<div class="mb-3">
+<div th:fragment="endereco">
+	<div class="row">
+		<div class="col-md-12 mt-3">
 			<label for="rua" class="form-label">Rua</label>
 			<input type="text" class="form-control" id="rua" name="dadosPessoais.endereco.rua" required>
 		</div>
-
-		<div class="row">
-			<div class="col-md-4 mb-3">
-				<label for="numero" class="form-label">Número</label>
-				<input type="text" class="form-control" id="numero" name="dadosPessoais.endereco.numero">
-			</div>
-			<div class="col-md-8 mb-3">
-				<label for="bairro" class="form-label">Bairro</label>
-				<input type="text" class="form-control" id="bairro" name="dadosPessoais.endereco.bairro" required>
-			</div>
+	</div>
+	<div class="row mt-3">
+		<div class="col-md-4">
+			<label for="numero" class="form-label">Número</label>
+			<input type="text" class="form-control" id="numero" name="dadosPessoais.endereco.numero">
 		</div>
-
-		<div class="row">
-			<div class="col-md-10 mb-3">
-				<label for="cidade" class="form-label">Cidade</label>
-				<input type="text" class="form-control" id="cidade" name="dadosPessoais.endereco.cidade" required>
-			</div>
-			<div class="col-md-2 mb-3">
-				<label for="uf" class="form-label">UF</label>
-				<input type="text" class="form-control" id="uf" name="dadosPessoais.endereco.uf" maxlength="2"
-					required>
-			</div>
+		<div class="col-md-8">
+			<label for="bairro" class="form-label">Bairro</label>
+			<input type="text" class="form-control" id="bairro" name="dadosPessoais.endereco.bairro" required>
+		</div>
+	</div>
+	<div class="row mt-3">
+		<div class="col-md-10">
+			<label for="cidade" class="form-label">Cidade</label>
+			<input type="text" class="form-control" id="cidade" name="dadosPessoais.endereco.cidade" required>
+		</div>
+		<div class="col-md-2">
+			<label for="uf" class="form-label">UF</label>
+			<input type="text" class="form-control" id="uf" name="dadosPessoais.endereco.uf" maxlength="2" required>
 		</div>
 	</div>
 </div>
