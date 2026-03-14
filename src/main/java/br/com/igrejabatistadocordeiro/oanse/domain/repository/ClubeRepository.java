@@ -10,5 +10,7 @@ import br.com.igrejabatistadocordeiro.oanse.domain.model.clube.Clubes;
 public interface ClubeRepository extends JpaRepository<Clube, Long> {
     
 	Optional<Clube> findByNome(Clubes nome);
+
+	Optional<Clube> findByAlunosId(Long alunoId);
 	
 }

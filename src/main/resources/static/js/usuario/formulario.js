@@ -174,7 +174,7 @@ $.validarFormulario = function() {
 			$(campo).removeClass("is-invalid");
 		}
 	});
-	if (perfis.indexOf($("#perfil").val()) === -1) {
+	if (OanseLib.perfis.indexOf($("#perfil").val()) === -1) {
 		$("#perfil").addClass("is-invalid");
 		valido = false;
 	}

@@ -1,7 +1,8 @@
-var perfis = ['ADMIN', 'SECRETARIO', 'LIDER'];
-var clubes = ['URSINHO','FAISCA','FLAMA','TOCHA','JV'];
 
 const OanseLib = (() => {
+	
+	const perfis = ['ADMIN', 'SECRETARIO', 'LIDER'];
+	const clubes = ['URSINHO','FAISCA','FLAMA','TOCHA','JV'];
 
 	// Lista de UFs válidas
 	const UFs = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
@@ -189,6 +190,8 @@ const OanseLib = (() => {
 		exibirSucesso,
 		exibirErro,
 		exibirLoading,
-		esconderLoading
+		esconderLoading,
+		perfis,
+		clubes
 	};
 })();

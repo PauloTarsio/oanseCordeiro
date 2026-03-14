@@ -1,0 +1,23 @@
+<div th:fragment="modalPesquisa">
+	<div class="modal fade" id="modalPesquisa" tabindex="-1">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="tituloModalPesquisa">Pesquisar</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row mb-3">
+						<div class="col-md-10">
+							<input type="text" id="campoPesquisa" class="form-control" placeholder="Digite para pesquisar">
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-primary" id="btnExecutarPesquisa">Pesquisar</button>
+						</div>
+					</div>
+					<table id="gridPesquisa"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -27,7 +27,7 @@ public class ClubeController {
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Clube não encontrado"),
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Erro interno do servidor") })
 	@Operation(description = "Carrega um clube pelo ID")
-	public ResponseEntity<Clube> getClubeById(@PathVariable Long id) {
+	public ResponseEntity<Clube> carregaPorId(@PathVariable Long id) {
 		Clube clube = clubeService.carrega(id);
 		if (clube != null) {
 			return ResponseEntity.ok(clube);

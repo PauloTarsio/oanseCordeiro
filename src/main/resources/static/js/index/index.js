@@ -16,7 +16,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		handleRedirect('/usuario/index');
 	});
-	$('#btnAtribuiManual').click(function(e) {
+	$('#btnAlunoVsManual').click(function(e) {
 		e.preventDefault();
 		handleRedirect('/aluno-manual/index');
 	});

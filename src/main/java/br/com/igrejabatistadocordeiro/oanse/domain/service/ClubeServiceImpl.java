@@ -17,4 +17,9 @@ public class ClubeServiceImpl implements ClubeService {
 		return clubeRepository.findById(id).orElse(null);                
 	}
 
+	@Override
+	public Clube carregaPorAluno(Long alunoId) {		
+		return clubeRepository.findByAlunosId(alunoId).orElse(null);
+	}
+
 }

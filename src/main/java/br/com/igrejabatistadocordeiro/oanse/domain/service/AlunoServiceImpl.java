@@ -1,5 +1,6 @@
 package br.com.igrejabatistadocordeiro.oanse.domain.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -12,7 +13,9 @@ import br.com.igrejabatistadocordeiro.oanse.domain.model.DadosPessoais;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Igreja;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Usuario;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.Aluno;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.clube.Clubes;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.AlunoRepository;
+import br.com.igrejabatistadocordeiro.oanse.domain.repository.ClubeRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.IgrejaRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.util.StringUtils;
 
@@ -27,10 +30,12 @@ public class AlunoServiceImpl implements AlunoService {
 
 	private AlunoRepository repository;
 	private IgrejaRepository igrejaRepository;
+	private ClubeRepository clubeRepository;
 
-	public AlunoServiceImpl(AlunoRepository repository, IgrejaRepository igrejaRepository) {
+	public AlunoServiceImpl(AlunoRepository repository, IgrejaRepository igrejaRepository, ClubeRepository clubeRepository) {
 		this.repository = repository;
 		this.igrejaRepository = igrejaRepository;
+		this.clubeRepository = clubeRepository;
 	}
 
 	@Override
@@ -62,6 +67,7 @@ public class AlunoServiceImpl implements AlunoService {
 			throw new IllegalArgumentException(MSG_IGREJA_NAO_ENCONTRADA);
 		else
 			aluno.setIgreja(igrejaEncontrada);
+		resolveClube(aluno);
 		repository.save(aluno);
 	}
 
@@ -75,7 +81,24 @@ public class AlunoServiceImpl implements AlunoService {
 		alunoEncontrado = carrega(aluno.getId());
 		aluno.getDadosPessoais().setId(alunoEncontrado.getDadosPessoais().getId());
 		aluno.getDadosPessoais().getEndereco().setId(alunoEncontrado.getDadosPessoais().getEndereco().getId());
+		resolveClube(aluno);
 		repository.save(aluno);
+	}
+
+	private void resolveClube(Aluno aluno) {		
+		int idade = LocalDate.now().getYear() - aluno.getDadosPessoais().getDataNascimento().getYear();
+		if (idade < 4)
+			return; // Não atribui clube para crianças menores de 4 anos
+		else if (idade <= 5)
+			aluno.setClube(clubeRepository.findByNome(Clubes.URSINHO).orElseThrow(() -> new RuntimeException("Clube URSINHO não encontrado")));
+		else if (idade <= 7)
+			aluno.setClube(clubeRepository.findByNome(Clubes.FAISCA).orElseThrow(() -> new RuntimeException("Clube FAISCA não encontrado")));
+		else if (idade <= 9)
+			aluno.setClube(clubeRepository.findByNome(Clubes.FLAMA).orElseThrow(() -> new RuntimeException("Clube FLAMA não encontrado")));
+		else if (idade <= 11)
+			aluno.setClube(clubeRepository.findByNome(Clubes.TOCHA).orElseThrow(() -> new RuntimeException("Clube TOCHA não encontrado")));
+		else
+			aluno.setClube(clubeRepository.findByNome(Clubes.JV).orElseThrow(() -> new RuntimeException("Clube JV não encontrado")));
 	}
 
 	private Aluno pesquisaDocumentos(DadosPessoais dadosPessoais) {

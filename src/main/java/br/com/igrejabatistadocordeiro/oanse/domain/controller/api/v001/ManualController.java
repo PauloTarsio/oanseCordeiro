@@ -23,10 +23,10 @@ public class ManualController {
 
     @GetMapping("/api/v001/manuais")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
-    public ResponseEntity<List<Livro>> listarPorClube(@RequestParam Clubes clube) {
+    public ResponseEntity<List<String>> listarPorClube(@RequestParam Clubes clube) {
         List<Livro> manuais = livroService.listarPorClube(clube);
         if (manuais.isEmpty())
 			return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(manuais);
+        return ResponseEntity.ok(manuais.stream().map(Livro::getDescricao).toList());
     }
 }
