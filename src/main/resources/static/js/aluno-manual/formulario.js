@@ -1,7 +1,6 @@
 let alunoSelecionado = null;
 
 $(document).ready(function () {
-
 	/* VOLTAR */
 	$("#btnVoltar").click(function () {
 		window.history.back();

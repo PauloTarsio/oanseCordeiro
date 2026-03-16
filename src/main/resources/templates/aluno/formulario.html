@@ -1,6 +1,7 @@
 <div th:replace="fragments/head :: head"></div>
 <body>
 	<div th:replace="fragments/modal-mensagem :: modal"></div>
+	<div th:replace="fragments/modal-pesquisa :: modalPesquisa"></div>
 	<div class="container mb-5" style="margin-top: 60px;">
 		<div class="col-md-12">
 			<div class="card-body">
@@ -82,7 +83,7 @@
 	
 	<script th:inline="javascript">var perfil = /*[[${perfil}]]*/ "";</script>
 	<script th:inline="javascript">var igrejaIdUsuarioLogado = /*[[${igrejaIdUsuarioLogado}]]*/ "";</script>
-	<script src="/js/aluno/index.js"></script>
+	<script src="/js/aluno/index.js"></script>	
 	<script src="/js/aluno/formulario.js"></script>
 	<script>
 $(function() {

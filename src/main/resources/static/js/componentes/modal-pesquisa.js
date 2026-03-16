@@ -11,7 +11,7 @@ function abrirPesquisa(config, callback) {
 	$("#campoPesquisa").val("");
 
 	/* LIMPA GRID SE EXISTIR */
-	if ($("#gridPesquisa")[0].grid) {
+	if ($("#gridPesquisa")[0] && $("#gridPesquisa")[0].grid) {
 		$("#gridPesquisa").jqGrid("clearGridData");
 	}
 

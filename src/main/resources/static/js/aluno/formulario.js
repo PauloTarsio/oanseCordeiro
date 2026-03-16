@@ -61,106 +61,6 @@ $(document).ready(function() {
 
 });
 
-// --- ABA MANUAL ---
-// Carrega combo de manuais
-/*$.carregarComboManuais = function() {
-    $.ajax({
-        url: "/api/v001/manuais", // endpoint que retorna a lista de manuais
-        type: "GET",
-        success: function(manuais) {
-            var $combo = $("#manualSelect");
-            $combo.empty();
-            $combo.append('<option value="">Selecione um manual</option>');
-            manuais.forEach(function(manual) {
-                $combo.append($('<option>', {
-                    value: manual.id,
-                    text: manual.nome
-                }));
-            });
-        },
-        error: function() {
-            OanseLib.exibirErro("Erro ao carregar manuais.");
-        }
-    });
-};*/
-
-// Associa manual ao aluno
-/*$("#btnAssociarManual").on("click", function() {
-    const manualId = $("#manualSelect").val();
-    const alunoId = $('#id').val();
-    if (!manualId) {
-        OanseLib.exibirErro("Selecione um manual.");
-        return;
-    }
-	if (!alunoId) {
-        OanseLib.exibirErro("Aluno não identificado. Salve o aluno antes de associar um manual.");
-		return;
-	}
-    $.ajax({
-        url: "/api/v001/aluno-manual?alunoId=" + alunoId + "&livroId=" + manualId,
-        type: "POST",
-        success: function() {
-			OanseLib.exibirMensagem("Manual associado com sucesso!");
-        },
-        error: function(xhr) {
-            let mensagemErro = "Erro ao associar manual.";
-            if (xhr.responseJSON?.message) {
-                mensagemErro = xhr.responseJSON.message;
-            } else if (xhr.responseText) {
-                mensagemErro = xhr.responseText;
-            }
-            OanseLib.exibirErro(mensagemErro);
-        }
-    });
-});*/
-
-// --- ABA MANUAL ---
-// Carrega combo de manuais do clube
-/*$.carregarComboManuaisDoClube = function(clubeId) {
-	var clube = clubes[clubeId-1];
-    var $combo = $("#manualSelect");
-    $combo.empty();
-    $combo.append('<option value="">Selecione um manual</option>');
-    if (!clube) {
-        $combo.prop('disabled', true);
-        $("#manualInfo").html('<div class="alert alert-warning">Escolha um Clube antes de associar um Manual.</div>');
-        return;
-    }
-    $combo.prop('disabled', false);
-    $.ajax({
-        url: "/api/manuais?clube=" + clube,
-        type: "GET",
-        success: function(manuais) {
-            if (manuais && manuais.length > 0) {
-                manuais.forEach(function(manual) {
-                    $combo.append($('<option>', {
-                        value: manual.id,
-                        text: manual.descricao
-                    }));
-                });
-            } else {
-                $combo.append('<option value="">Nenhum manual disponível para o clube</option>');
-            }
-        },
-        error: function() {
-            OanseLib.exibirErro("Erro ao carregar manuais do clube.");
-        }
-    });
-};
-*/
-// Ao abrir a aba Manual, verifica se há clube e carrega combo
-/*$("#manual-tab").on("shown.bs.tab", function() {
-    var clubeId = $("#clubeId").val();
-    if (!clubeId) {
-        $.carregarComboManuaisDoClube(null);
-        return;
-    }
-    $.carregarComboManuaisDoClube(clubeId);
-    const alunoId = $("#formAluno").data("aluno-id");
-    if (alunoId) {
-        $.carregarManualAluno(alunoId);
-    }
-});*/
 
 function ajustarCamposPorTipo(tipo) {
 	if (!novo)
@@ -293,39 +193,6 @@ function preencherFotoAluno(fotoBase64) {
     }
 }
 
-/*$.carregaClube = function(id) {
-	if (!id) {
-		$("#clubeDescricao").val("");
-		return;
-	}
-	$.ajax({
-		url: "/api/v001/clube/" + id,
-		type: "GET",
-		success: function(data) {
-			if (data) {
-				$("#clubeId").val(data.id);
-				$("#clubeDescricao").val(data.nome);
-				$("#clubeId").removeClass("is-invalid");
-				$("#clubeDescricao").removeClass("is-invalid");
-			} else {
-				$("#clubeId").val("").addClass("is-invalid");
-				$("#clubeDescricao").val("").addClass("is-invalid");
-			}
-		},
-		error: function() {
-			$("#clubeId").val("").addClass("is-invalid");
-			$("#clubeDescricao").val("").addClass("is-invalid");
-		}
-	});
-}
-*/
-/*$.carregaClubes = function() {	
-    $("#clubeOptions").empty(); // limpa antes de preencher
-    $.each(clubes, function(i, clube) {
-        i++;
-        $("#clubeOptions").append('<div><label>' + i + ' - ' + clube + '</label></div>');
-    });
-}*/
 
 $.carregaIgreja = function(id) {
 	if (!id) {
@@ -338,7 +205,6 @@ $.carregaIgreja = function(id) {
 			if (data && data.dadosPessoais && data.dadosPessoais.descricao) {
 				$("#igrejaId").val(data.id);
 				$("#igrejaId").removeClass("is-invalid");
-				$("#igrejaId").prop("disabled", perfil == 'SECRETARIO');
 				$("#igrejaDescricao").val(data.dadosPessoais.descricao);
 				$("#igrejaDescricao").removeClass("is-invalid");
 			} else {
@@ -348,7 +214,6 @@ $.carregaIgreja = function(id) {
 		},
 		error: function(xhr) {			
 			$("#igrejaId").val("").addClass("is-invalid");
-			$("#igrejaId").prop("disabled", false);
 			$("#igrejaDescricao").val("").addClass("is-invalid");
 			
 			let mensagemErro = "Erro ao carregar igreja.";
@@ -376,8 +241,6 @@ $.validarFormulario = function() {
 		"#uf",
 		"#igrejaId",
 		"#igrejaDescricao",
-		//"#clubeId",
-		//"#clubeDescricao"
 	];
 
 	camposObrigatorios.forEach(function(campo) {

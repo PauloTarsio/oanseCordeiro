@@ -83,14 +83,7 @@ $(document).ready(function() {
 		window.history.back();
 	});
 
-	$.carregaClubes();
 });
-
-$.carregaClubes = function() {	
-	$.each(clubes, function(i, clube) {
-		$("#filtroClube").append(`<option value="${i+1}">${clube}</option>`);
-	});
-}
 
 aluno.novo = function() {
 	window.location.href = "/aluno/formulario";
