@@ -21,29 +21,41 @@ public class SecurityConfiguration {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http
-			.httpBasic(httpBasic -> httpBasic.init(http)) // Ideal desativar para produção !!!
-			.authorizeHttpRequests(auth -> auth
-					.requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico").permitAll() // libera estáticos
-					.requestMatchers("/login").permitAll() // login sem estar autenticado
-					.anyRequest().authenticated())  // resto precisa logar
-			.formLogin(form -> form.loginPage("/login") // página customizada
-			.loginProcessingUrl("/login") // action do formulário (POST)
-			.failureUrl("/login?error=true") // se falhar volta para login com erro
-			.defaultSuccessUrl("/", true) // após sucesso vai para /
-			.permitAll())
-			.logout(logout -> logout.logoutUrl("/logout") // URL de logout
-				.logoutSuccessUrl("/login?logout=true") // após logout redireciona
-				.invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll())
-			.authenticationProvider(customAuthenticationProvider) // seu provider custom
-			.csrf(csrf -> csrf.disable()); // (opcional: útil em dev/teste)
+	    http
+	        .authorizeHttpRequests(auth -> auth
+	            .requestMatchers(
+	                "/css/**",
+	                "/js/**",
+	                "/img/**",
+	                "/favicon.ico"
+	            ).permitAll()
+	            .requestMatchers("/login").permitAll()
+	            .anyRequest().authenticated()
+	        )
+	        .formLogin(form -> form
+	            .loginPage("/login")
+	            .loginProcessingUrl("/login")
+	            .failureUrl("/login?error=true")
+	            .defaultSuccessUrl("/", true)
+	            .permitAll()
+	        )
+	        .logout(logout -> logout
+	            .logoutUrl("/logout")
+	            .logoutSuccessUrl("/login?logout=true")
+	            .invalidateHttpSession(true)
+	            .deleteCookies("JSESSIONID")
+	            .permitAll()
+	        )
+	        .authenticationProvider(customAuthenticationProvider)
+	        .csrf(csrf -> csrf.disable());
 
-		return http.build();
+	    return http.build();
 	}
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
 		return web -> web.ignoring().requestMatchers(
+				"/favicon.ico",
 				"/v2/api-docs/**",
 				"/v3/api-docs/**",
 				"/swagger-resources/**",

@@ -11,10 +11,10 @@ import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.Aluno
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.dto.PesquisaAlunoManualDTO;
 import br.com.igrejabatistadocordeiro.oanse.domain.controller.api.v001.mappers.AlunoManualMapper;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Livro;
-import br.com.igrejabatistadocordeiro.oanse.domain.model.PerfilDoUsuario;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.Usuario;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.Aluno;
 import br.com.igrejabatistadocordeiro.oanse.domain.model.aluno.AlunoManual;
+import br.com.igrejabatistadocordeiro.oanse.domain.model.recursos.PerfilDoUsuario;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.AlunoManualRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.AlunoRepository;
 import br.com.igrejabatistadocordeiro.oanse.domain.repository.LivroRepository;

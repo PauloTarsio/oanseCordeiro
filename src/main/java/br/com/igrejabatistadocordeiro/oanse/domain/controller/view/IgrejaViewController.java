@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IgrejaViewController {
 
+	@GetMapping("/igreja/index")
+	public String index() {
+		return "/igreja/index";
+	}
+	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARIO')")
 	@GetMapping("/igreja/formulario")
-	public String igrejaFormulario() {				
+	public String formulario() {				
 		return "/igreja/formulario";
-	}
-
-	@GetMapping("/igreja/index")
-	public String igrejaIndex() {
-		return "/igreja/index";
 	}
 }

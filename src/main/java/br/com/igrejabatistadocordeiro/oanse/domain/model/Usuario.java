@@ -2,6 +2,7 @@ package br.com.igrejabatistadocordeiro.oanse.domain.model;
 
 import java.util.UUID;
 
+import br.com.igrejabatistadocordeiro.oanse.domain.model.recursos.PerfilDoUsuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

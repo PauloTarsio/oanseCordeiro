@@ -1,4 +1,4 @@
-package br.com.igrejabatistadocordeiro.oanse.domain.model;
+package br.com.igrejabatistadocordeiro.oanse.domain.model.recursos;
 
 import java.util.List;
 
@@ -9,4 +9,3 @@ public enum PerfilDoUsuario {
 		return List.of("ROLE_" + this.name());
 	}
 }
-
